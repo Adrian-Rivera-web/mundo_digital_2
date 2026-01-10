@@ -6,18 +6,39 @@
     <title>Mundo Digital</title>
     
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     
     <header>
         <div class="header-arriba">
             <img src="img/logo.jpg" alt="logo de tienda" class="logo">
+            <form class="buscar-form">
+                <input type="text" placeholder="Busca los mejores productos y marcas :)" class="buscar-input">
+                <div class="separador"></div>
+                <button type="submit" class="buscar-boton">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="page/login.html" class="usuario-izquierda">
+                <i class="fa-regular fa-circle-user"></i> <div class="usuario-texto">
+                    <span class="hola">¡Hola!</span>
+                    <span class="inicia">Inicia sesión</span>
+                </div>
+            </a>
+            <a href="page/carrito.html" class="icono-carrito">
+                <i class="fa-solid fa-basket-shopping"></i>
+            </a>
         </div>
         <div class="header-abajo">
             <nav>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="page/producto.html">Productos</a></li>
+                    <li><a href="page/ofertas.html">ofertas</a></li>
+                    <li><a href="page/nosotros.html">nosotros</a></li>
+                    <li><a href="page/contacto.html">contacto</a></li>
+                    <li><a href="page/blog.html">reseñas</a></li>
                 </ul>
             </nav>
         </div>
@@ -25,6 +46,20 @@
 <section class="banner"> 
     <img src="img/banner.jpg" alt="Banner de tienda" class="banner-img">
 </section>
-    
+    <div class="titulo-inicio">
+        <h2>Categorias Populares</h2>
+        <h2>Mas vendidos</h2>
+        <h2>Ofertas Destacadas</h2>
+        <h2>Las Mejores Marcas</h2>
+    </div>
+    <div class="Marcas-inicio">
+        <img src="img/Asus.jpg" alt="asus" class="asus">
+        <img src="img/gigabyte.jpg" alt="gigabyte" class="gigabyte">
+        <img src="img/Kingston.jpg" alt="kingston" class="kingston">
+        <img src="img/msi.jpg" alt="msi" class="msi">
+    </div>
+    <footer class="Encabezado-final">
+        <p>&copy; 2026 Mundo Digital - Todos los derechos reservados</p>
+    </footer>
 </body>
 </html>

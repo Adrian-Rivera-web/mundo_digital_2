@@ -1,7 +1,10 @@
+body{
+    background-color: #e6e5e5;
+}
 .header-arriba{
     background: #1f69a2;
     color: white;
-    padding: 40px 2px;
+    padding: 1px 2px;
     display: flex;
     justify-content:center;
     align-items: center;
@@ -10,6 +13,8 @@
     width: 100%;
 }
 .header-abajo{
+    background-color: white;
+    width: 100%;
     font-weight: 800;
     font-size: 20px;
     font-family: Arial;
@@ -22,8 +27,8 @@
 }
 .logo {
     position:absolute;
-    left: 50px;
-    width: 230px;
+    left: 80px;
+    width: 180px;
     height: auto;
 }
 header nav ul{
@@ -38,6 +43,134 @@ header nav ul li a{
 }
 
 .banner-img {
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+}
+
+/* Barra de busqueda */
+
+.buscar-form {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 5px 20px;
+    width: 50%;          
+    max-width: 600px;   
+    height: 40px;        
+    margin: 20px auto;   
+    box-sizing: border-box;
+}
+
+.buscar-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Diseño de boton de buscar */
+
+.buscar-boton {
+    background: none !important;
+    border: none !important;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.buscar-boton i {
+    color: #1d42ae;
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.icono-carrito {
+    right: 100px;
+    color: white !important;    /* ¡Aquí está la clave! Fuerza el color blanco */
+    font-size: 30px;            /* Tamaño del icono (ajústalo a tu gusto) */
+    margin-left: 25px;          /* Espacio entre la barra de búsqueda y el carrito */
+    text-decoration: none;      /* Quita el subrayado del enlace */
+    transition: transform 0.3s; /* Efecto suave al pasar el mouse */
+    position: relative;        /* Necesario si luego agregas un contador */
+}
+
+.usuario-izquierda {
+    position: absolute;       /* Lo hace flotar para ubicarlo libremente */
+    left: 1150px;              /* Ajusta este número según el ancho de tu logo */
+    top: 50%;                 /* Lo centra verticalmente */
+    transform: translateY(-50%); /* Corrección técnica para centrado exacto */
+    
+    display: flex;            /* Pone el icono y el texto en línea */
+    align-items: center;      /* Centrado vertical interno */
+    text-decoration: none;    /* Quita el subrayado del enlace */
+    color: white;             /* Color del texto e icono */
+    gap: 10px;                /* Espacio entre el muñequito y las letras */
+    z-index: 10;              /* Asegura que quede por encima de todo */
+}
+
+/* Estilo del Icono de la persona */
+.usuario-izquierda i {
+    font-size: 35px;          /* Tamaño del icono grande */
+}
+
+/* Estilo para los textos (uno arriba del otro) */
+.usuario-texto {
+    display: flex;
+    flex-direction: column;  
+    line-height: 1.2;         
+}
+
+.usuario-texto .hola {
+    font-size: 15px;
+    width: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.usuario-texto .inicia {
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+.Encabezado-final{
+    text-align: center;
+    padding: 15px;
+    background: #222;
+    color: white;
+    margin-top: 2000px;
+}
+
+/* imagenes para las marcas */
+.Marcas-inicio {
+    display: flex;             
+    justify-content: space-around; 
+    align-items: center;        
+    padding: 10px 20px;         
+    background-color: #e6e5e5;    
+}
+
+.Marcas-inicio img {
+    width: 350px;               
+    height: auto;               
+    object-fit: contain; 
+    border-radius: 15px;       
+}
+
+.titulo-inicio{
+    color:rgb(71, 24, 117);
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.distribuidores{
     display: block;
     margin-top: 30px;
     margin-left: auto;
