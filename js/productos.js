@@ -2,7 +2,7 @@ const productos = [
   {
     id: 1,
     nombre: "Notebook Gamer",
-    precio: 79999000,
+    precio: 79990,
     imagen: "producto1.jpg",
     descripcion: "Notebook de alto rendimiento ideal para juegos y trabajo pesado.",
     categoria: "Computación",

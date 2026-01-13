@@ -69,3 +69,6 @@ function cambiarCantidad(index, cambio) {
 
 // Ejecutar al cargar la página
 renderCarrito();
+document.getElementById("seguir-comprando").addEventListener("click", () => {
+    window.location.href = "../page/producto.html";
+});
