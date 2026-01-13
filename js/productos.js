@@ -148,94 +148,76 @@ if (contenedorMasVendidos) {
 }
 
 /* TODOS LOS PRODUCTOS (PRODUCTOS.HTML) */
+/* === LÓGICA DE PRODUCTOS: CARGA, SPINNER Y CARRITO === */
 const contenedorProductos = document.getElementById("contenedor-productos");
 
+// Asegúrate de que estos IDs existan en tu HTML
+const spinner = document.getElementById("loading-spinner");
+const mensaje = document.getElementById("mensaje-agregado");
+
 if (contenedorProductos) {
+  // Recorremos tu lista de productos (asegúrate de que el array 'productos' exista arriba)
   productos.forEach(producto => {
+    
+    // 1. Crear la tarjeta del producto
     const div = document.createElement("div");
     div.className = "producto";
-
     div.innerHTML = `
       <img src="../img/${producto.imagen}" alt="${producto.nombre}">
       <h3>${producto.nombre}</h3>
       <p class="precio">$${producto.precio.toLocaleString("es-CL")}</p>
       <button class="btn-producto">Añadir</button>
     `;
-
+    
     contenedorProductos.appendChild(div);
 
-    // Agregar evento click
+    // 2. Asignar la función al botón "Añadir"
     const boton = div.querySelector(".btn-producto");
+    
     boton.addEventListener("click", () => {
-        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const productoEnCarrito = carrito.find(p => p.id === producto.id);
+        
+        // A) Mostrar el Spinner visualmente
+        if(spinner) spinner.style.display = "flex";
+        if(mensaje) mensaje.style.display = "none"; // Ocultar mensaje anterior si lo hubiera
 
-        if (productoEnCarrito) {
-            productoEnCarrito.cantidad++;
-        } else {
-            carrito.push({
-                id: producto.id,
-                nombre: producto.nombre,
-                precio: producto.precio,
-                imagen: producto.imagen,
-                cantidad: 1
-            });
-        }
+        // B) Usar setTimeout para dar tiempo a ver la animación (0.5 seg)
+        setTimeout(() => {
+            
+            // --- LÓGICA DE GUARDADO EN LOCALSTORAGE ---
+            let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            const productoEnCarrito = carrito.find(p => p.id === producto.id);
 
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        mostrarSpinner(); // usa spinner.js
+            if (productoEnCarrito) {
+                productoEnCarrito.cantidad++;
+            } else {
+                carrito.push({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    precio: producto.precio,
+                    imagen: producto.imagen,
+                    cantidad: 1
+                });
+            }
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+            // ------------------------------------------
+
+            // C) Ocultar Spinner y Mostrar Mensaje de Éxito
+            if(spinner) spinner.style.display = "none";
+            
+            if(mensaje) {
+                mensaje.textContent = "✅ Producto agregado";
+                mensaje.style.display = "block";
+                
+                // D) Quitar el mensaje automáticamente a los 2 segundos
+                setTimeout(() => {
+                    mensaje.style.display = "none";
+                }, 750);
+            }
+
+        }, 200); // Tiempo de espera (medio segundo)
     });
   });
 }
-
-
-function agregarAlCarrito(idProducto) {
-    const spinner = document.getElementById("loading-spinner");
-    const mensaje = document.getElementById("mensaje-agregado");
-
-    // 1. Mostrar overlay
-    spinner.style.display = "flex";
-    mensaje.style.display = "none";
-
-    // 2. Simular carga de producto
-    setTimeout(() => {
-        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const producto = productos.find(p => p.id === idProducto);
-
-        if (!producto) {
-            console.error("Producto no encontrado", idProducto);
-            spinner.style.display = "none";
-            return;
-        }
-
-        const productoEnCarrito = carrito.find(p => p.id === idProducto);
-        if (productoEnCarrito) {
-            productoEnCarrito.cantidad++;
-        } else {
-            carrito.push({
-                id: producto.id,
-                nombre: producto.nombre,
-                precio: producto.precio,
-                imagen: producto.imagen,
-                cantidad: 1
-            });
-        }
-
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-
-        // 3. Ocultar overlay y mostrar mensaje
-        spinner.style.display = "none";
-        mensaje.textContent = "✅ Producto agregado al carrito";
-        mensaje.style.display = "block";
-
-        // 4. Ocultar mensaje automáticamente
-        setTimeout(() => {
-            mensaje.style.display = "none";
-        }, 2000);
-
-    }, 800); // Duración de la animación de carga
-}
-
 
 
 
