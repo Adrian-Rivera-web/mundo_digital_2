@@ -2,7 +2,7 @@ const productos = [
   {
     id: 1,
     nombre: "Notebook Gamer",
-    precio: 799990,
+    precio: 79999000,
     imagen: "producto1.jpg",
     descripcion: "Notebook de alto rendimiento ideal para juegos y trabajo pesado.",
     categoria: "Computación",
@@ -163,11 +163,78 @@ if (contenedorProductos) {
     `;
 
     contenedorProductos.appendChild(div);
+
+    // Agregar evento click
+    const boton = div.querySelector(".btn-producto");
+    boton.addEventListener("click", () => {
+        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const productoEnCarrito = carrito.find(p => p.id === producto.id);
+
+        if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            carrito.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                imagen: producto.imagen,
+                cantidad: 1
+            });
+        }
+
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        mostrarSpinner(); // usa spinner.js
+    });
   });
 }
 
 
+function agregarAlCarrito(idProducto) {
+    const spinner = document.getElementById("loading-spinner");
+    const mensaje = document.getElementById("mensaje-agregado");
 
+    // 1. Mostrar overlay
+    spinner.style.display = "flex";
+    mensaje.style.display = "none";
+
+    // 2. Simular carga de producto
+    setTimeout(() => {
+        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const producto = productos.find(p => p.id === idProducto);
+
+        if (!producto) {
+            console.error("Producto no encontrado", idProducto);
+            spinner.style.display = "none";
+            return;
+        }
+
+        const productoEnCarrito = carrito.find(p => p.id === idProducto);
+        if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            carrito.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                imagen: producto.imagen,
+                cantidad: 1
+            });
+        }
+
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        // 3. Ocultar overlay y mostrar mensaje
+        spinner.style.display = "none";
+        mensaje.textContent = "✅ Producto agregado al carrito";
+        mensaje.style.display = "block";
+
+        // 4. Ocultar mensaje automáticamente
+        setTimeout(() => {
+            mensaje.style.display = "none";
+        }, 2000);
+
+    }, 800); // Duración de la animación de carga
+}
 
 
 
@@ -193,3 +260,4 @@ if (contenedorOferta && productoOferta) {
     </div>
   `;
 }
+

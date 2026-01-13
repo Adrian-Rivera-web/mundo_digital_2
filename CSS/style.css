@@ -104,7 +104,7 @@ header nav ul li a{
 
 .usuario-izquierda {
     position: absolute;       /* Lo hace flotar para ubicarlo libremente */
-    left: 1150px;              /* Ajusta este número según el ancho de tu logo */
+    left: 75%;              /* Ajusta este número según el ancho de tu logo */
     top: 50%;                 /* Lo centra verticalmente */
     transform: translateY(-50%); /* Corrección técnica para centrado exacto */
     
@@ -130,7 +130,7 @@ header nav ul li a{
 
 .usuario-texto .hola {
     font-size: 15px;
-    width: 100px;
+    width: 100;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
 }
@@ -145,7 +145,7 @@ header nav ul li a{
     padding: 15px;
     background: #222;
     color: white;
-    margin-top: 2000px;
+    margin-top: 1%;
 }
 
 /* imagenes para las marcas */
@@ -307,4 +307,285 @@ header nav ul li a{
 
 .producto.oferta {
   position: relative;
+}
+
+
+
+/* Pagina Nosotros */
+
+.titulo-nosotros{
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:160%;
+  text-align: center;
+  color: #2e4d8f;
+
+}
+
+.bloque-nosotros {
+    display: flex;              
+    align-items: center;        
+    justify-content: space-between; 
+    gap: 1%;                  
+    padding: 3%;              
+    background-color: white;
+    max-width: 1200px;          
+    margin: 40px auto;          
+    border-radius: 10px;        
+}
+
+.bloque-nosotros p {
+    flex: 1;                    
+    font-size: 130%;            /* Tamaño de letra cómodo */
+    line-height: 1.6;           /* Altura de línea para leer mejor */
+    color: #444;                /* Color gris oscuro (más elegante que negro puro) */
+    text-align: left;           /* Alineado a la izquierda */
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* 3. La Imagen (<img>) */
+.bloque-nosotros img {
+    flex: 1;                    /* Ocupa el otro 50% del espacio */
+    max-width: 500px;           /* Controla que la imagen no sea gigante */
+    width: 100%;                /* Se adapta si la pantalla es pequeña */
+    border-radius: 20px;        /* Bordes redondeados en la foto */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Sombra elegante */
+    object-fit: cover;          /* Asegura que la foto no se deforme */
+}
+
+/*css de carrito para no diferenciar*/
+/* =========================
+   CARRITO DE COMPRAS
+   ========================= */
+
+.carrito-page {
+  background: #f6f7f8;
+  padding: 40px 0;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedor-carrito {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  gap: 30px;
+  padding: 0 20px;
+}
+
+/* =========================
+   LISTA DE PRODUCTOS
+   ========================= */
+
+.carrito-items {
+  flex: 2;
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.carrito-items h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+/* MENSAJE CARRITO VACÍO */
+#carrito-empty {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+}
+
+/* PRODUCTO */
+.carrito-producto {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.carrito-producto:last-child {
+  border-bottom: none;
+}
+
+.carrito-producto img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* INFO PRODUCTO */
+.carrito-info {
+  flex: 1;
+}
+
+.carrito-info h4 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.carrito-info p {
+  margin: 4px 0;
+  color: #555;
+}
+
+/* =========================
+   CANTIDAD
+   ========================= */
+
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.cantidad button {
+  width: 30px;
+  height: 30px;
+  background: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.cantidad span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* =========================
+   RESUMEN
+   ========================= */
+
+.resumen-pedido {
+  flex: 1;
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.resumen-pedido h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.resumen-pedido p {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.resumen-pedido .total {
+  font-size: 20px;
+  font-weight: bold;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+
+#checkout {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+#checkout:hover {
+  background: #0056b3;
+}
+
+#seguir-comprando {
+  width: 100%;
+  padding: 10px;
+  background: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#seguir-comprando:hover {
+  background: #333;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+  .contenedor-carrito {
+    flex-direction: column;
+  }
+
+  .carrito-producto {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .carrito-producto img {
+    width: 100%;
+    max-width: 120px;
+  }
+}
+
+/*pagina de carga*/
+/* Spinner overlay */
+#loading-spinner {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Fijo sobre toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    z-index: 1000; /* Por encima de todo */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center;     /* Centrar verticalmente */
+    display: flex;           /* Flex para centrar */
+}
+
+/* Círculo giratorio del spinner */
+#loading-spinner::before {
+    content: "";
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mensaje de producto agregado */
+#mensaje-agregado {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 20%; /* Ajusta verticalmente si quieres */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4CAF50; /* Verde */
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 1001; /* Siempre encima del overlay */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
