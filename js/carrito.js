@@ -1,104 +1,127 @@
 // Obtener carrito desde localStorage
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-// Elementos del DOM (COINCIDEN con tu HTML)
+// Elementos del DOM
 const contenedor = document.getElementById("carritoItems");
 const carritoVacio = document.getElementById("carrito-empty");
 const subtotalEl = document.getElementById("subtotal");
 const totalEl = document.getElementById("total");
 
-// Renderizar carrito
+// --- RENDERIZAR CARRITO ---
 function renderCarrito() {
-  contenedor.innerHTML = "";
+    // Si el contenedor no existe (por si acaso), salimos
+    if (!contenedor) return;
 
-  // Carrito vacío
-  if (carrito.length === 0) {
-    carritoVacio.style.display = "block";
-    subtotalEl.textContent = "$0";
-    totalEl.textContent = "$0";
-    return;
-  }
+    contenedor.innerHTML = "";
 
-  carritoVacio.style.display = "none";
+    // Carrito vacío
+    if (carrito.length === 0) {
+        carritoVacio.style.display = "block";
+        if(subtotalEl) subtotalEl.textContent = "$0";
+        if(totalEl) totalEl.textContent = "$0";
+        return;
+    }
 
-  let subtotal = 0;
+    carritoVacio.style.display = "none";
+    let subtotal = 0;
 
-  carrito.forEach((producto, index) => {
-    const subtotalProducto = producto.precio * producto.cantidad;
-    subtotal += subtotalProducto;
+    carrito.forEach((producto, index) => {
+        const subtotalProducto = producto.precio * producto.cantidad;
+        subtotal += subtotalProducto;
 
-    const div = document.createElement("div");
-    div.classList.add("carrito-producto");
+        const div = document.createElement("div");
+        div.classList.add("carrito-producto");
 
-    div.innerHTML = `
-      <img src="../img/${producto.imagen}" alt="${producto.nombre}">
-      <div class="carrito-info">
-        <h4>${producto.nombre}</h4>
-        <p>$${producto.precio.toLocaleString("es-CL")}</p>
+        div.innerHTML = `
+            <img src="../img/${producto.imagen}" alt="${producto.nombre}">
+            <div class="carrito-info">
+                <h4>${producto.nombre}</h4>
+                <p>$${producto.precio.toLocaleString("es-CL")}</p>
 
-        <div class="cantidad">
-          <button onclick="cambiarCantidad(${index}, -1)">−</button>
-          <span>${producto.cantidad}</span>
-          <button onclick="cambiarCantidad(${index}, 1)">+</button>
-        </div>
+                <div class="cantidad">
+                    <button onclick="cambiarCantidad(${index}, -1)">−</button>
+                    <span>${producto.cantidad}</span>
+                    <button onclick="cambiarCantidad(${index}, 1)">+</button>
+                </div>
 
-        <p><strong>Subtotal:</strong> $${subtotalProducto.toLocaleString("es-CL")}</p>
-      </div>
-    `;
+                <p><strong>Subtotal:</strong> $${subtotalProducto.toLocaleString("es-CL")}</p>
+            </div>
+        `;
 
-    contenedor.appendChild(div);
-  });
+        contenedor.appendChild(div);
+    });
 
-  subtotalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
-  totalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
+    if(subtotalEl) subtotalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
+    if(totalEl) totalEl.textContent = "$" + subtotal.toLocaleString("es-CL");
 
-  // Guardar cambios
-  localStorage.setItem("carrito", JSON.stringify(carrito));
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-// Cambiar cantidad
-function cambiarCantidad(index, cambio) {
-  carrito[index].cantidad += cambio;
+// --- CAMBIAR CANTIDAD ---
+// (La hacemos global para que el HTML la encuentre)
+window.cambiarCantidad = function(index, cambio) {
+    carrito[index].cantidad += cambio;
+    if (carrito[index].cantidad <= 0) {
+        carrito.splice(index, 1);
+    }
+    renderCarrito();
+};
 
-  if (carrito[index].cantidad <= 0) {
-    carrito.splice(index, 1);
-  }
-
-  renderCarrito();
-}
-
-// Ejecutar al cargar la página
+// Ejecutar al cargar
 renderCarrito();
 
-document.getElementById("seguir-comprando").addEventListener("click", () => {
-    window.location.href = "../page/producto.html";
-});
+// Botón Seguir Comprando
+const btnSeguir = document.getElementById("seguir-comprando");
+if(btnSeguir) {
+    btnSeguir.addEventListener("click", () => {
+        window.location.href = "producto.html";
+    });
+}
 
+// --- LÓGICA DEL CHECKOUT (AQUÍ ESTÁ EL CAMBIO) ---
+const btnCheckout = document.getElementById("checkout");
 
-document.getElementById("checkout").addEventListener("click", () => {
+if(btnCheckout) {
+    btnCheckout.addEventListener("click", () => {
 
-    // obtener carrito actual
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        // 1. VERIFICAR LOGIN
+        const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
-    // calcular total
-    let total = carrito.reduce((acc, item) => {
-        return acc + (item.precio * item.cantidad);
-    }, 0);
+        if (!usuarioLogueado) {
+            // Si no hay usuario, alerta y redirección
+            alert("🔒 Para finalizar la compra, necesitas iniciar sesión.");
+            window.location.href = "login.html";
+            return; // Detiene la función aquí, no genera boleta
+        }
 
-    // guardar datos de la boleta
-    const boleta = {
-        fecha: new Date().toLocaleString(),
-        productos: carrito,
-        total: total
-    };
+        // 2. Si hay usuario, procedemos con la compra
+        const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
+        
+        if(carritoActual.length === 0) {
+            alert("Tu carrito está vacío.");
+            return;
+        }
 
-    localStorage.setItem("boleta", JSON.stringify(boleta));
+        // Calcular total
+        let total = carritoActual.reduce((acc, item) => {
+            return acc + (item.precio * item.cantidad);
+        }, 0);
 
-    // borrar carrito
-    localStorage.removeItem("carrito");
-    localStorage.removeItem("total");
-    localStorage.removeItem("cantidad");
+        // 3. Crear Boleta (Ahora incluimos los datos del cliente)
+        const boleta = {
+            fecha: new Date().toLocaleString(),
+            cliente: usuarioLogueado.nombre, // ¡Dato importante!
+            email: usuarioLogueado.email,
+            productos: carritoActual,
+            total: total
+        };
 
-    // ir a la boleta
-    window.location.href = "../page/boleta.html";
-});
+        localStorage.setItem("boleta", JSON.stringify(boleta));
+
+        // 4. Limpiar carrito y redirigir
+        localStorage.removeItem("carrito");
+        
+        alert("✅ ¡Compra exitosa! Generando boleta...");
+        window.location.href = "boleta.html";
+    });
+}

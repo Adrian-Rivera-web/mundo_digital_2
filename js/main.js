@@ -1,5 +1,3 @@
-// js/main.js
-
 document.addEventListener("DOMContentLoaded", function() {
     // Verificar usuario logueado
     const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
