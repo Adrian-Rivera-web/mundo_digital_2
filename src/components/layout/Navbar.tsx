@@ -60,17 +60,17 @@ export const Navbar = () => {
 
                     {/* Mobile menu button */}
                     <div className="flex items-center sm:hidden">
-                        <Link to="/cart" className="relative p-2 text-gray-500 hover:text-blue-600 mr-4">
+                        <Link to="/cart" className="relative p-2 text-blue-100 hover:text-white mr-4">
                             <ShoppingCart className="h-6 w-6" />
                             {itemCount > 0 && (
-                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-600 bg-white rounded-full">
                                     {itemCount}
                                 </span>
                             )}
                         </Link>
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
+                            className="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-blue-700 focus:outline-none"
                         >
                             <Menu className="h-6 w-6" />
                         </button>
