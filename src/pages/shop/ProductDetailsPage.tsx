@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import type { Product } from '../../types';
 import { ProductService } from '../../services/product.service';
 import { useCartStore } from '../../hooks/useCartStore';
@@ -7,7 +7,7 @@ import { ArrowLeft, ShoppingCart, Truck, ShieldCheck } from 'lucide-react';
 
 export const ProductDetailsPage = () => {
     const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
+
     const [product, setProduct] = useState<Product | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const addItem = useCartStore(state => state.addItem);
@@ -107,8 +107,8 @@ export const ProductDetailsPage = () => {
                             onClick={handleAddToCart}
                             disabled={product.stock === 0 || isAdding}
                             className={`flex-1 inline-flex justify-center items-center px-6 py-4 border border-transparent text-lg font-medium rounded-md shadow-sm text-white ${product.stock > 0
-                                    ? isAdding ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
-                                    : 'bg-gray-400 cursor-not-allowed'
+                                ? isAdding ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
+                                : 'bg-gray-400 cursor-not-allowed'
                                 }`}
                         >
                             <ShoppingCart className="h-6 w-6 mr-2" />
