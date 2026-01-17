@@ -14,6 +14,9 @@ import { AdminDashboard } from './pages/admin/DashboardPage';
 import { OrdersPage } from './pages/admin/OrdersPage';
 import { ProductsPage } from './pages/admin/ProductsPage';
 import { ProductEditPage } from './pages/admin/ProductEditPage';
+import { AboutPage } from './pages/static/AboutPage';
+import { ContactPage } from './pages/static/ContactPage';
+import { ReviewsPage } from './pages/static/ReviewsPage';
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="order-success/:id" element={<OrderSuccessPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="reviews" element={<ReviewsPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
