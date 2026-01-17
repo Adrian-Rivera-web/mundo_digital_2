@@ -82,7 +82,7 @@ export const Navbar = () => {
             <div className="hidden sm:block border-t border-gray-100 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex space-x-8 h-12 items-center text-sm font-medium">
-                        <Link to="/" className="text-gray-900 hover:text-blue-600">
+                        <Link to="/products" className="text-gray-900 hover:text-blue-600">
                             Productos
                         </Link>
                         <Link to="/about" className="text-gray-500 hover:text-gray-900">
@@ -116,7 +116,7 @@ export const Navbar = () => {
                         </div>
                     </div>
                     <div className="pt-2 pb-3 space-y-1">
-                        <Link to="/" className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 text-base font-medium">
+                        <Link to="/products" className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 text-base font-medium">
                             Productos
                         </Link>
                         <Link to="/about" className="border-l-4 border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 text-base font-medium">
