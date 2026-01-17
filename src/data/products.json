@@ -1,0 +1,56 @@
+[
+    {
+        "id": "1",
+        "name": "Laptop Gamer Raider X",
+        "description": "Potente laptop para gaming con RTX 4060 y Ryzen 7.",
+        "price": 25000,
+        "stock": 10,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": "2",
+        "name": "Smartphone Galaxy Ultra",
+        "description": "El último modelo con cámara de 200MP y pantalla AMOLED.",
+        "price": 18000,
+        "stock": 15,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": "3",
+        "name": "Monitor 27' 144Hz",
+        "description": "Monitor curvo ideal para esports.",
+        "price": 4500,
+        "stock": 5,
+        "category": "Monitores",
+        "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": "4",
+        "name": "Teclado Mecánico RGB",
+        "description": "Switches azules y chasis de aluminio.",
+        "price": 1200,
+        "stock": 50,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": "5",
+        "name": "Mouse Inalámbrico Pro",
+        "description": "Sensor de alta precisión y batería de larga duración.",
+        "price": 800,
+        "stock": 30,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": "6",
+        "name": "Procesador Ryzen 9 7900X",
+        "description": "12 núcleos y 24 hilos para máximo rendimiento.",
+        "price": 9500,
+        "stock": 8,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000"
+    }
+]
