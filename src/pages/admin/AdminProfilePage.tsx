@@ -3,7 +3,7 @@ import { User as UserIcon, Mail, Shield, Save, Lock, CheckCircle } from 'lucide-
 import { useAuth } from '../../context/AuthContext';
 
 export const AdminProfilePage = () => {
-    const { user, login } = useAuth();
+    const { user } = useAuth();
     const [name, setName] = useState(user?.name || '');
     const [isSaving, setIsSaving] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -19,10 +19,9 @@ export const AdminProfilePage = () => {
                     u.email === user.email ? { ...u, name } : u
                 );
                 localStorage.setItem('mundo_digital_users', JSON.stringify(updatedUsers));
-                // Update context (simulated)
-                if (login) {
-                    // Refrescar contexto si es necesario
-                }
+                // En una app real, aquí llamaríamos a un servicio para actualizar los datos
+                // y luego actualizaríamos el contexto de autenticación o forzaríamos un re-login.
+                console.log('Perfil actualizado localmente en localStorage');
             }
             setIsSaving(false);
             setShowSuccess(true);
