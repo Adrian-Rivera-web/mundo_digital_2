@@ -39,43 +39,75 @@ export const CartPage = () => {
             </div>
             <ul className="divide-y divide-gray-200">
                 {items.map((item) => (
-                    <li key={item.id} className="px-4 py-4 sm:px-6 flex items-center">
-                        <img
-                            src={item.image}
-                            alt={item.name}
-                            className="h-16 w-16 w-full object-cover rounded-md border border-gray-200"
-                        />
-                        <div className="ml-4 flex-1">
-                            <h3 className="text-sm font-medium text-gray-900">{item.name}</h3>
-                            <p className="text-sm text-gray-500">{formatPrice(item.price)}</p>
+                    <li key={item.id} className="px-4 py-6 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0">
+                        {/* Image Container with fixed aspect ratio */}
+                        <div className="h-24 w-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                            <img
+                                src={item.image}
+                                alt={item.name}
+                                className="h-full w-full object-cover"
+                            />
                         </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center border border-gray-300 rounded-md">
+
+                        {/* Product Info */}
+                        <div className="sm:ml-6 flex-1 w-full">
+                            <div className="flex justify-between">
+                                <h3 className="text-base font-bold text-gray-900 line-clamp-1">{item.name}</h3>
+                                <button
+                                    onClick={() => removeItem(item.id)}
+                                    className="sm:hidden text-red-500 p-1"
+                                >
+                                    <Trash2 className="h-5 w-5" />
+                                </button>
+                            </div>
+                            <div className="mt-1 flex items-baseline space-x-2">
+                                {item.discountPrice ? (
+                                    <>
+                                        <span className="text-lg font-bold text-red-600">{formatPrice(item.discountPrice)}</span>
+                                        <span className="text-sm text-gray-400 line-through">{formatPrice(item.price)}</span>
+                                    </>
+                                ) : (
+                                    <span className="text-lg font-semibold text-gray-900">{formatPrice(item.price)}</span>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Quantity and Actions */}
+                        <div className="flex items-center justify-between w-full sm:w-auto sm:space-x-8">
+                            <div className="flex items-center border border-gray-300 rounded-lg bg-white overflow-hidden">
                                 <button
                                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                    className="p-1 hover:bg-gray-100 disabled:opacity-50"
+                                    className="p-2 hover:bg-gray-50 disabled:opacity-30 transition-colors"
                                     disabled={item.quantity <= 1}
                                 >
                                     <Minus className="h-4 w-4 text-gray-600" />
                                 </button>
-                                <span className="px-2 text-gray-700 font-medium w-8 text-center">{item.quantity}</span>
+                                <span className="px-2 text-gray-900 font-bold w-10 text-center text-sm">{item.quantity}</span>
                                 <button
                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                    className="p-1 hover:bg-gray-100 disabled:opacity-50"
+                                    className="p-2 hover:bg-gray-50 disabled:opacity-30 transition-colors"
                                     disabled={item.quantity >= item.stock}
                                 >
                                     <Plus className="h-4 w-4 text-gray-600" />
                                 </button>
                             </div>
-                            <button
-                                onClick={() => removeItem(item.id)}
-                                className="text-red-500 hover:text-red-700"
-                            >
-                                <Trash2 className="h-5 w-5" />
-                            </button>
-                        </div>
-                        <div className="ml-4 w-24 text-right font-medium text-gray-900">
-                            {formatPrice(item.price * item.quantity)}
+
+                            <div className="hidden sm:block">
+                                <button
+                                    onClick={() => removeItem(item.id)}
+                                    className="text-gray-400 hover:text-red-500 p-2 transition-colors"
+                                    title="Eliminar producto"
+                                >
+                                    <Trash2 className="h-5 w-5" />
+                                </button>
+                            </div>
+
+                            <div className="text-right min-w-[100px]">
+                                <p className="text-sm text-gray-500 uppercase font-semibold text-[10px] tracking-wider">Subtotal</p>
+                                <p className="text-lg font-bold text-gray-900">
+                                    {formatPrice((item.discountPrice || item.price) * item.quantity)}
+                                </p>
+                            </div>
                         </div>
                     </li>
                 ))}

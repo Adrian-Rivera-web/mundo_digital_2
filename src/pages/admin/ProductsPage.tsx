@@ -68,8 +68,10 @@ export const ProductsPage = () => {
                                         <div className="text-sm text-gray-900 font-bold">
                                             ${product.price.toLocaleString()}
                                         </div>
-                                        <div className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                            Stock: {product.stock}
+                                        <div className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.stock > 0
+                                            ? product.stock < 3 ? 'bg-orange-100 text-orange-800 border border-orange-200' : 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'}`}>
+                                            Stock: {product.stock} {product.stock > 0 && product.stock < 3 && '⚠️'}
                                         </div>
                                         <Link to={`/admin/products/edit/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
                                             <Edit2 className="h-5 w-5" />

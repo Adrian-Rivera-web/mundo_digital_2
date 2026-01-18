@@ -51,7 +51,12 @@ export const useCartStore = create<CartState>()(
             },
             clearCart: () => set({ items: [] }),
             getTotal: () => {
-                return get().items.reduce((total, item) => total + (item.price * item.quantity), 0);
+                return get().items.reduce((total, item) => {
+                    const price = item.discountPrice && item.discountPrice < item.price
+                        ? item.discountPrice
+                        : item.price;
+                    return total + (price * item.quantity);
+                }, 0);
             },
             getItemCount: () => {
                 return get().items.reduce((total, item) => total + item.quantity, 0);

@@ -83,8 +83,24 @@ export const ProductDetailsPage = () => {
                         {product.name}
                     </h1>
 
-                    <div className="text-3xl font-bold text-gray-900 mb-6">
-                        {formatPrice(product.price)}
+                    <div className="mb-6">
+                        {product.discountPrice ? (
+                            <div className="flex items-center gap-4">
+                                <span className="text-4xl font-bold text-red-600">
+                                    {formatPrice(product.discountPrice)}
+                                </span>
+                                <span className="text-xl text-gray-400 line-through">
+                                    {formatPrice(product.price)}
+                                </span>
+                                <span className="bg-red-100 text-red-700 px-2 py-1 rounded-md text-sm font-bold">
+                                    AHORRA {formatPrice(product.price - product.discountPrice)}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="text-3xl font-bold text-gray-900">
+                                {formatPrice(product.price)}
+                            </div>
+                        )}
                     </div>
 
                     <p className="text-gray-600 mb-8 text-lg leading-relaxed">

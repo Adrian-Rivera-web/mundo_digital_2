@@ -18,6 +18,11 @@ import { ProductEditPage } from './pages/admin/ProductEditPage';
 import { AboutPage } from './pages/static/AboutPage';
 import { ContactPage } from './pages/static/ContactPage';
 import { ReviewsPage } from './pages/static/ReviewsPage';
+import { BlogListPage } from './pages/blog/BlogListPage';
+import { BlogDetailsPage } from './pages/blog/BlogDetailsPage';
+import { UsersPage } from './pages/admin/UsersPage';
+import { InvoicesPage } from './pages/admin/InvoicesPage';
+import { AdminProfilePage } from './pages/admin/AdminProfilePage';
 
 function App() {
   return (
@@ -28,6 +33,8 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="products" element={<CatalogPage />} />
             <Route path="product/:id" element={<ProductDetailsPage />} />
+            <Route path="blog" element={<BlogListPage />} />
+            <Route path="blog/:id" element={<BlogDetailsPage />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="order-success/:id" element={<OrderSuccessPage />} />
@@ -46,6 +53,9 @@ function App() {
               <Route path="products" element={<ProductsPage />} />
               <Route path="products/new" element={<ProductEditPage />} />
               <Route path="products/edit/:id" element={<ProductEditPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="invoices" element={<InvoicesPage />} />
+              <Route path="profile" element={<AdminProfilePage />} />
             </Route>
           </Route>
         </Routes>

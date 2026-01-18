@@ -88,25 +88,25 @@ export const HomePage = () => {
 
                 {/* Simple category grid teaser */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Link to="/products" className="group relative h-64 rounded-lg overflow-hidden block">
+                    <Link to="/products?category=Laptops" className="group relative h-64 rounded-lg overflow-hidden block">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
                         <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=1000" alt="Laptops" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                         <div className="absolute bottom-4 left-4 z-20">
-                            <span className="text-white font-bold text-xl">Laptops</span>
+                            <span className="text-white font-bold text-xl">Laptops Gamer</span>
                         </div>
                     </Link>
-                    <Link to="/products" className="group relative h-64 rounded-lg overflow-hidden block">
+                    <Link to="/products?category=Celulares" className="group relative h-64 rounded-lg overflow-hidden block">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
                         <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=1000" alt="Celulares" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                         <div className="absolute bottom-4 left-4 z-20">
-                            <span className="text-white font-bold text-xl">Celulares</span>
+                            <span className="text-white font-bold text-xl">Smartphones</span>
                         </div>
                     </Link>
-                    <Link to="/products" className="group relative h-64 rounded-lg overflow-hidden block">
+                    <Link to="/products?category=Periféricos" className="group relative h-64 rounded-lg overflow-hidden block">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
-                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1000" alt="Audio" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=1000" alt="Periféricos" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                         <div className="absolute bottom-4 left-4 z-20">
-                            <span className="text-white font-bold text-xl">Audio & Accesorios</span>
+                            <span className="text-white font-bold text-xl">Periféricos & Accesorios</span>
                         </div>
                     </Link>
                 </div>

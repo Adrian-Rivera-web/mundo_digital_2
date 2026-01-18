@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Monitor, LayoutDashboard, Package, ShoppingBag, LogOut } from 'lucide-react';
+import { Monitor, LayoutDashboard, Package, ShoppingBag, LogOut, Users, User, FileText, ExternalLink } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const AdminLayout = () => {
@@ -16,6 +16,9 @@ export const AdminLayout = () => {
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Pedidos', href: '/admin/orders', icon: ShoppingBag },
         { name: 'Productos', href: '/admin/products', icon: Package },
+        { name: 'Usuarios', href: '/admin/users', icon: Users },
+        { name: 'Boletas', href: '/admin/invoices', icon: FileText },
+        { name: 'Mi Perfil', href: '/admin/profile', icon: User },
     ];
 
     return (
@@ -46,6 +49,15 @@ export const AdminLayout = () => {
                                         </Link>
                                     );
                                 })}
+                                <div className="pt-4 mt-4 border-t border-gray-800">
+                                    <Link
+                                        to="/"
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                                    >
+                                        <ExternalLink className="text-gray-400 group-hover:text-gray-300 mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />
+                                        Ir a la Tienda
+                                    </Link>
+                                </div>
                             </nav>
                         </div>
                         <div className="flex-shrink-0 flex bg-gray-800 p-4">

@@ -39,6 +39,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                         AGOTADO
                     </div>
                 )}
+                {product.discountPrice && product.stock > 0 && (
+                    <div className="absolute top-0 left-0 m-2 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded">
+                        OFERTA
+                    </div>
+                )}
             </Link>
 
             <div className="p-4 flex flex-col flex-grow">
@@ -55,8 +60,21 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 </p>
 
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                    <div className="text-xl font-bold text-gray-900">
-                        {formatPrice(product.price)}
+                    <div className="flex flex-col">
+                        {product.discountPrice ? (
+                            <>
+                                <span className="text-xl font-bold text-red-600">
+                                    {formatPrice(product.discountPrice)}
+                                </span>
+                                <span className="text-sm text-gray-400 line-through">
+                                    {formatPrice(product.price)}
+                                </span>
+                            </>
+                        ) : (
+                            <span className="text-xl font-bold text-gray-900">
+                                {formatPrice(product.price)}
+                            </span>
+                        )}
                     </div>
                     <button
                         onClick={handleAddToCart}

@@ -6,6 +6,7 @@ export interface Product {
     stock: number;
     category: string;
     image: string;
+    discountPrice?: number;
 }
 
 export interface CartItem extends Product {
@@ -28,4 +29,14 @@ export interface Order {
     createdAt: string;
     shippingType: 'PICKUP' | 'DELIVERY';
     shippingAddress?: string;
+}
+
+export interface BlogPost {
+    id: string;
+    title: string;
+    excerpt: string;
+    content: string;
+    author: string;
+    date: string;
+    image: string;
 }
