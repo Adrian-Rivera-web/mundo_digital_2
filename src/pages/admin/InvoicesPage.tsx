@@ -142,17 +142,27 @@ export const InvoicesPage = () => {
                                     <tr className="border-b-2 border-gray-800">
                                         <th className="py-2 text-sm font-bold text-gray-900">Cant.</th>
                                         <th className="py-2 text-sm font-bold text-gray-900">Producto</th>
+                                        <th className="py-2 text-right text-sm font-bold text-gray-900">Unitario</th>
                                         <th className="py-2 text-right text-sm font-bold text-gray-900">Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
-                                    {selectedOrder.items.map((item, idx) => (
-                                        <tr key={idx}>
-                                            <td className="py-3 text-sm text-gray-900">{item.quantity}</td>
-                                            <td className="py-3 text-sm text-gray-900">{item.name}</td>
-                                            <td className="py-3 text-right text-sm text-gray-900">{formatPrice(item.price * item.quantity)}</td>
-                                        </tr>
-                                    ))}
+                                    {selectedOrder.items.map((item, idx) => {
+                                        const actualPrice = item.discountPrice || item.price;
+                                        return (
+                                            <tr key={idx} className="border-b border-gray-100 last:border-0">
+                                                <td className="py-3 text-sm text-gray-900 font-medium">{item.quantity}</td>
+                                                <td className="py-3 text-sm text-gray-900">
+                                                    <div className="font-bold">{item.name}</div>
+                                                    {item.discountPrice && (
+                                                        <div className="text-[10px] text-green-600 uppercase font-black">Precio Oferta (Ref original: {formatPrice(item.price)})</div>
+                                                    )}
+                                                </td>
+                                                <td className="py-3 text-right text-sm text-gray-900">{formatPrice(actualPrice)}</td>
+                                                <td className="py-3 text-right text-sm font-bold text-gray-900">{formatPrice(actualPrice * item.quantity)}</td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
 

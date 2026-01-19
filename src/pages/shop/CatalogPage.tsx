@@ -50,7 +50,7 @@ export const CatalogPage = () => {
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
             const matchesCategory = selectedCategory === 'Todas' || product.category === selectedCategory;
-            const matchesOffers = !showOffersOnly || (product.discountPrice !== undefined && product.discountPrice < product.price);
+            const matchesOffers = !showOffersOnly || (!!product.discountPrice && product.discountPrice < product.price);
             return matchesCategory && matchesOffers;
         });
     }, [products, selectedCategory, showOffersOnly]);
@@ -85,8 +85,8 @@ export const CatalogPage = () => {
                                         <button
                                             onClick={() => setSelectedCategory(category)}
                                             className={`w-full text-left px-2 py-1.5 rounded-md text-sm transition-colors ${selectedCategory === category
-                                                    ? 'bg-blue-50 text-blue-700 font-medium'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-blue-50 text-blue-700 font-medium'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {category}

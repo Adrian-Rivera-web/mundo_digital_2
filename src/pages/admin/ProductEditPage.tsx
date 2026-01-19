@@ -37,7 +37,12 @@ export const ProductEditPage = () => {
         }
     };
 
-    const onSubmit = async (data: Product) => {
+    const onSubmit = async (formData: Product) => {
+        const data = { ...formData };
+        if (!data.discountPrice || isNaN(data.discountPrice)) {
+            delete data.discountPrice;
+        }
+
         const localStr = localStorage.getItem('mundo_digital_products');
         let products: Product[] = await ProductService.getAll(); // fallback base
 
@@ -74,10 +79,17 @@ export const ProductEditPage = () => {
                     <textarea {...register('description')} rows={3} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 bg-gray-50 border" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Precio</label>
-                        <input type="number" {...register('price', { valueAsNumber: true })} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 bg-gray-50 border" />
+                        <label className="block text-sm font-medium text-gray-700">Precio Normal</label>
+                        <input type="number" step="0.01" {...register('price', { valueAsNumber: true })} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 bg-gray-50 border font-semibold" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 text-red-600">Precio Oferta (Opcional)</label>
+                        <input type="number" step="0.01" {...register('discountPrice', {
+                            valueAsNumber: true,
+                            setValueAs: v => v === "" ? undefined : parseFloat(v)
+                        })} className="mt-1 block w-full border-red-200 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm p-2 bg-red-50 border font-bold text-red-700" placeholder="Ej: 99.99" />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Stock</label>

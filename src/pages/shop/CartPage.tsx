@@ -113,9 +113,21 @@ export const CartPage = () => {
                 ))}
             </ul>
             <div className="px-4 py-5 sm:px-6 bg-gray-50 border-t border-gray-200">
-                <div className="flex justify-between items-center text-lg font-bold text-gray-900">
-                    <span>Total</span>
-                    <span>{formatPrice(total)}</span>
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center text-sm text-gray-500">
+                        <span>Subtotal base</span>
+                        <span>{formatPrice(items.reduce((acc, item) => acc + (item.price * item.quantity), 0))}</span>
+                    </div>
+                    {items.some(i => i.discountPrice) && (
+                        <div className="flex justify-between items-center text-sm font-medium text-green-600">
+                            <span>Ahorro por ofertas</span>
+                            <span>-{formatPrice(items.reduce((acc, item) => acc + (item.discountPrice ? (item.price - item.discountPrice) * item.quantity : 0), 0))}</span>
+                        </div>
+                    )}
+                    <div className="flex justify-between items-center text-xl font-black text-gray-900 pt-2 border-t border-gray-100">
+                        <span>Total a pagar</span>
+                        <span>{formatPrice(total)}</span>
+                    </div>
                 </div>
                 <div className="mt-6 flex justify-end">
                     <Link

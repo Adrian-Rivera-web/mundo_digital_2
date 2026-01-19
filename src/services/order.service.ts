@@ -1,4 +1,4 @@
-import type { Order, CartItem } from '../types';
+import type { Order, CartItem, Product } from '../types';
 
 const ORDERS_KEY = 'mundo_digital_orders';
 
@@ -24,6 +24,20 @@ export const OrderService = {
 
                 orders.push(newOrder);
                 localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+
+                // Deduct Stock
+                const productsStr = localStorage.getItem('mundo_digital_products');
+                if (productsStr) {
+                    let products: Product[] = JSON.parse(productsStr);
+                    items.forEach(orderItem => {
+                        products = products.map(p =>
+                            p.id === orderItem.id
+                                ? { ...p, stock: Math.max(0, p.stock - orderItem.quantity) }
+                                : p
+                        );
+                    });
+                    localStorage.setItem('mundo_digital_products', JSON.stringify(products));
+                }
 
                 resolve(newOrder);
             }, 500);

@@ -10,7 +10,10 @@ export const ProductService = {
                 if (localStr) {
                     resolve(JSON.parse(localStr));
                 } else {
-                    resolve(productsData as Product[]);
+                    const products = productsData as Product[];
+                    // Persist initial data so stock can be deducted even if admin hasn't edited anything yet
+                    localStorage.setItem('mundo_digital_products', JSON.stringify(products));
+                    resolve(products);
                 }
             }, 500);
         });
@@ -19,7 +22,16 @@ export const ProductService = {
     getById: async (id: string): Promise<Product | undefined> => {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const product = (productsData as Product[]).find(p => p.id === id);
+                const localStr = localStorage.getItem('mundo_digital_products');
+                let products: Product[];
+
+                if (localStr) {
+                    products = JSON.parse(localStr);
+                } else {
+                    products = productsData as Product[];
+                }
+
+                const product = products.find(p => p.id === id);
                 resolve(product);
             }, 500);
         });

@@ -202,7 +202,19 @@ export const CheckoutPage = () => {
                                             </div>
                                         </div>
                                         <div className="flex-1 pt-2 flex items-end justify-between">
-                                            <p className="mt-1 text-sm font-medium text-gray-900">{item.quantity} x ${item.price.toLocaleString()}</p>
+                                            <div className="flex flex-col">
+                                                <p className="text-sm font-bold text-gray-900">
+                                                    {item.quantity} x ${(item.discountPrice || item.price).toLocaleString()}
+                                                </p>
+                                                {item.discountPrice && (
+                                                    <p className="text-xs text-gray-400 line-through">
+                                                        Original: ${item.price.toLocaleString()}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <p className="text-sm font-black text-blue-600">
+                                                ${((item.discountPrice || item.price) * item.quantity).toLocaleString()}
+                                            </p>
                                         </div>
                                     </div>
                                 </li>
@@ -210,9 +222,15 @@ export const CheckoutPage = () => {
                         </ul>
                         <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
                             <div className="flex items-center justify-between">
-                                <dt className="text-sm text-gray-600">Subtotal</dt>
-                                <dd className="text-sm font-medium text-gray-900">${getTotal().toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                                <dt className="text-sm text-gray-600">Subtotal productos</dt>
+                                <dd className="text-sm font-bold text-gray-900">${getTotal().toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
                             </div>
+                            {items.some(i => i.discountPrice) && (
+                                <div className="flex items-center justify-between text-green-600 font-medium">
+                                    <dt className="text-sm italic">Descuento aplicado</dt>
+                                    <dd className="text-sm">-{(items.reduce((acc, i) => acc + (i.discountPrice ? (i.price - i.discountPrice) * i.quantity : 0), 0)).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                                </div>
+                            )}
                             <div className="flex items-center justify-between">
                                 <dt className="text-sm text-gray-600">Envío</dt>
                                 <dd className="text-sm font-medium text-gray-900">${shippingCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>

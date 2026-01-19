@@ -6,6 +6,8 @@ export const UsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedUserHistory, setSelectedUserHistory] = useState<string | null>(null);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [newUser, setNewUser] = useState({ name: '', email: '', role: 'CLIENT' as const });
 
     useEffect(() => {
         const loadUsers = () => {
@@ -13,12 +15,35 @@ export const UsersPage = () => {
             if (usersStr) {
                 setUsers(JSON.parse(usersStr));
             } else {
-                // Fallback or empty
-                setUsers([]);
+                // Initialize with some default users if empty (for demo/persistence)
+                const defaults: User[] = [
+                    { id: '1', name: 'Admin Mundo', email: 'admin@mundodigital.com', role: 'SUPERADMIN' }
+                ];
+                setUsers(defaults);
+                localStorage.setItem('mundo_digital_users', JSON.stringify(defaults));
             }
         };
         loadUsers();
     }, []);
+
+    const handleCreateUser = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (users.some(u => u.email === newUser.email)) {
+            alert('Este email ya está registrado.');
+            return;
+        }
+
+        const userToAdd: User = {
+            ...newUser,
+            id: Math.random().toString(36).substr(2, 9)
+        };
+
+        const updated = [...users, userToAdd];
+        setUsers(updated);
+        localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
+        setShowCreateModal(false);
+        setNewUser({ name: '', email: '', role: 'CLIENT' });
+    };
 
     const filteredUsers = users.filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -28,7 +53,9 @@ export const UsersPage = () => {
     const toggleRole = (userId: string) => {
         const updated = users.map(u => {
             if (u.id === userId) {
-                return { ...u, role: u.role === 'ADMIN' ? 'USER' : 'ADMIN' } as User;
+                // Prevent toggling SUPERADMIN
+                if (u.role === 'SUPERADMIN') return u;
+                return { ...u, role: u.role === 'ADMIN' ? 'CLIENT' : 'ADMIN' } as User;
             }
             return u;
         });
@@ -37,6 +64,11 @@ export const UsersPage = () => {
     };
 
     const deleteUser = (userId: string) => {
+        const user = users.find(u => u.id === userId);
+        if (user?.role === 'SUPERADMIN') {
+            alert('No se puede eliminar al Super Admin.');
+            return;
+        }
         if (confirm('¿Estás seguro de eliminar este usuario?')) {
             const updated = users.filter(u => u.id !== userId);
             setUsers(updated);
@@ -44,11 +76,15 @@ export const UsersPage = () => {
         }
     };
 
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-900">Gestión de Usuarios</h1>
-                <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                <button
+                    onClick={() => setShowCreateModal(true)}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                >
                     <UserPlus className="h-5 w-5 mr-2" />
                     Nuevo Usuario
                 </button>
@@ -208,6 +244,69 @@ export const UsersPage = () => {
                                 Cerrar Historial
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {/* Modal de Creación de Usuario */}
+            {showCreateModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                            <h2 className="text-xl font-black text-gray-900 uppercase">Nuevo Usuario</h2>
+                            <button onClick={() => setShowCreateModal(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
+                                <X className="h-6 w-6 text-gray-500" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleCreateUser} className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Nombre Completo</label>
+                                <input
+                                    required
+                                    type="text"
+                                    value={newUser.name}
+                                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
+                                    placeholder="Ej: Juan Pérez"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Correo Electrónico</label>
+                                <input
+                                    required
+                                    type="email"
+                                    value={newUser.email}
+                                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
+                                    placeholder="juan@ejemplo.com"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Rol de Acceso</label>
+                                <select
+                                    value={newUser.role}
+                                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
+                                >
+                                    <option value="CLIENT">Cliente (Solo Compras)</option>
+                                    <option value="ADMIN">Administrador (Acceso Panel)</option>
+                                </select>
+                            </div>
+                            <div className="pt-4 space-y-3">
+                                <button
+                                    type="submit"
+                                    className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition-all shadow-lg"
+                                >
+                                    Crear Usuario
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowCreateModal(false)}
+                                    className="w-full py-3 bg-white text-gray-500 font-bold uppercase tracking-widest rounded-xl border border-gray-200 hover:bg-gray-50 transition-all"
+                                >
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
