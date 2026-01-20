@@ -29,14 +29,13 @@ export const OrderSuccessPage = () => {
                     <CheckCircle className="h-10 w-10 text-green-600" />
                 </div>
 
-                <h2 className="text-3xl font-extrabold text-gray-900 mb-2">¡Pedido Realizado!</h2>
-                <p className="text-lg text-gray-600 mb-8">Tu número de orden es: <span className="font-mono font-bold text-gray-900">#{id}</span></p>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-2">¡Pedido Recibido!</h2>
+                <p className="text-lg text-gray-600 mb-8">Tu comprobante de orden es: <span className="font-mono font-bold text-blue-600">#{id}</span></p>
 
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 text-left">
-                    <h3 className="text-lg font-medium text-blue-900 mb-2">Instrucciones de Pago</h3>
-                    <p className="text-sm text-blue-700 mb-4">
-                        Por favor realiza una transferencia bancaria por el total de tu compra a la siguiente cuenta.
-                        Tu pedido será procesado una vez que confirmemos el pago.
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 text-left">
+                    <h3 className="text-lg font-medium text-yellow-800 mb-2">Pendiente de Pago</h3>
+                    <p className="text-sm text-yellow-700 mb-4">
+                        Este comprobante NO es una boleta fiscal. Para procesar tu despacho, debes realizar la transferencia bancaria y enviar el comprobante a ventas@mundodigital.cl indicando tu número de orden.
                     </p>
 
                     <div className="space-y-2 font-mono text-sm bg-white p-4 rounded border border-blue-100">

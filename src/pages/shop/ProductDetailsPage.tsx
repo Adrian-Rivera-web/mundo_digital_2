@@ -8,20 +8,25 @@ import { ArrowLeft, ShoppingCart, Truck, ShieldCheck } from 'lucide-react';
 export const ProductDetailsPage = () => {
     const { id } = useParams<{ id: string }>();
 
-    const [product, setProduct] = useState<Product | undefined>(undefined);
+    const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
-    const addItem = useCartStore(state => state.addItem);
+    const [isBestSeller, setIsBestSeller] = useState(false);
+    const { addItem, getProductQuantity } = useCartStore();
     const [isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
-        if (!id) return;
         const fetchProduct = async () => {
             try {
-                const data = await ProductService.getById(id);
-                if (!data) {
-                    // Handle not found
+                if (id) {
+                    const data = await ProductService.getById(id);
+                    setProduct(data || null);
+
+                    // Check if best seller
+                    const bestSellers = await ProductService.getBestSellers(3);
+                    if (data && bestSellers.some(p => p.id === data.id)) {
+                        setIsBestSeller(true);
+                    }
                 }
-                setProduct(data);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -31,8 +36,11 @@ export const ProductDetailsPage = () => {
         fetchProduct();
     }, [id]);
 
+    const cartQuantity = product ? getProductQuantity(product.id) : 0;
+    const isMaxStock = product ? cartQuantity >= product.stock : false;
+
     const handleAddToCart = () => {
-        if (!product) return;
+        if (!product || isMaxStock) return;
         setIsAdding(true);
         addItem(product);
         setTimeout(() => setIsAdding(false), 500);
@@ -79,9 +87,16 @@ export const ProductDetailsPage = () => {
                     <span className="text-blue-600 font-semibold tracking-wide uppercase text-sm">
                         {product.category}
                     </span>
-                    <h1 className="text-3xl font-bold text-gray-900 mt-2 mb-4">
-                        {product.name}
-                    </h1>
+                    <div className="flex items-center mt-2 mb-4">
+                        <h1 className="text-3xl font-bold text-gray-900">
+                            {product.name}
+                        </h1>
+                        {isBestSeller && (
+                            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 ml-3">
+                                🔥 Más Popular
+                            </span>
+                        )}
+                    </div>
 
                     <div className="mb-6">
                         {product.discountPrice ? (
@@ -121,18 +136,18 @@ export const ProductDetailsPage = () => {
                     <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={handleAddToCart}
-                            disabled={product.stock === 0 || isAdding}
-                            className={`flex-1 inline-flex justify-center items-center px-6 py-4 border border-transparent text-lg font-medium rounded-md shadow-sm text-white ${product.stock > 0
+                            disabled={product.stock === 0 || isAdding || isMaxStock}
+                            className={`flex-1 inline-flex justify-center items-center px-6 py-4 border border-transparent text-lg font-medium rounded-md shadow-sm text-white ${product.stock > 0 && !isMaxStock
                                 ? isAdding ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
                                 : 'bg-gray-400 cursor-not-allowed'
                                 }`}
                         >
                             <ShoppingCart className="h-6 w-6 mr-2" />
-                            {product.stock === 0 ? 'Agotado' : isAdding ? 'Agregado al Carrito' : 'Agregar al Carrito'}
+                            {product.stock === 0 ? 'Agotado' : isMaxStock ? 'Stock Máximo en Carrito' : isAdding ? 'Agregado al Carrito' : 'Agregar al Carrito'}
                         </button>
                     </div>
                     <div className="mt-4 text-sm text-gray-500 text-center">
-                        Stock disponible: {product.stock} unidades
+                        Stock disponible: {Math.max(0, product.stock - cartQuantity)} unidades
                     </div>
                 </div>
             </div>

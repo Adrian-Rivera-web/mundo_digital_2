@@ -10,6 +10,8 @@ import { CreditCard, Truck, Store } from 'lucide-react';
 
 const checkoutSchema = z.object({
     shippingType: z.enum(['PICKUP', 'DELIVERY']),
+    rut: z.string().min(8, "RUT es obligatorio"),
+    phone: z.string().min(9, "Teléfono es obligatorio"),
     address: z.string().optional(),
     city: z.string().optional(),
     zip: z.string().optional(),
@@ -34,7 +36,10 @@ export const CheckoutPage = () => {
     const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<CheckoutFormData>({
         resolver: zodResolver(checkoutSchema),
         defaultValues: {
-            shippingType: 'PICKUP'
+            shippingType: 'PICKUP',
+            rut: user?.rut || '',
+            phone: user?.phone || '',
+            address: user?.address || '',
         }
     });
 
@@ -87,6 +92,23 @@ export const CheckoutPage = () => {
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
+                        <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 mb-6">
+                            <div>
+                                <label htmlFor="rut" className="block text-sm font-medium text-gray-700">RUT</label>
+                                <div className="mt-1">
+                                    <input type="text" id="rut" {...register('rut')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2" />
+                                    {errors.rut && <p className="mt-1 text-sm text-red-600">{errors.rut.message}</p>}
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono</label>
+                                <div className="mt-1">
+                                    <input type="tel" id="phone" {...register('phone')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2" />
+                                    {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
+                                </div>
+                            </div>
+                        </div>
 
                         <section aria-labelledby="shipping-heading">
                             <h2 id="shipping-heading" className="text-lg font-medium text-gray-900 mb-4">

@@ -6,11 +6,15 @@ import { useState } from 'react';
 
 interface ProductCardProps {
     product: Product;
+    isPopular?: boolean;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, isPopular }: ProductCardProps) => {
     const addItem = useCartStore(state => state.addItem);
     const [isAdding, setIsAdding] = useState(false);
+    const getQuantity = useCartStore(state => state.getProductQuantity);
+    const cartQuantity = getQuantity(product.id);
+    const isMaxStock = cartQuantity >= product.stock;
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('es-MX', {
@@ -20,15 +24,16 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     };
 
     const handleAddToCart = () => {
+        if (isMaxStock) return;
         setIsAdding(true);
         addItem(product);
-        // Visual feedback simulation
         setTimeout(() => setIsAdding(false), 500);
     };
 
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
             <Link to={`/product/${product.id}`} className="relative pt-[75%] bg-gray-100 block group">
+                {/* ... (image and badges) ... */}
                 <img
                     src={product.image}
                     alt={product.name}
@@ -42,6 +47,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 {product.discountPrice && product.stock > 0 && (
                     <div className="absolute top-0 left-0 m-2 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded">
                         OFERTA
+                    </div>
+                )}
+                {isPopular && product.stock > 0 && (
+                    <div className={`absolute top-0 ${product.discountPrice ? 'left-20' : 'left-0'} m-2 bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded border border-yellow-200 z-10`}>
+                        🔥 Popular
                     </div>
                 )}
             </Link>
@@ -78,16 +88,16 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     </div>
                     <button
                         onClick={handleAddToCart}
-                        disabled={product.stock === 0 || isAdding}
+                        disabled={product.stock === 0 || isAdding || isMaxStock}
                         className={`
               inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white transition-colors
-              ${product.stock > 0
+              ${product.stock > 0 && !isMaxStock
                                 ? isAdding ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
                                 : 'bg-gray-400 cursor-not-allowed'}
             `}
                     >
                         <ShoppingCart className="h-4 w-4 mr-2" />
-                        {isAdding ? 'Agregado' : 'Agregar'}
+                        {product.stock === 0 ? 'Agotado' : isMaxStock ? 'Max Stock' : isAdding ? 'Agregado' : 'Agregar'}
                     </button>
                 </div>
             </div>

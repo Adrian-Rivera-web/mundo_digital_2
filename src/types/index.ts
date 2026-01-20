@@ -18,6 +18,9 @@ export interface User {
     email: string;
     name: string;
     role: 'CLIENT' | 'ADMIN' | 'SUPERADMIN';
+    rut?: string;
+    phone?: string;
+    address?: string;
 }
 
 export interface Order {

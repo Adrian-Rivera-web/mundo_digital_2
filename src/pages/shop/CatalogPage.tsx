@@ -9,6 +9,7 @@ export const CatalogPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [salesMap, setSalesMap] = useState<Record<string, number>>({});
 
     // Filtros locales state
     const categoryParam = searchParams.get('category');
@@ -16,6 +17,7 @@ export const CatalogPage = () => {
 
     const [selectedCategory, setSelectedCategory] = useState<string>(categoryParam || 'Todas');
     const [showOffersOnly, setShowOffersOnly] = useState<boolean>(offersParam);
+    const [sortBy, setSortBy] = useState<string>('recommended');
 
     useEffect(() => {
         // Sincronizar URL si cambia el estado local (opcional, pero buena UX)
@@ -26,18 +28,22 @@ export const CatalogPage = () => {
     }, [selectedCategory, showOffersOnly, setSearchParams]);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchProductsAndSales = async () => {
             try {
-                const data = await ProductService.getAll();
-                setProducts(data);
+                const [productsData, salesData] = await Promise.all([
+                    ProductService.getAll(),
+                    ProductService.getProductSalesMap()
+                ]);
+                setProducts(productsData);
+                setSalesMap(salesData);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error fetching data:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProducts();
+        fetchProductsAndSales();
     }, []);
 
     // Extraer categorías únicas
@@ -46,14 +52,52 @@ export const CatalogPage = () => {
         return ['Todas', ...new Set(cats)];
     }, [products]);
 
-    // Filtrar productos
+    // Top 3 IDs para etiqueta popular
+    const popularProductIds = useMemo(() => {
+        return Object.entries(salesMap)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 3)
+            .map(([id]) => id);
+    }, [salesMap]);
+
+    // Filtrar y ordenar productos
     const filteredProducts = useMemo(() => {
-        return products.filter(product => {
+        let result = products.filter(product => {
             const matchesCategory = selectedCategory === 'Todas' || product.category === selectedCategory;
             const matchesOffers = !showOffersOnly || (!!product.discountPrice && product.discountPrice < product.price);
             return matchesCategory && matchesOffers;
         });
-    }, [products, selectedCategory, showOffersOnly]);
+
+        switch (sortBy) {
+            case 'price-asc':
+                result.sort((a, b) => {
+                    const priceA = a.discountPrice || a.price;
+                    const priceB = b.discountPrice || b.price;
+                    return priceA - priceB;
+                });
+                break;
+            case 'price-desc':
+                result.sort((a, b) => {
+                    const priceA = a.discountPrice || a.price;
+                    const priceB = b.discountPrice || b.price;
+                    return priceB - priceA;
+                });
+                break;
+            case 'bestsellers':
+                result.sort((a, b) => {
+                    const salesA = salesMap[a.id] || 0;
+                    const salesB = salesMap[b.id] || 0;
+                    return salesB - salesA;
+                });
+                break;
+            case 'recommended':
+            default:
+                // Default sorting (could be by ID or whatever original order)
+                break;
+        }
+
+        return result;
+    }, [products, selectedCategory, showOffersOnly, sortBy, salesMap]);
 
     if (loading) {
         return (
@@ -135,13 +179,30 @@ export const CatalogPage = () => {
 
                 {/* Grid de Productos */}
                 <main className="flex-1">
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            {selectedCategory === 'Todas' ? 'Catálogo Completo' : selectedCategory}
-                        </h1>
-                        <span className="text-gray-500 text-sm">
-                            {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
-                        </span>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <div>
+                            <h1 className="text-3xl font-bold text-gray-900">
+                                {selectedCategory === 'Todas' ? 'Catálogo Completo' : selectedCategory}
+                            </h1>
+                            <span className="text-gray-500 text-sm">
+                                {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center">
+                            <label htmlFor="sort" className="text-sm font-medium text-gray-700 mr-2">Ordenar por:</label>
+                            <select
+                                id="sort"
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border"
+                            >
+                                <option value="recommended">Recomendados</option>
+                                <option value="bestsellers">Más Vendidos</option>
+                                <option value="price-asc">Menor Precio</option>
+                                <option value="price-desc">Mayor Precio</option>
+                            </select>
+                        </div>
                     </div>
 
                     {showOffersOnly && (
@@ -181,7 +242,11 @@ export const CatalogPage = () => {
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredProducts.map(product => (
-                                <ProductCard key={product.id} product={product} />
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    isPopular={popularProductIds.includes(product.id)}
+                                />
                             ))}
                         </div>
                     )}

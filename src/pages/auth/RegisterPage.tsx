@@ -8,6 +8,8 @@ import { Monitor } from 'lucide-react';
 const registerSchema = z.object({
     name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
     email: z.string().email('Email inválido'),
+    rut: z.string().min(8, 'RUT inválido (ej: 12345678-9)'),
+    phone: z.string().min(9, 'Teléfono debe tener al menos 9 dígitos'),
     password: z.string().min(6, 'La contraseña es decorativa pero debe tener 6 caracteres'),
 });
 
@@ -21,7 +23,7 @@ export const RegisterPage = () => {
     });
 
     const onSubmit = async (data: RegisterFormData) => {
-        await registerUser(data.name, data.email);
+        await registerUser(data.name, data.email, data.rut, data.phone);
         navigate('/');
     };
 
@@ -58,6 +60,41 @@ export const RegisterPage = () => {
                                 />
                                 {errors.name && (
                                     <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="rut" className="block text-sm font-medium text-gray-700">
+                                RUT
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="rut"
+                                    type="text"
+                                    placeholder="12345678-9"
+                                    {...register('rut')}
+                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                />
+                                {errors.rut && (
+                                    <p className="mt-2 text-sm text-red-600">{errors.rut.message}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                                Teléfono
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="phone"
+                                    type="tel"
+                                    {...register('phone')}
+                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                />
+                                {errors.phone && (
+                                    <p className="mt-2 text-sm text-red-600">{errors.phone.message}</p>
                                 )}
                             </div>
                         </div>

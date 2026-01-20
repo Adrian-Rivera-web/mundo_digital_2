@@ -22,7 +22,7 @@ export const AdminLayout = () => {
     ];
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
             {/* Sidebar */}
             <div className="hidden md:flex md:flex-shrink-0">
                 <div className="flex flex-col w-64">

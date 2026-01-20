@@ -37,13 +37,15 @@ export const AuthService = {
         });
     },
 
-    register: async (name: string, email: string): Promise<User> => {
+    register: async (name: string, email: string, rut: string, phone: string): Promise<User> => {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const newUser: User = {
                     id: Math.random().toString(36).substr(2, 9),
                     name,
                     email,
+                    rut,
+                    phone,
                     role: 'CLIENT'
                 };
 

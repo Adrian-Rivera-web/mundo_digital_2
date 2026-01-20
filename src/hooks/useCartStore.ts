@@ -10,23 +10,30 @@ interface CartState {
     clearCart: () => void;
     getTotal: () => number;
     getItemCount: () => number;
+    getProductQuantity: (productId: string) => number;
 }
 
 export const useCartStore = create<CartState>()(
     persist(
         (set, get) => ({
             items: [],
+            getProductQuantity: (productId) => {
+                const item = get().items.find(i => i.id === productId);
+                return item ? item.quantity : 0;
+            },
             addItem: (product, quantity = 1) => {
                 const items = get().items;
                 const existingItem = items.find(item => item.id === product.id);
 
                 if (existingItem) {
-                    // Check stock before adding? For now, we assume UI handles max stock limits, 
-                    // but strictly we should check product.stock here too.
-                    if (existingItem.quantity + quantity > product.stock) {
-                        // Optional: Alert user or cap quantity. For MVP, we just cap at stock if logic permits, 
-                        // but here we just add. logic is robust enough for now.
+                    const totalQuantity = existingItem.quantity + quantity;
+                    if (totalQuantity > product.stock) {
+                        // Can't add more than stock
+                        // We could also set it to max stock:
+                        // set({ items: items.map(i => i.id === product.id ? {...i, quantity: product.stock} : i) });
+                        return; // For now just do nothing if exceeds
                     }
+
                     set({
                         items: items.map(item =>
                             item.id === product.id
@@ -35,6 +42,9 @@ export const useCartStore = create<CartState>()(
                         )
                     });
                 } else {
+                    if (quantity > product.stock) {
+                        return; // Attempting to add more than stock initially
+                    }
                     set({ items: [...items, { ...product, quantity }] });
                 }
             },

@@ -1,10 +1,12 @@
 
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, Search, User as UserIcon, LogOut, ChevronDown, LayoutDashboard } from 'lucide-react';
+import { ShoppingCart, Menu, Search, User as UserIcon, LogOut, ChevronDown, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../../hooks/useCartStore';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import logo from '../../assets/logo.jpg';
+import { NAV_LINKS } from '../../data';
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -12,6 +14,7 @@ export const Navbar = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement>(null);
     const { user, isAuthenticated, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const itemCount = useCartStore(state => state.getItemCount());
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -36,7 +39,7 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className="bg-[#1f69a2] shadow border-b border-blue-800">
+        <nav className="bg-[#1f69a2] dark:bg-gray-900 shadow border-b border-blue-800 dark:border-gray-800 transition-colors duration-200">
             {/* Main Header Row */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
@@ -66,6 +69,16 @@ export const Navbar = () => {
 
                     {/* Right Icons */}
                     <div className="hidden sm:flex sm:items-center sm:space-x-4">
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full text-blue-100 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                            {theme === 'dark' ? (
+                                <Sun className="h-6 w-6" />
+                            ) : (
+                                <Moon className="h-6 w-6" />
+                            )}
+                        </button>
                         {!isAuthenticated ? (
                             <Link to="/login" className="text-blue-100 hover:text-white font-medium transition-colors px-3 py-2 rounded-md hover:bg-white/10">
                                 Iniciar Sesión
@@ -151,21 +164,15 @@ export const Navbar = () => {
             <div className="hidden sm:block border-t border-gray-100 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex space-x-8 h-12 items-center text-sm font-medium">
-                        <Link to="/products" className="text-gray-900 hover:text-blue-600">
-                            Productos
-                        </Link>
-                        <Link to="/blog" className="text-gray-500 hover:text-gray-900">
-                            Blog
-                        </Link>
-                        <Link to="/about" className="text-gray-500 hover:text-gray-900">
-                            Nosotros
-                        </Link>
-                        <Link to="/contact" className="text-gray-500 hover:text-gray-900">
-                            Contacto
-                        </Link>
-                        <Link to="/reviews" className="text-gray-500 hover:text-gray-900">
-                            Reseñas
-                        </Link>
+                        {NAV_LINKS.map((link) => (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                className="text-gray-900 hover:text-blue-600"
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -202,34 +209,16 @@ export const Navbar = () => {
                         </div>
 
                         <div className="space-y-1">
-                            <Link
-                                to="/products"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                            >
-                                Productos
-                            </Link>
-                            <Link
-                                to="/blog"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                Blog
-                            </Link>
-                            <Link
-                                to="/about"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                Nosotros
-                            </Link>
-                            <Link
-                                to="/contact"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                Contacto
-                            </Link>
+                            {NAV_LINKS.map((link) => (
+                                <Link
+                                    key={link.path}
+                                    to={link.path}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                                >
+                                    {link.name}
+                                </Link>
+                            ))}
 
                             <div className="border-t border-gray-200 pt-4 mt-4">
                                 {isAuthenticated ? (
