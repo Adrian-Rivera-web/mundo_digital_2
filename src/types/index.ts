@@ -21,6 +21,7 @@ export interface User {
     rut?: string;
     phone?: string;
     address?: string;
+    password?: string;
 }
 
 export interface Order {

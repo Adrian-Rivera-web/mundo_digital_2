@@ -3,22 +3,26 @@ import type { User } from '../types';
 const USERS_KEY = 'mundo_digital_users';
 const CURRENT_USER_KEY = 'mundo_digital_current_user';
 
-// Mock initial admin user
 const INITIAL_ADMIN: User = {
     id: 'admin-1',
     email: 'admin@mundodigital.com',
     name: 'Super Admin',
-    role: 'SUPERADMIN'
+    role: 'SUPERADMIN',
+    password: 'admin123'
 };
 
 export const AuthService = {
-    login: async (email: string): Promise<User | null> => {
+    login: async (email: string, password?: string): Promise<User | null> => {
         return new Promise((resolve) => {
             setTimeout(() => {
                 // Check if it's the hardcoded admin
                 if (email === INITIAL_ADMIN.email) {
-                    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(INITIAL_ADMIN));
-                    resolve(INITIAL_ADMIN);
+                    if (password === INITIAL_ADMIN.password) {
+                        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(INITIAL_ADMIN));
+                        resolve(INITIAL_ADMIN);
+                    } else {
+                        resolve(null);
+                    }
                     return;
                 }
 
@@ -27,7 +31,7 @@ export const AuthService = {
                 const users: User[] = usersStr ? JSON.parse(usersStr) : [];
                 const user = users.find(u => u.email === email);
 
-                if (user) {
+                if (user && user.password === password) {
                     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
                     resolve(user);
                 } else {
@@ -37,7 +41,7 @@ export const AuthService = {
         });
     },
 
-    register: async (name: string, email: string, rut: string, phone: string): Promise<User> => {
+    register: async (name: string, email: string, rut: string, phone: string, password?: string): Promise<User> => {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const newUser: User = {
@@ -46,7 +50,8 @@ export const AuthService = {
                     email,
                     rut,
                     phone,
-                    role: 'CLIENT'
+                    role: 'CLIENT',
+                    password: password || '123456' // Fallback for old tests
                 };
 
                 const usersStr = localStorage.getItem(USERS_KEY);

@@ -6,8 +6,8 @@ import { AuthService } from '../services/auth.service';
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
-    login: (email: string) => Promise<boolean>;
-    register: (name: string, email: string, rut: string, phone: string) => Promise<void>;
+    login: (email: string, password?: string) => Promise<boolean>;
+    register: (name: string, email: string, rut: string, phone: string, password?: string) => Promise<void>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         initAuth();
     }, []);
 
-    const login = async (email: string): Promise<boolean> => {
-        const user = await AuthService.login(email);
+    const login = async (email: string, password?: string): Promise<boolean> => {
+        const user = await AuthService.login(email, password);
         if (user) {
             setUser(user);
             return true;
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
-    const register = async (name: string, email: string, rut: string, phone: string): Promise<void> => {
-        const user = await AuthService.register(name, email, rut, phone);
+    const register = async (name: string, email: string, rut: string, phone: string, password?: string): Promise<void> => {
+        const user = await AuthService.register(name, email, rut, phone, password);
         setUser(user);
     };
 

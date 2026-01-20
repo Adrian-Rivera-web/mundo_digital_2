@@ -23,7 +23,7 @@ export const RegisterPage = () => {
     });
 
     const onSubmit = async (data: RegisterFormData) => {
-        await registerUser(data.name, data.email, data.rut, data.phone);
+        await registerUser(data.name, data.email, data.rut, data.phone, data.password);
         navigate('/');
     };
 
