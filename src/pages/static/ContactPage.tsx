@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Lock, Search, User, ShoppingBag } from 'lucide-react'; // Using Lucide icons as replacements for FontAwesome
+import { MapPin, Phone, Mail, Lock } from 'lucide-react'; // Using Lucide icons as replacements for FontAwesome
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 

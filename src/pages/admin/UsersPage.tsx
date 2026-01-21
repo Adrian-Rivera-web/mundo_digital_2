@@ -17,7 +17,15 @@ export const UsersPage = () => {
             } else {
                 // Initialize with some default users if empty (for demo/persistence)
                 const defaults: User[] = [
-                    { id: '1', name: 'Admin Mundo', email: 'admin@mundodigital.com', role: 'SUPERADMIN' }
+                    {
+                        id: '1',
+                        name: 'Admin Mundo',
+                        email: 'admin@mundodigital.com',
+                        role: 'SUPERADMIN',
+                        bits: 0,
+                        totalBitsDetails: 0,
+                        tier: 'BIT'
+                    }
                 ];
                 setUsers(defaults);
                 localStorage.setItem('mundo_digital_users', JSON.stringify(defaults));
@@ -35,7 +43,10 @@ export const UsersPage = () => {
 
         const userToAdd: User = {
             ...newUser,
-            id: Math.random().toString(36).substr(2, 9)
+            id: Math.random().toString(36).substr(2, 9),
+            bits: 0,
+            totalBitsDetails: 0,
+            tier: 'BIT'
         };
 
         const updated = [...users, userToAdd];
