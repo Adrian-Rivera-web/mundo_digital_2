@@ -9,6 +9,7 @@ interface AuthContextType {
     login: (email: string, password?: string) => Promise<boolean>;
     register: (name: string, email: string, rut: string, phone: string, password?: string) => Promise<void>;
     logout: () => void;
+    refreshUser: () => void;
     isLoading: boolean;
 }
 
@@ -46,6 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
     };
 
+    const refreshUser = () => {
+        const storedUser = AuthService.getCurrentUser();
+        setUser(storedUser);
+    };
+
     return (
         <AuthContext.Provider value={{
             user,
@@ -53,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             login,
             register,
             logout,
+            refreshUser,
             isLoading
         }}>
             {children}

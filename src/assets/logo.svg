@@ -1,0 +1,51 @@
+<svg width="600" height="100" viewBox="0 0 600 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Option 4: HIGH IMPACT (Fixed Clipping & Icon Size) -->
+    <!-- Changes: 
+         1. ViewBox Width increased to 600 (was 500) to stop text cutting.
+         2. Icon scaled UP to 1.1x (was 0.85) to be huge and visible.
+         3. Font size kept large (54) but positioned to fit with new icon.
+    -->
+
+    <defs>
+        <linearGradient id="text-grad" x1="0" y1="0" x2="100%" y2="0%">
+            <stop offset="0" stop-color="#22D3EE"/> <!-- Cyan -->
+            <stop offset="1" stop-color="#3B82F6"/> <!-- Blue -->
+        </linearGradient>
+        <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="#000" flood-opacity="0.6"/>
+        </filter>
+        <filter id="glow-impact" x="-20%" y="-20%" width="140%" height="140%">
+             <feGaussianBlur stdDeviation="4" in="SourceGraphic" result="blur"/>
+             <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+    </defs>
+
+    <!-- ICON (Restored to Full Presence + 10% bigger) -->
+    <!-- Using scale 1.1 centered around (50,50) -->
+    <g transform="translate(60, 50) scale(1.1)"> 
+        <circle cx="0" cy="0" r="38" fill="#3B82F6" opacity="0.2" filter="url(#glow-impact)"/>
+        <circle cx="0" cy="0" r="35" fill="#020617"/>
+        
+        <g transform="scale(0.8)">
+            <ellipse cx="0" cy="0" rx="30" ry="30" stroke="#38BDF8" stroke-width="2" fill="none"/>
+            <ellipse cx="0" cy="0" rx="30" ry="12" stroke="#7DD3FC" stroke-width="1.5"/>
+            <ellipse cx="0" cy="0" rx="18" ry="27" stroke="#7DD3FC" stroke-width="1.5" transform="rotate(90 0 0)"/>
+            <circle cx="0" cy="0" r="5" fill="#FFFFFF" filter="url(#glow-impact)"/>
+            <circle cx="30" cy="0" r="3" fill="#7DD3FC"/>
+            <circle cx="-30" cy="0" r="3" fill="#7DD3FC"/>
+            <circle cx="0" cy="30" r="3" fill="#7DD3FC"/>
+            <circle cx="0" cy="-30" r="3" fill="#7DD3FC"/>
+        </g>
+    </g>
+
+    <!-- TYPOGRAPHY: Massive & Clear -->
+    <!-- Starting X moved to 120 to clear the bigger icon -->
+    
+    <!-- "MUNDO" -->
+    <text x="120" y="68" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="54" fill="#FFFFFF" filter="url(#text-shadow)" letter-spacing="0">MUNDO</text>
+    
+    <!-- "DIGITAL" -->
+    <!-- X moved to 350 to give breathing room -->
+    <text x="350" y="68" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="54" fill="url(#text-grad)" filter="url(#text-shadow)" letter-spacing="0">DIGITAL</text>
+
+</svg>

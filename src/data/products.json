@@ -3,56 +3,262 @@
         "id": "1",
         "name": "Laptop Gamer Raider X",
         "description": "Potente laptop para gaming con RTX 4060 y Ryzen 7.",
-        "price": 25000,
+        "price": 650000,
         "stock": 10,
         "category": "Laptops",
-        "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=1000"
+        "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=1000",
+        "brand": "MSI"
     },
     {
         "id": "2",
         "name": "Smartphone Galaxy Ultra",
         "description": "El último modelo con cámara de 200MP y pantalla AMOLED.",
-        "price": 18000,
+        "price": 400000,
         "stock": 15,
         "category": "Celulares",
-        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000"
+        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Samsung"
     },
     {
         "id": "3",
         "name": "Monitor 27' 144Hz",
         "description": "Monitor curvo ideal para esports.",
-        "price": 4500,
+        "price": 150000,
+        "discountPrice": 129000,
         "stock": 5,
         "category": "Monitores",
         "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000",
-        "discountPrice": 3990
+        "brand": "Samsung"
     },
     {
         "id": "4",
         "name": "Teclado Mecánico RGB",
         "description": "Switches azules y chasis de aluminio.",
-        "price": 1200,
+        "price": 60000,
         "stock": 50,
         "category": "Periféricos",
-        "image": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000"
+        "image": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Corsair"
     },
     {
         "id": "5",
         "name": "Mouse Inalámbrico Pro",
         "description": "Sensor de alta precisión y batería de larga duración.",
-        "price": 800,
+        "price": 25000,
+        "discountPrice": 19990,
         "stock": 30,
         "category": "Periféricos",
         "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
-        "discountPrice": 650
+        "brand": "Logitech"
     },
     {
         "id": "6",
         "name": "Procesador Ryzen 9 7900X",
         "description": "12 núcleos y 24 hilos para máximo rendimiento.",
-        "price": 9500,
+        "price": 350000,
         "stock": 8,
         "category": "Componentes",
-        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000"
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "AMD"
+    },
+    {
+        "id": "1001",
+        "name": "MacBook Pro M2",
+        "description": "Potencia bestial con el chip M2 Pro.",
+        "price": 1800000,
+        "stock": 5,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Apple"
+    },
+    {
+        "id": "1002",
+        "name": "iPhone 15 Pro",
+        "description": "Titanio, chip A17 Pro y botón de acción.",
+        "price": 1200000,
+        "stock": 20,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Apple"
+    },
+    {
+        "id": "1003",
+        "name": "Sony WH-1000XM5",
+        "description": "Los mejores audífonos con cancelación de ruido.",
+        "price": 350000,
+        "stock": 12,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Sony"
+    },
+    {
+        "id": "1004",
+        "name": "Samsung Odyssey G9",
+        "description": "Monitor curvo ultrawide de 49 pulgadas.",
+        "price": 1100000,
+        "stock": 3,
+        "category": "Monitores",
+        "image": "https://images.unsplash.com/photo-1616406432452-07bc59280cdc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Samsung"
+    },
+    {
+        "id": "1005",
+        "name": "ASUS TUF Gaming F15",
+        "description": "Resistencia y potencia para gamers.",
+        "price": 890000,
+        "stock": 8,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1588702547919-26089e690ecc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Asus"
+    },
+    {
+        "id": "1006",
+        "name": "Tarjeta Gráfica RTX 4090",
+        "description": "El rey de las gráficas. 24GB VRAM.",
+        "price": 2000000,
+        "stock": 2,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Nvidia"
+    },
+    {
+        "id": "1007",
+        "name": "PlayStation 5 Slim",
+        "description": "La consola de nueva generación más vendida.",
+        "price": 500000,
+        "stock": 25,
+        "category": "Consolas",
+        "image": "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Sony"
+    },
+    {
+        "id": "1008",
+        "name": "Dell XPS 13",
+        "description": "El ultrabook definitivo para profesionales.",
+        "price": 1400000,
+        "stock": 6,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Dell"
+    },
+    {
+        "id": "1009",
+        "name": "Memoria RAM Corsair Vengeance 32GB",
+        "description": "DDR5 a 6000MHz para máximo rendimiento.",
+        "price": 140000,
+        "stock": 100,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Corsair"
+    },
+    {
+        "id": "1010",
+        "name": "SSD Samsung 990 Pro 2TB",
+        "description": "El SSD más rápido del mercado.",
+        "price": 180000,
+        "stock": 40,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1628557044797-f21a17b96e6d?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Samsung"
+    },
+    {
+        "id": "1011",
+        "name": "iPad Air M1",
+        "description": "Potencia de computador en una tablet.",
+        "price": 700000,
+        "stock": 10,
+        "category": "Tablets",
+        "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Apple"
+    },
+    {
+        "id": "1012",
+        "name": "Cámara Canon EOS R6",
+        "description": "Mirrorless full frame para profesionales.",
+        "price": 2500000,
+        "stock": 3,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Canon"
+    },
+    {
+        "id": "1013",
+        "name": "Xiaomi Redmi Note 13",
+        "description": "El rey de la gama media.",
+        "price": 250000,
+        "stock": 50,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff23?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Xiaomi"
+    },
+    {
+        "id": "1014",
+        "name": "Silla Gamer Secretlab",
+        "description": "Ergonomía premium para largas sesiones.",
+        "price": 450000,
+        "stock": 5,
+        "category": "Mobiliario",
+        "image": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Secretlab"
+    },
+    {
+        "id": "1015",
+        "name": "Nintendo Switch OLED",
+        "description": "Pantalla vibrante y modo portátil.",
+        "price": 350000,
+        "stock": 30,
+        "category": "Consolas",
+        "image": "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Nintendo"
+    },
+    {
+        "id": "1016",
+        "name": "Auriculares Bose QC45",
+        "description": "Confort legendario y sonido profundo.",
+        "price": 300000,
+        "stock": 15,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1546435770-a3e2feadf728?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Bose"
+    },
+    {
+        "id": "1017",
+        "name": "Smart TV LG OLED C3 55'",
+        "description": "Negros perfectos y colores infinitos.",
+        "price": 1300000,
+        "stock": 4,
+        "category": "TV",
+        "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=1000",
+        "brand": "LG"
+    },
+    {
+        "id": "1018",
+        "name": "GoPro Hero 12 Black",
+        "description": "Cámara de acción indestructible.",
+        "price": 400000,
+        "stock": 20,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "GoPro"
+    },
+    {
+        "id": "1019",
+        "name": "Lenovo Legion 5",
+        "description": "Equilibrio perfecto entre trabajo y juego.",
+        "price": 1100000,
+        "stock": 10,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Lenovo"
+    },
+    {
+        "id": "1020",
+        "name": "Dron DJI Mini 3",
+        "description": "Vuela más tiempo y graba en 4K.",
+        "price": 600000,
+        "stock": 8,
+        "category": "Drones",
+        "image": "https://images.unsplash.com/photo-1579829366248-204fe8413f31?auto=format&fit=crop&q=80&w=1000",
+        "brand": "DJI"
     }
 ]

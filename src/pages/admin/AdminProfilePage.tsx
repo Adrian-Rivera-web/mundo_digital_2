@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { User as UserIcon, Mail, Shield, Save, Lock, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { LoyaltyDashboard } from '../../components/loyalty/LoyaltyDashboard';
 
 export const AdminProfilePage = () => {
     const { user } = useAuth();
@@ -40,6 +41,8 @@ export const AdminProfilePage = () => {
                     </div>
                 )}
             </div>
+
+            {user && <LoyaltyDashboard user={user} />}
 
             <div className="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-800 to-gray-900 h-32 relative">

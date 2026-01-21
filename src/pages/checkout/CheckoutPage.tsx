@@ -7,6 +7,11 @@ import { useCartStore } from '../../hooks/useCartStore';
 import { useAuth } from '../../context/AuthContext';
 import { OrderService } from '../../services/order.service';
 import { CreditCard, Truck, Store } from 'lucide-react';
+import { LoyaltyService } from '../../services/loyalty.service';
+import { CouponService } from '../../services/coupon.service';
+import type { Coupon } from '../../types';
+import { CouponSelector } from '../../components/coupons/CouponSelector';
+import { MundoBitIcon } from '../../components/ui/MundoBitIcon';
 
 const checkoutSchema = z.object({
     shippingType: z.enum(['PICKUP', 'DELIVERY']),
@@ -32,6 +37,10 @@ export const CheckoutPage = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const [shippingCost, setShippingCost] = useState(0);
+    const [bitsToRedeem, setBitsToRedeem] = useState(0); // Bits to redeem
+
+    // Coupon State
+    const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
 
     const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<CheckoutFormData>({
         resolver: zodResolver(checkoutSchema),
@@ -49,7 +58,28 @@ export const CheckoutPage = () => {
     if (shippingType === 'DELIVERY' && shippingCost !== 4000) setShippingCost(4000);
     if (shippingType === 'PICKUP' && shippingCost !== 0) setShippingCost(0);
 
-    const total = getTotal() + shippingCost;
+    const subtotal = getTotal();
+
+    // Coupon Logic
+    const discountFromCoupon = appliedCoupon ? CouponService.calculateDiscount(appliedCoupon, subtotal) : 0;
+    const subtotalAfterCoupon = subtotal - discountFromCoupon;
+
+    const totalBeforeBits = subtotalAfterCoupon + shippingCost;
+
+    // Loyalty Calculations
+    // Note: Bits redemption cap applies to the subtotal AFTER coupon
+    const userBits = user?.bits || 0;
+    const maxRedeemableForOrder = LoyaltyService.calculateMaxRedemption(userBits, subtotalAfterCoupon);
+    const discountFromBits = Math.min(bitsToRedeem, maxRedeemableForOrder); // Ensure valid if totals change
+
+    const finalTotal = totalBeforeBits - discountFromBits;
+    const earnedBits = LoyaltyService.calculateBitsEarned(subtotalAfterCoupon); // Earn based on what you pay for products
+
+    const handleSelectCoupon = (coupon: Coupon) => {
+        setAppliedCoupon(coupon);
+        // Reset bits if necessary to prevent over-redemption issues
+        setBitsToRedeem(0);
+    };
 
     const onSubmit = async (data: CheckoutFormData) => {
         if (!user) {
@@ -60,8 +90,12 @@ export const CheckoutPage = () => {
         const order = await OrderService.createOrder(
             user.id,
             items,
-            total,
-            data
+            finalTotal,
+            data,
+            {
+                redeemed: discountFromBits,
+                earned: earnedBits
+            }
         );
 
         clearCart();
@@ -87,7 +121,7 @@ export const CheckoutPage = () => {
 
     return (
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Finalizar Compra</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-8 dark:text-gray-100">Finalizar Compra</h1>
 
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                 <div>
@@ -95,29 +129,29 @@ export const CheckoutPage = () => {
 
                         <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 mb-6">
                             <div>
-                                <label htmlFor="rut" className="block text-sm font-medium text-gray-700">RUT</label>
+                                <label htmlFor="rut" className="block text-sm font-medium text-gray-700 dark:text-gray-300">RUT</label>
                                 <div className="mt-1">
-                                    <input type="text" id="rut" {...register('rut')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2" />
+                                    <input type="text" id="rut" {...register('rut')} className="block w-full border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 dark:bg-gray-800 dark:text-white" />
                                     {errors.rut && <p className="mt-1 text-sm text-red-600">{errors.rut.message}</p>}
                                 </div>
                             </div>
                             <div>
-                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Teléfono</label>
+                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Teléfono</label>
                                 <div className="mt-1">
-                                    <input type="tel" id="phone" {...register('phone')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2" />
+                                    <input type="tel" id="phone" {...register('phone')} className="block w-full border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 dark:bg-gray-800 dark:text-white" />
                                     {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
                                 </div>
                             </div>
                         </div>
 
                         <section aria-labelledby="shipping-heading">
-                            <h2 id="shipping-heading" className="text-lg font-medium text-gray-900 mb-4">
+                            <h2 id="shipping-heading" className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                                 Método de Entrega
                             </h2>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <label className={`
-                        relative border rounded-lg p-4 flex cursor-pointer focus:outline-none
-                        ${shippingType === 'PICKUP' ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50' : 'border-gray-300'}
+                        relative border rounded-lg p-4 flex cursor-pointer focus:outline-none dark:bg-gray-800
+                        ${shippingType === 'PICKUP' ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-700'}
                     `}>
                                     <input
                                         type="radio"
@@ -127,22 +161,22 @@ export const CheckoutPage = () => {
                                     />
                                     <div className="flex-1 flex">
                                         <div className="flex flex-col">
-                                            <span className={`block text-sm font-medium ${shippingType === 'PICKUP' ? 'text-blue-900' : 'text-gray-900'}`}>
+                                            <span className={`block text-sm font-medium ${shippingType === 'PICKUP' ? 'text-blue-900 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300'}`}>
                                                 Retiro en Sucursal
                                             </span>
-                                            <span className="mt-1 flex items-center text-sm text-gray-500">
+                                            <span className="mt-1 flex items-center text-sm text-gray-500 dark:text-gray-400">
                                                 <Store className="h-4 w-4 mr-1" /> Gratis
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={`h-5 w-5 rounded-full border flex items-center justify-center ${shippingType === 'PICKUP' ? 'border-blue-500' : 'border-gray-300'}`}>
+                                    <div className={`h-5 w-5 rounded-full border flex items-center justify-center ${shippingType === 'PICKUP' ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
                                         {shippingType === 'PICKUP' && <div className="h-2.5 w-2.5 rounded-full bg-blue-500" />}
                                     </div>
                                 </label>
 
                                 <label className={`
-                        relative border rounded-lg p-4 flex cursor-pointer focus:outline-none
-                        ${shippingType === 'DELIVERY' ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50' : 'border-gray-300'}
+                        relative border rounded-lg p-4 flex cursor-pointer focus:outline-none dark:bg-gray-800
+                        ${shippingType === 'DELIVERY' ? 'border-blue-500 ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-700'}
                     `}>
                                     <input
                                         type="radio"
@@ -152,15 +186,15 @@ export const CheckoutPage = () => {
                                     />
                                     <div className="flex-1 flex">
                                         <div className="flex flex-col">
-                                            <span className={`block text-sm font-medium ${shippingType === 'DELIVERY' ? 'text-blue-900' : 'text-gray-900'}`}>
+                                            <span className={`block text-sm font-medium ${shippingType === 'DELIVERY' ? 'text-blue-900 dark:text-blue-300' : 'text-gray-900 dark:text-gray-300'}`}>
                                                 Envío a Domicilio
                                             </span>
-                                            <span className="mt-1 flex items-center text-sm text-gray-500">
+                                            <span className="mt-1 flex items-center text-sm text-gray-500 dark:text-gray-400">
                                                 <Truck className="h-4 w-4 mr-1" /> $4,000.00
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={`h-5 w-5 rounded-full border flex items-center justify-center ${shippingType === 'DELIVERY' ? 'border-blue-500' : 'border-gray-300'}`}>
+                                    <div className={`h-5 w-5 rounded-full border flex items-center justify-center ${shippingType === 'DELIVERY' ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
                                         {shippingType === 'DELIVERY' && <div className="h-2.5 w-2.5 rounded-full bg-blue-500" />}
                                     </div>
                                 </label>
@@ -168,26 +202,26 @@ export const CheckoutPage = () => {
                         </section>
 
                         {shippingType === 'DELIVERY' && (
-                            <section className="bg-gray-50 p-4 rounded-md">
+                            <section className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                                 <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                                     <div className="sm:col-span-2">
-                                        <label htmlFor="address" className="block text-sm font-medium text-gray-700">Dirección</label>
+                                        <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Dirección</label>
                                         <div className="mt-1">
-                                            <input type="text" id="address" {...register('address')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white" />
+                                            <input type="text" id="address" {...register('address')} className="block w-full border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white dark:bg-gray-700 dark:text-white" />
                                             {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
                                         </div>
                                     </div>
                                     <div>
-                                        <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad</label>
+                                        <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ciudad</label>
                                         <div className="mt-1">
-                                            <input type="text" id="city" {...register('city')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white" />
+                                            <input type="text" id="city" {...register('city')} className="block w-full border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white dark:bg-gray-700 dark:text-white" />
                                             {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city.message}</p>}
                                         </div>
                                     </div>
                                     <div>
-                                        <label htmlFor="zip" className="block text-sm font-medium text-gray-700">Código Postal</label>
+                                        <label htmlFor="zip" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Código Postal</label>
                                         <div className="mt-1">
-                                            <input type="text" id="zip" {...register('zip')} className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white" />
+                                            <input type="text" id="zip" {...register('zip')} className="block w-full border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2 bg-white dark:bg-gray-700 dark:text-white" />
                                             {errors.zip && <p className="mt-1 text-sm text-red-600">{errors.zip.message}</p>}
                                         </div>
                                     </div>
@@ -207,9 +241,9 @@ export const CheckoutPage = () => {
 
                 {/* Order Summary */}
                 <div className="mt-10 lg:mt-0">
-                    <h2 className="text-lg font-medium text-gray-900">Resumen del Pedido</h2>
-                    <div className="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                        <ul role="list" className="divide-y divide-gray-200">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Resumen del Pedido</h2>
+                    <div className="mt-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+                        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                             {items.map((item) => (
                                 <li key={item.id} className="flex py-6 px-4 sm:px-6">
                                     <div className="flex-shrink-0">
@@ -218,14 +252,14 @@ export const CheckoutPage = () => {
                                     <div className="ml-6 flex-1 flex flex-col">
                                         <div className="flex">
                                             <div className="min-w-0 flex-1">
-                                                <h4 className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-800">
                                                     {item.name}
                                                 </h4>
                                             </div>
                                         </div>
                                         <div className="flex-1 pt-2 flex items-end justify-between">
                                             <div className="flex flex-col">
-                                                <p className="text-sm font-bold text-gray-900">
+                                                <p className="text-sm font-bold text-gray-900 dark:text-white">
                                                     {item.quantity} x ${(item.discountPrice || item.price).toLocaleString()}
                                                 </p>
                                                 {item.discountPrice && (
@@ -234,7 +268,7 @@ export const CheckoutPage = () => {
                                                     </p>
                                                 )}
                                             </div>
-                                            <p className="text-sm font-black text-blue-600">
+                                            <p className="text-sm font-black text-blue-600 dark:text-blue-400">
                                                 ${((item.discountPrice || item.price) * item.quantity).toLocaleString()}
                                             </p>
                                         </div>
@@ -242,10 +276,51 @@ export const CheckoutPage = () => {
                                 </li>
                             ))}
                         </ul>
-                        <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
+
+                        {/* Coupon Section */}
+                        <CouponSelector
+                            currentTotal={subtotal}
+                            appliedCoupon={appliedCoupon}
+                            onSelectCoupon={handleSelectCoupon}
+                            onRemoveCoupon={() => setAppliedCoupon(null)}
+                        />
+
+                        {/* Loyalty Redemption Section */}
+                        {userBits > 0 && maxRedeemableForOrder > 0 && (
+                            <div className="p-4 bg-purple-50 dark:bg-gray-900/50 border-t border-b border-purple-100 dark:border-gray-700">
+                                <div className="flex items-center gap-2 mb-2 font-medium text-purple-800 dark:text-purple-400">
+                                    <MundoBitIcon size={18} />
+                                    <span>Mundo Bits</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                    <span>Saldo disponible:</span>
+                                    <span className="font-bold">{userBits} Bits</span>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max={maxRedeemableForOrder}
+                                        step="100"
+                                        value={discountFromBits}
+                                        onChange={(e) => setBitsToRedeem(parseInt(e.target.value))}
+                                        className="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer"
+                                    />
+                                    <span className="font-bold text-purple-700 dark:text-purple-400 w-16 text-right">
+                                        {discountFromBits}
+                                    </span>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Puedes usar hasta el 50% de valor del carrito ({maxRedeemableForOrder} bits).
+                                </p>
+                            </div>
+                        )}
+
+                        <dl className="border-t border-gray-200 dark:border-gray-700 py-6 px-4 space-y-6 sm:px-6">
                             <div className="flex items-center justify-between">
-                                <dt className="text-sm text-gray-600">Subtotal productos</dt>
-                                <dd className="text-sm font-bold text-gray-900">${getTotal().toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                                <dt className="text-sm text-gray-600 dark:text-gray-400">Subtotal productos</dt>
+                                <dd className="text-sm font-bold text-gray-900 dark:text-white">${subtotal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
                             </div>
                             {items.some(i => i.discountPrice) && (
                                 <div className="flex items-center justify-between text-green-600 font-medium">
@@ -253,18 +328,34 @@ export const CheckoutPage = () => {
                                     <dd className="text-sm">-{(items.reduce((acc, i) => acc + (i.discountPrice ? (i.price - i.discountPrice) * i.quantity : 0), 0)).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
                                 </div>
                             )}
-                            <div className="flex items-center justify-between">
-                                <dt className="text-sm text-gray-600">Envío</dt>
-                                <dd className="text-sm font-medium text-gray-900">${shippingCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+
+                            {discountFromCoupon > 0 && (
+                                <div className="flex items-center justify-between text-green-600 font-medium">
+                                    <dt className="text-sm">Cupón ({appliedCoupon?.code})</dt>
+                                    <dd className="text-sm">-${discountFromCoupon.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                                </div>
+                            )}
+
+                            <div className="flex items-center justify-between text-purple-600 dark:text-purple-400 font-medium">
+                                <dt className="text-sm">Bits canjeados</dt>
+                                <dd className="text-sm">-${discountFromBits.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
                             </div>
-                            <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-                                <dt className="text-base font-medium text-gray-900">Total</dt>
-                                <dd className="text-base font-medium text-gray-900">${total.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                            <div className="flex items-center justify-between">
+                                <dt className="text-sm text-gray-600 dark:text-gray-400">Envío</dt>
+                                <dd className="text-sm font-medium text-gray-900 dark:text-white">${shippingCost.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                            </div>
+                            <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
+                                <dt className="text-base font-medium text-gray-900 dark:text-white">Total a Pagar</dt>
+                                <dd className="text-xl font-bold text-gray-900 dark:text-white">${finalTotal.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</dd>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-2">
+                                <dt>Ganarás</dt>
+                                <dd className="font-bold text-purple-600">+{earnedBits} Bits</dd>
                             </div>
                         </dl>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
+                    <div className="mt-6 flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
                         <CreditCard className="h-5 w-5 mr-2" />
                         <p>El pago se coordina manualmente post-pedido.</p>
                     </div>

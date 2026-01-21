@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import bannerImage from '../../assets/banner.png';
-import asusLogo from '../../assets/asus.png';
-import gigabyteLogo from '../../assets/gigabyte.png';
-import kingstonLogo from '../../assets/kingston.png';
-import msiLogo from '../../assets/msi.png';
+import { BrandCarousel } from '../../components/shop/BrandCarousel';
 
 export const HomePage = () => {
     const [bestSellers, setBestSellers] = useState<any[]>([]);
@@ -98,11 +95,8 @@ export const HomePage = () => {
 
                 {/* Las Mejores Marcas */}
                 <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Las Mejores Marcas</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
-                    <img src={asusLogo} alt="Asus" className="h-12 w-auto object-contain hover:opacity-100 transition-opacity" />
-                    <img src={gigabyteLogo} alt="Gigabyte" className="h-12 w-auto object-contain hover:opacity-100 transition-opacity" />
-                    <img src={kingstonLogo} alt="Kingston" className="h-16 w-auto object-contain hover:opacity-100 transition-opacity" />
-                    <img src={msiLogo} alt="MSI" className="h-16 w-auto object-contain hover:opacity-100 transition-opacity" />
+                <div className="mb-16">
+                    <BrandCarousel />
                 </div>
             </div>
         </div>

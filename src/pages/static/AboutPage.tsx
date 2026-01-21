@@ -1,4 +1,7 @@
-import { ShieldCheck, Users, Award } from 'lucide-react';
+import distribuidoresImage from '../../assets/distribuidores.svg';
+import nosotrosImage from '../../assets/nosotros.jpg';
+import misionImage from '../../assets/mision.jpg';
+import visionImage from '../../assets/vision.jpg';
 
 export const AboutPage = () => {
     return (
@@ -23,10 +26,12 @@ export const AboutPage = () => {
                         </p>
                     </div>
                     <div className="mt-10 lg:mt-0 relative">
-                        {/* Placeholder for ../img/nosotros.jpg */}
-                        <div className="aspect-w-16 aspect-h-9 rounded-xl shadow-2xl overflow-hidden bg-gray-100 flex items-center justify-center min-h-[300px]">
-                            <Users className="h-32 w-32 text-gray-300" />
-                            <span className="absolute text-gray-400 font-medium">Imagen Nosotros</span>
+                        <div className="aspect-w-16 aspect-h-9 rounded-xl shadow-2xl overflow-hidden">
+                            <img
+                                src={nosotrosImage}
+                                alt="Equipo Mundo Digital"
+                                className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-700"
+                            />
                         </div>
                     </div>
                 </div>
@@ -41,10 +46,14 @@ export const AboutPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         {/* Misión */}
-                        <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105">
-                            <div className="h-48 bg-blue-100 flex items-center justify-center">
-                                {/* Placeholder for ../img/mision.jpg */}
-                                <ShieldCheck className="h-20 w-20 text-blue-500" />
+                        <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 group">
+                            <div className="h-64 overflow-hidden relative">
+                                <img
+                                    src={misionImage}
+                                    alt="Nuestra Misión"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-colors" />
                             </div>
                             <div className="p-8">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Nuestra Misión</h3>
@@ -55,10 +64,14 @@ export const AboutPage = () => {
                         </div>
 
                         {/* Visión */}
-                        <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105">
-                            <div className="h-48 bg-indigo-100 flex items-center justify-center">
-                                {/* Placeholder for ../img/vision.jpg */}
-                                <Award className="h-20 w-20 text-indigo-500" />
+                        <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 group">
+                            <div className="h-64 overflow-hidden relative">
+                                <img
+                                    src={visionImage}
+                                    alt="Nuestra Visión"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-indigo-900/20 group-hover:bg-indigo-900/10 transition-colors" />
                             </div>
                             <div className="p-8">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Nuestra Visión</h3>
@@ -77,22 +90,32 @@ export const AboutPage = () => {
                     <h2 className="text-3xl font-extrabold text-gray-900">¿Por qué Elegirnos?</h2>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    <div className="bg-blue-600 rounded-lg p-6 text-center text-white shadow-lg">
-                        <p className="text-4xl font-extrabold mb-2">+ 20.000</p>
-                        <p className="font-medium text-blue-100">Productos en nuestro catálogo</p>
+                <div className="space-y-6">
+                    {/* Top Row: 3 Items */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-gray-100 rounded-none p-8 text-center transition-transform hover:-translate-y-1 duration-300">
+                            <p className="text-2xl font-extrabold text-[#1e1b4b] mb-1">Más de 20.000 productos</p>
+                            <p className="text-gray-600 text-sm">en nuestro catálogo</p>
+                        </div>
+                        <div className="bg-gray-100 rounded-none p-8 text-center flex flex-col justify-center transition-transform hover:-translate-y-1 duration-300">
+                            <p className="text-2xl font-extrabold text-[#1e1b4b]">430 marcas</p>
+                        </div>
+                        <div className="bg-gray-100 rounded-none p-8 text-center transition-transform hover:-translate-y-1 duration-300">
+                            <p className="text-xl font-extrabold text-[#1e1b4b] mb-1">4 canales de venta:</p>
+                            <p className="text-gray-600 text-sm">eCommerce, Marketplaces, Corporativo y Gobierno</p>
+                        </div>
                     </div>
-                    <div className="bg-blue-600 rounded-lg p-6 text-center text-white shadow-lg">
-                        <p className="text-4xl font-extrabold mb-2">430</p>
-                        <p className="font-medium text-blue-100">Marcas líderes en tecnología</p>
-                    </div>
-                    <div className="bg-blue-600 rounded-lg p-6 text-center text-white shadow-lg">
-                        <p className="text-4xl font-extrabold mb-2">4</p>
-                        <p className="font-medium text-blue-100">Canales de venta integrados</p>
-                    </div>
-                    <div className="bg-blue-600 rounded-lg p-6 text-center text-white shadow-lg">
-                        <p className="text-4xl font-extrabold mb-2">7.000 m²</p>
-                        <p className="font-medium text-blue-100">De bodega propia</p>
+
+                    {/* Bottom Row: 2 Items */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-gray-100 rounded-none p-8 text-center transition-transform hover:-translate-y-1 duration-300">
+                            <p className="text-2xl font-extrabold text-[#1e1b4b] mb-1">7.000 m² de almacenaje</p>
+                            <p className="text-gray-600 text-sm">en bodega</p>
+                        </div>
+                        <div className="bg-gray-100 rounded-none p-8 text-center transition-transform hover:-translate-y-1 duration-300">
+                            <p className="text-2xl font-extrabold text-[#1e1b4b] mb-1">40 alianzas</p>
+                            <p className="text-gray-600 text-sm">estratégicas</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,22 +124,13 @@ export const AboutPage = () => {
             <div className="bg-white pb-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Marcas Distribuidoras</h2>
-                    <div className="bg-gray-50 rounded-xl p-8 border-2 border-dashed border-gray-300 flex items-center justify-center min-h-[150px]">
-                        {/* Placeholder for ../img/distribuidores.svg */}
-                        <div className="flex flex-wrap justify-center gap-8 text-gray-400 font-bold text-xl">
-                            <span>SAMSUNG</span>
-                            <span>APPLE</span>
-                            <span>HP</span>
-                            <span>DELL</span>
-                            <span>LENOVO</span>
-                            <span>SONY</span>
-                            <span>LG</span>
-                            {/* In real app, put the img tag here */}
-                        </div>
+                    <div className="flex justify-center">
+                        <img
+                            src={distribuidoresImage}
+                            alt="Distribuidores y Marcas"
+                            className="max-w-full h-auto object-contain max-h-[400px] grayscale hover:grayscale-0 transition-all duration-300"
+                        />
                     </div>
-                    <p className="mt-4 text-sm text-gray-400 italic">
-                        (Aquí iría la imagen de los logos de marcas: distribuidores.svg)
-                    </p>
                 </div>
             </div>
         </div>

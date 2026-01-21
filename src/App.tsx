@@ -3,6 +3,7 @@ import { MainLayout } from './components/layout/MainLayout';
 import { HomePage } from './pages/shop/HomePage';
 import { CatalogPage } from './pages/shop/CatalogPage';
 import { ProductDetailsPage } from './pages/shop/ProductDetailsPage';
+import { BitsStorePage } from './pages/shop/BitsStorePage';
 import { CartPage } from './pages/shop/CartPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
@@ -24,6 +25,7 @@ import { BlogDetailsPage } from './pages/blog/BlogDetailsPage';
 import { UsersPage } from './pages/admin/UsersPage';
 import { InvoicesPage } from './pages/admin/InvoicesPage';
 import { AdminProfilePage } from './pages/admin/AdminProfilePage';
+import { ProfilePage } from './pages/profile/ProfilePage';
 
 function App() {
   return (
@@ -43,7 +45,8 @@ function App() {
               <Route path="about" element={<AboutPage />} />
               <Route path="contact" element={<ContactPage />} />
               <Route path="contact" element={<ContactPage />} />
-              <Route path="profile" element={<AdminProfilePage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="bits-store" element={<BitsStorePage />} />
             </Route>
 
             <Route path="/login" element={<LoginPage />} />

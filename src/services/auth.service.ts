@@ -8,7 +8,10 @@ const INITIAL_ADMIN: User = {
     email: 'admin@mundodigital.com',
     name: 'Super Admin',
     role: 'SUPERADMIN',
-    password: 'admin123'
+    password: 'admin123',
+    bits: 10000,
+    totalBitsDetails: 10000,
+    tier: 'BYTE'
 };
 
 export const AuthService = {
@@ -51,7 +54,10 @@ export const AuthService = {
                     rut,
                     phone,
                     role: 'CLIENT',
-                    password: password || '123456' // Fallback for old tests
+                    password: password || '123456', // Fallback for old tests
+                    bits: 0,
+                    totalBitsDetails: 0,
+                    tier: 'BIT'
                 };
 
                 const usersStr = localStorage.getItem(USERS_KEY);

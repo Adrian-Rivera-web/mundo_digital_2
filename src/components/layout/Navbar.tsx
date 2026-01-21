@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../../hooks/useCartStore';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import logo from '../../assets/logo.jpg';
+import logo from '../../assets/logo.svg';
 import { NAV_LINKS } from '../../data';
 
 export const Navbar = () => {
@@ -46,8 +46,7 @@ export const Navbar = () => {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
                         <Link to="/" className="flex items-center gap-2">
-                            <img src={logo} alt="Mundo Digital Logo" className="h-10 w-auto rounded-sm" />
-                            <span className="text-2xl font-bold text-white">Mundo Digital</span>
+                            <img src={logo} alt="Mundo Digital Logo" className="h-12 w-auto" />
                         </Link>
                     </div>
 
@@ -63,6 +62,11 @@ export const Navbar = () => {
                                 placeholder="Buscar productos..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
+                                    }
+                                }}
                             />
                         </div>
                     </div>

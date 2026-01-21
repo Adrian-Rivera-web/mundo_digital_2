@@ -1,0 +1,85 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Design: Hex Token V4 (The "Mundo Digital" Prime) -->
+    <!-- Symbol: Digital Globe/Network (Representative of "Mundo") -->
+    <!-- Optimization: High Contrast Backlight for Dark Mode visibility -->
+
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="hex-body-v4" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0EA5E9"/> <!-- Sky Blue -->
+            <stop offset="0.5" stop-color="#0284C7"/> <!-- Strong Blue -->
+            <stop offset="1" stop-color="#1E3A8A"/> <!-- Dark Blue -->
+        </linearGradient>
+
+        <radialGradient id="globe-glow" cx="50" cy="50" r="25">
+             <stop offset="0" stop-color="#22D3EE"/> <!-- Neon Cyan Core -->
+             <stop offset="0.7" stop-color="#0369A1"/>
+             <stop offset="1" stop-color="#020617"/>
+        </radialGradient>
+
+        <linearGradient id="rim-light" x1="0" y1="0" x2="0" y2="100">
+            <stop offset="0" stop-color="#FFFFFF"/> <!-- Top shine -->
+            <stop offset="0.2" stop-color="#7DD3FC"/>
+            <stop offset="0.8" stop-color="#3B82F6"/>
+            <stop offset="1" stop-color="#60A5FA"/> <!-- Bottom bounce light -->
+        </linearGradient>
+
+        <!-- Filters -->
+        <!-- Strong Backlight for Dark Mode Pop -->
+        <filter id="neon-halo" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3.5" in="SourceAlpha" result="blur"/>
+            <feFlood flood-color="#0EA5E9" result="color"/>
+            <feComposite in="color" in2="blur" operator="in" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <filter id="inner-glow">
+            <feGaussianBlur stdDeviation="1"/>
+            <feComposite in="SourceGraphic" operator="over"/>
+        </filter>
+    </defs>
+
+    <!-- Group with Neon Halo for Dark Mode Visibility -->
+    <g filter="url(#neon-halo)">
+        
+        <!-- 3D Extrusion (Bottom Layer) -->
+        <path d="M88 28V72L50 94L12 72V28" stroke="#172554" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M12 72L50 94L88 72V78L50 100L12 78Z" fill="#1E3A8A"/> 
+
+        <!-- Main Hex Body -->
+        <path d="M50 5L88 27V73L50 95L12 73V27L50 5Z" fill="url(#hex-body-v4)"/>
+        
+        <!-- Bright Rim (The "Sticker" Edge for contrast) -->
+        <path d="M50 5L88 27V73L50 95L12 73V27L50 5Z" stroke="url(#rim-light)" stroke-width="2.5" fill="none"/>
+
+        <!-- Inner Recess (The Screen) -->
+        <path d="M50 15L78 31V69L50 85L22 69V31L50 15Z" fill="#020617" stroke="#0369A1" stroke-width="1"/>
+        <path d="M50 15L78 31V69L50 85L22 69V31L50 15Z" fill="url(#globe-glow)" opacity="0.4"/>
+
+        <!-- THE SYMBOL: Digital Globe / Network -->
+        <!-- Latitudes -->
+        <ellipse cx="50" cy="50" rx="20" ry="20" stroke="#38BDF8" stroke-width="1.5" fill="none"/> <!-- Outer Circle -->
+        <ellipse cx="50" cy="50" rx="20" ry="8" stroke="#7DD3FC" stroke-width="1"/> <!-- Equator -->
+        <ellipse cx="50" cy="50" rx="12" ry="18" stroke="#7DD3FC" stroke-width="1" transform="rotate(90 50 50)"/> <!-- Meridian -->
+        
+        <!-- Connections (Nodes) -->
+        <circle cx="50" cy="50" r="3" fill="#FFFFFF" filter="url(#inner-glow)"/> <!-- Center Node -->
+        <circle cx="70" cy="50" r="2" fill="#7DD3FC"/>
+        <circle cx="30" cy="50" r="2" fill="#7DD3FC"/>
+        <circle cx="50" cy="30" r="2" fill="#7DD3FC"/>
+        <circle cx="50" cy="70" r="2" fill="#7DD3FC"/>
+
+        <!-- Orbiting/Connecting Lines (Digital World) -->
+        <path d="M36 36L44 44" stroke="#BAE6FD" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M64 36L56 44" stroke="#BAE6FD" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M36 64L44 56" stroke="#BAE6FD" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M64 64L56 56" stroke="#BAE6FD" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- Specular Glass Highlights (Top) -->
+        <path d="M50 8L82 26L75 30L50 15L25 30L18 26L50 8Z" fill="white" opacity="0.3"/>
+    </g>
+
+</svg>

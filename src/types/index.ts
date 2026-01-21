@@ -7,6 +7,9 @@ export interface Product {
     category: string;
     image: string;
     discountPrice?: number;
+    isBitStoreItem?: boolean;
+    bitPrice?: number;
+    brand?: string;
 }
 
 export interface CartItem extends Product {
@@ -22,6 +25,10 @@ export interface User {
     phone?: string;
     address?: string;
     password?: string;
+    // Loyalty - Mundo Bits
+    bits: number;
+    totalBitsDetails: number;
+    tier: 'BIT' | 'BYTE' | 'GIGA';
 }
 
 export interface Order {
@@ -33,6 +40,9 @@ export interface Order {
     createdAt: string;
     shippingType: 'PICKUP' | 'DELIVERY';
     shippingAddress?: string;
+    // Loyalty
+    redeemedBits?: number;
+    earnedBits?: number;
 }
 
 export interface BlogPost {
@@ -43,4 +53,15 @@ export interface BlogPost {
     author: string;
     date: string;
     image: string;
+}
+
+export interface Coupon {
+    code: string;
+    description: string;
+    discountType: 'PERCENTAGE' | 'FIXED';
+    value: number; // e.g., 10 for 10% or 5000 for $5000
+    minPurchase?: number;
+    active: boolean;
+    usageLimit?: number; // Total global uses
+    usedCount: number;
 }

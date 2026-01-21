@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { Product } from '../../types';
 import { ProductService } from '../../services/product.service';
 import { ProductCard } from '../../components/ui/ProductCard';
-import { Filter, Tag, X } from 'lucide-react';
+import { Filter, Tag, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const CatalogPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -11,22 +11,33 @@ export const CatalogPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [salesMap, setSalesMap] = useState<Record<string, number>>({});
 
-    // Filtros locales state
+    // --- Local State for Filters ---
     const categoryParam = searchParams.get('category');
     const offersParam = searchParams.get('offers') === 'true';
+    const searchParam = searchParams.get('search') || '';
 
     const [selectedCategory, setSelectedCategory] = useState<string>(categoryParam || 'Todas');
     const [showOffersOnly, setShowOffersOnly] = useState<boolean>(offersParam);
+    const [searchQuery, setSearchQuery] = useState<string>(searchParam);
     const [sortBy, setSortBy] = useState<string>('recommended');
 
+    // Brand Filter State
+    const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
+    // Pagination State
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 12;
+
+    // --- Effect: Sync URL ---
     useEffect(() => {
-        // Sincronizar URL si cambia el estado local (opcional, pero buena UX)
         const params = new URLSearchParams();
         if (selectedCategory && selectedCategory !== 'Todas') params.set('category', selectedCategory);
         if (showOffersOnly) params.set('offers', 'true');
+        if (searchQuery) params.set('search', searchQuery);
         setSearchParams(params, { replace: true });
-    }, [selectedCategory, showOffersOnly, setSearchParams]);
+    }, [selectedCategory, showOffersOnly, searchQuery, setSearchParams]);
 
+    // --- Effect: Load Data ---
     useEffect(() => {
         const fetchProductsAndSales = async () => {
             try {
@@ -46,10 +57,31 @@ export const CatalogPage = () => {
         fetchProductsAndSales();
     }, []);
 
-    // Extraer categorías únicas
+    // --- Scroll to top on page change ---
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
+
+    // --- Reset Page on Filter Change ---
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedCategory, showOffersOnly, searchQuery, selectedBrands]);
+
+
+    // --- Derived Data: Unique Categories & Brands ---
     const categories = useMemo(() => {
         const cats = products.map(p => p.category);
         return ['Todas', ...new Set(cats)];
+    }, [products]);
+
+    const brands = useMemo(() => {
+        // Assuming product has a 'brand' property. If not, we might need to rely on 'manufacturer' or similar if it existed.
+        // Based on previous context, user asked to scan 'marcas'. 
+        // If the Product type strictly doesn't have brand, we might need to infer it or update type.
+        // For now, I'll assume 'brand' exists on Product interface based on requirements.
+        // If TS error occurs, I will fix.
+        const allBrands = products.map(p => (p as any).brand || 'Genérico').filter(b => b !== 'Genérico');
+        return [...new Set(allBrands)].sort();
     }, [products]);
 
     // Top 3 IDs para etiqueta popular
@@ -60,12 +92,18 @@ export const CatalogPage = () => {
             .map(([id]) => id);
     }, [salesMap]);
 
-    // Filtrar y ordenar productos
+    // --- Filter & Sort Logic ---
     const filteredProducts = useMemo(() => {
         let result = products.filter(product => {
             const matchesCategory = selectedCategory === 'Todas' || product.category === selectedCategory;
             const matchesOffers = !showOffersOnly || (!!product.discountPrice && product.discountPrice < product.price);
-            return matchesCategory && matchesOffers;
+            const matchesSearch = !searchQuery || product.name.toLowerCase().includes(searchQuery.toLowerCase()) || product.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+            // Brand Check
+            const productBrand = (product as any).brand || 'Genérico';
+            const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(productBrand);
+
+            return matchesCategory && matchesOffers && matchesSearch && matchesBrand;
         });
 
         switch (sortBy) {
@@ -92,12 +130,25 @@ export const CatalogPage = () => {
                 break;
             case 'recommended':
             default:
-                // Default sorting (could be by ID or whatever original order)
                 break;
         }
 
         return result;
-    }, [products, selectedCategory, showOffersOnly, sortBy, salesMap]);
+    }, [products, selectedCategory, showOffersOnly, selectedBrands, searchQuery, sortBy, salesMap]);
+
+    // --- Pagination Logic ---
+    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    const paginatedProducts = filteredProducts.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
+    // Handler for brand checkbox
+    const toggleBrand = (brand: string) => {
+        setSelectedBrands(prev =>
+            prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+        );
+    };
 
     if (loading) {
         return (
@@ -140,6 +191,33 @@ export const CatalogPage = () => {
                             </ul>
                         </div>
 
+                        {/* Filtro Marcas (Nuevo) */}
+                        <div className="mb-8">
+                            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
+                                Marcas
+                            </h3>
+                            <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                                {brands.map(brand => (
+                                    <label key={brand} className="flex items-center space-x-3 cursor-pointer group">
+                                        <div className="relative flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                                checked={selectedBrands.includes(brand)}
+                                                onChange={() => toggleBrand(brand)}
+                                            />
+                                        </div>
+                                        <span className={`text-sm ${selectedBrands.includes(brand) ? 'text-blue-700 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                                            {brand}
+                                        </span>
+                                    </label>
+                                ))}
+                                {brands.length === 0 && (
+                                    <p className="text-xs text-gray-400 italic">No hay marcas disponibles</p>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Filtro Ofertas */}
                         <div className="mb-6">
                             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
@@ -162,11 +240,13 @@ export const CatalogPage = () => {
                             </label>
                         </div>
 
-                        {(selectedCategory !== 'Todas' || showOffersOnly) && (
+                        {(selectedCategory !== 'Todas' || showOffersOnly || searchQuery || selectedBrands.length > 0) && (
                             <button
                                 onClick={() => {
                                     setSelectedCategory('Todas');
                                     setShowOffersOnly(false);
+                                    setSearchQuery('');
+                                    setSelectedBrands([]);
                                 }}
                                 className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                             >
@@ -220,7 +300,7 @@ export const CatalogPage = () => {
                         </div>
                     )}
 
-                    {filteredProducts.length === 0 ? (
+                    {paginatedProducts.length === 0 ? (
                         <div className="text-center py-12 bg-gray-50 rounded-lg">
                             <Filter className="mx-auto h-12 w-12 text-gray-400" />
                             <h3 className="mt-2 text-sm font-medium text-gray-900">No hay productos</h3>
@@ -232,6 +312,7 @@ export const CatalogPage = () => {
                                     onClick={() => {
                                         setSelectedCategory('Todas');
                                         setShowOffersOnly(false);
+                                        setSelectedBrands([]);
                                     }}
                                     className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                                 >
@@ -240,15 +321,51 @@ export const CatalogPage = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredProducts.map(product => (
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                    isPopular={popularProductIds.includes(product.id)}
-                                />
-                            ))}
-                        </div>
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                {paginatedProducts.map(product => (
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        isPopular={popularProductIds.includes(product.id)}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Pagination Bar */}
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-center space-x-2">
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1}
+                                        className="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronLeft className="h-5 w-5" />
+                                    </button>
+
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                        <button
+                                            key={page}
+                                            onClick={() => setCurrentPage(page)}
+                                            className={`px-4 py-2 text-sm font-medium rounded-md border ${currentPage === page
+                                                    ? 'bg-blue-600 text-white border-blue-600'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
+
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronRight className="h-5 w-5" />
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </main>
             </div>
