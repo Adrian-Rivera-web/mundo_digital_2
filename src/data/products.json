@@ -260,5 +260,745 @@
         "category": "Drones",
         "image": "https://images.unsplash.com/photo-1579829366248-204fe8413f31?auto=format&fit=crop&q=80&w=1000",
         "brand": "DJI"
+    },
+    {
+        "id": "1021",
+        "name": "Sony Alpha a7 IV",
+        "description": "Cámara mirrorless full-frame híbrida para foto y video profesional.",
+        "price": 2800000,
+        "stock": 5,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Sony"
+    },
+    {
+        "id": "1022",
+        "name": "Xbox Series X",
+        "description": "La consola Xbox más rápida y potente de la historia.",
+        "price": 550000,
+        "stock": 15,
+        "category": "Consolas",
+        "image": "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Microsoft"
+    },
+    {
+        "id": "1023",
+        "name": "Logitech MX Master 3S",
+        "description": "El mouse de productividad definitivo, silencioso y preciso.",
+        "price": 99990,
+        "stock": 40,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Logitech"
+    },
+    {
+        "id": "1024",
+        "name": "Keychron K2 Pro",
+        "description": "Teclado mecánico inalámbrico customizable QMK/VIA.",
+        "price": 115000,
+        "stock": 25,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Keychron"
+    },
+    {
+        "id": "1025",
+        "name": "Samsung Galaxy Tab S9 Ultra",
+        "description": "Tablet Android definitiva con pantalla enorme y S-Pen.",
+        "price": 1200000,
+        "stock": 8,
+        "category": "Tablets",
+        "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Samsung"
+    },
+    {
+        "id": "1026",
+        "name": "Razer DeathAdder V3 Pro",
+        "description": "Mouse esports ultraligero con tecnología HyperPolling.",
+        "price": 140000,
+        "stock": 12,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Razer"
+    },
+    {
+        "id": "1027",
+        "name": "HyperX Cloud Alpha Wireless",
+        "description": "Audífonos gaming con hasta 300 horas de batería.",
+        "price": 159990,
+        "stock": 20,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=1000",
+        "brand": "HyperX"
+    },
+    {
+        "id": "1028",
+        "name": "Apple Watch Ultra 2",
+        "description": "El reloj más resistente y capaz para deportes extremos.",
+        "price": 899990,
+        "stock": 10,
+        "category": "Wearables",
+        "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Apple"
+    },
+    {
+        "id": "1029",
+        "name": "LG C3 OLED 65\"",
+        "description": "Televisor OLED Evo 4K ideal para cine y gaming.",
+        "price": 1600000,
+        "stock": 4,
+        "category": "TV",
+        "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=1000",
+        "brand": "LG"
+    },
+    {
+        "id": "1030",
+        "name": "Sonos Arc",
+        "description": "Barra de sonido inteligente premium con Dolby Atmos.",
+        "price": 899990,
+        "stock": 6,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Sonos"
+    },
+    {
+        "id": "1031",
+        "name": "Kindle Paperwhite Signature",
+        "description": "Lector de e-books con carga inalámbrica y luz cálida.",
+        "price": 189990,
+        "stock": 30,
+        "category": "Tablets",
+        "image": "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Amazon"
+    },
+    {
+        "id": "1032",
+        "name": "DJI Osmo Pocket 3",
+        "description": "Cámara gimbal de bolsillo con sensor de 1 pulgada.",
+        "price": 600000,
+        "stock": 8,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "DJI"
+    },
+    {
+        "id": "1033",
+        "name": "Steam Deck OLED 1TB",
+        "description": "Consola PC portátil con pantalla OLED HDR.",
+        "price": 750000,
+        "stock": 5,
+        "category": "Consolas",
+        "image": "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Valve"
+    },
+    {
+        "id": "1034",
+        "name": "Meta Quest 3",
+        "description": "Gafas de realidad mixta revolucionarias.",
+        "price": 650000,
+        "stock": 10,
+        "category": "VR",
+        "image": "https://images.unsplash.com/photo-1622979135225-d2ba269fb1bd?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Meta"
+    },
+    {
+        "id": "1035",
+        "name": "Elgato Stream Deck MK.2",
+        "description": "Controlador de estudio para creadores de contenido.",
+        "price": 149990,
+        "stock": 15,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Elgato"
+    },
+    {
+        "id": "1036",
+        "name": "ASUS ROG Zephyrus G14",
+        "description": "Laptop gamer potente y ultraportátil de 14 pulgadas.",
+        "price": 1650000,
+        "stock": 7,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Asus"
+    },
+    {
+        "id": "1037",
+        "name": "Intel Core i9-14900K",
+        "description": "Procesador tope de gama para gaming y creación.",
+        "price": 650000,
+        "stock": 10,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Intel"
+    },
+    {
+        "id": "1038",
+        "name": "WD_BLACK SN850X 4TB",
+        "description": "SSD NVMe Gen4 de ultra alta capacidad y velocidad.",
+        "price": 400000,
+        "stock": 12,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1628557044797-f21a17b96e6d?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Western Digital"
+    },
+    {
+        "id": "1039",
+        "name": "Lian Li O11 Dynamic Evo",
+        "description": "Gabinete PC versátil con vidrio templado.",
+        "price": 180000,
+        "stock": 8,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Lian Li"
+    },
+    {
+        "id": "1040",
+        "name": "Corsair RM1000x Shift",
+        "description": "Fuente de poder 1000W modular con conectores laterales.",
+        "price": 220000,
+        "stock": 10,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Corsair"
+    },
+    {
+        "id": "1041",
+        "name": "G.Skill Trident Z5 RGB 64GB",
+        "description": "Kit de memoria DDR5 de alto rendimiento y estética.",
+        "price": 280000,
+        "stock": 15,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&q=80&w=1000",
+        "brand": "G.Skill"
+    },
+    {
+        "id": "1042",
+        "name": "Noctua NH-D15 chromax.black",
+        "description": "El rey de la refrigeración por aire, ahora en negro.",
+        "price": 110000,
+        "stock": 20,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Noctua"
+    },
+    {
+        "id": "1043",
+        "name": "Raspberry Pi 5 8GB",
+        "description": "La computadora de placa única más popular, renovada.",
+        "price": 95000,
+        "stock": 50,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Raspberry Pi"
+    },
+    {
+        "id": "1044",
+        "name": "Arduino Uno R4 WiFi",
+        "description": "Placa de desarrollo clásica ahora con WiFi y matriz LED.",
+        "price": 35000,
+        "stock": 40,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Arduino"
+    },
+    {
+        "id": "1045",
+        "name": "Philips Hue Starter Kit",
+        "description": "Iluminación inteligente RGB para tu hogar.",
+        "price": 180000,
+        "stock": 15,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Philips"
+    },
+    {
+        "id": "1046",
+        "name": "Google Nest Hub (2nd Gen)",
+        "description": "Pantalla inteligente con Asistente de Google.",
+        "price": 89990,
+        "stock": 20,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Google"
+    },
+    {
+        "id": "1047",
+        "name": "Amazon Echo Dot (5ta Gen)",
+        "description": "Parlante inteligente con Alexa y sonido mejorado.",
+        "price": 49990,
+        "stock": 30,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Amazon"
+    },
+    {
+        "id": "1048",
+        "name": "Ring Video Doorbell Wired",
+        "description": "Timbre con cámara HD para seguridad en la entrada.",
+        "price": 65000,
+        "stock": 15,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Ring"
+    },
+    {
+        "id": "1049",
+        "name": "Nanoleaf Shapes Triangles",
+        "description": "Paneles de luz modulares RGBW inteligentes.",
+        "price": 200000,
+        "stock": 10,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Nanoleaf"
+    },
+    {
+        "id": "1050",
+        "name": "Ubiquiti UniFi Dream Machine",
+        "description": "Consola todo en uno para redes empresariales y hogar.",
+        "price": 350000,
+        "stock": 5,
+        "category": "Redes",
+        "image": "https://images.unsplash.com/photo-1544197150-b99a580bbc7c?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Ubiquiti"
+    },
+    {
+        "id": "1051",
+        "name": "Starlink Kit Standard",
+        "description": "Internet satelital de alta velocidad en cualquier lugar.",
+        "price": 400000,
+        "stock": 5,
+        "category": "Redes",
+        "image": "https://images.unsplash.com/photo-1544197150-b99a580bbc7c?auto=format&fit=crop&q=80&w=1000",
+        "brand": "SpaceX"
+    },
+    {
+        "id": "1052",
+        "name": "Synology DiskStation DS224+",
+        "description": "NAS compacto de 2 bahías para gestión de datos.",
+        "price": 320000,
+        "stock": 6,
+        "category": "Redes",
+        "image": "https://images.unsplash.com/photo-1544197150-b99a580bbc7c?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Synology"
+    },
+    {
+        "id": "1053",
+        "name": "Wacom Intuos Pro Medium",
+        "description": "Tableta gráfica profesional para artistas digitales.",
+        "price": 330000,
+        "stock": 8,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Wacom"
+    },
+    {
+        "id": "1054",
+        "name": "Blue Yeti X",
+        "description": "Micrófono USB profesional para streaming y podcast.",
+        "price": 160000,
+        "stock": 15,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Logitech"
+    },
+    {
+        "id": "1055",
+        "name": "Rode Wireless GO II",
+        "description": "Sistema de micrófono inalámbrico compacto dual.",
+        "price": 280000,
+        "stock": 10,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Rode"
+    },
+    {
+        "id": "1056",
+        "name": "Audio-Technica AT-LP120X",
+        "description": "Tornamesa de tracción directa analógico/USB.",
+        "price": 350000,
+        "stock": 6,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Audio-Technica"
+    },
+    {
+        "id": "1057",
+        "name": "Sennheiser HD 600",
+        "description": "Audífonos audiófilos de referencia abiertos.",
+        "price": 400000,
+        "stock": 5,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Sennheiser"
+    },
+    {
+        "id": "1058",
+        "name": "Fiio M11S",
+        "description": "Reproductor de audio digital Hi-Res portátil.",
+        "price": 450000,
+        "stock": 4,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Fiio"
+    },
+    {
+        "id": "1059",
+        "name": "Creality Ender 3 V3 KE",
+        "description": "Impresora 3D rápida y precisa para makers.",
+        "price": 300000,
+        "stock": 10,
+        "category": "Impresión 3D",
+        "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Creality"
+    },
+    {
+        "id": "1060",
+        "name": "Anycubic Photon Mono 2",
+        "description": "Impresora 3D de resina 4K ideal para miniaturas.",
+        "price": 250000,
+        "stock": 8,
+        "category": "Impresión 3D",
+        "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Anycubic"
+    },
+    {
+        "id": "1061",
+        "name": "Bambu Lab A1 Mini",
+        "description": "Impresora 3D compacta multicolor de alta velocidad.",
+        "price": 350000,
+        "stock": 5,
+        "category": "Impresión 3D",
+        "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Bambu Lab"
+    },
+    {
+        "id": "1062",
+        "name": "Garmin Fenix 7 Pro",
+        "description": "Reloj multideporte con carga solar y linterna LED.",
+        "price": 850000,
+        "stock": 6,
+        "category": "Wearables",
+        "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Garmin"
+    },
+    {
+        "id": "1063",
+        "name": "Oura Ring Gen 3",
+        "description": "Anillo inteligente para monitoreo de sueño y salud.",
+        "price": 320000,
+        "stock": 10,
+        "category": "Wearables",
+        "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Oura"
+    },
+    {
+        "id": "1064",
+        "name": "Insta360 X4",
+        "description": "Cámara 360 grados 8K para acción.",
+        "price": 550000,
+        "stock": 8,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Insta360"
+    },
+    {
+        "id": "1065",
+        "name": "Polaroid Now+ Gen 2",
+        "description": "Cámara instantánea conectada con filtros creativos.",
+        "price": 140000,
+        "stock": 15,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Polaroid"
+    },
+    {
+        "id": "1066",
+        "name": "Fujifilm X100VI",
+        "description": "Cámara compacta premium con estilo retro.",
+        "price": 1600000,
+        "stock": 3,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Fujifilm"
+    },
+    {
+        "id": "1067",
+        "name": "Nothing Phone (2)",
+        "description": "Smartphone con interfaz Glyph única y diseño transparente.",
+        "price": 650000,
+        "stock": 10,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Nothing"
+    },
+    {
+        "id": "1068",
+        "name": "Google Pixel 8 Pro",
+        "description": "El teléfono Android más inteligente con IA de Google.",
+        "price": 950000,
+        "stock": 8,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Google"
+    },
+    {
+        "id": "1069",
+        "name": "OnePlus 12",
+        "description": "Flagship killer con rendimiento extremo y carga rápida.",
+        "price": 850000,
+        "stock": 10,
+        "category": "Celulares",
+        "image": "https://images.unsplash.com/photo-1610945265078-38660dd18d79?auto=format&fit=crop&q=80&w=1000",
+        "brand": "OnePlus"
+    },
+    {
+        "id": "1070",
+        "name": "Anker 737 Power Bank",
+        "description": "Batería portátil 24000mAh 140W con pantalla inteligente.",
+        "price": 130000,
+        "stock": 20,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Anker"
+    },
+    {
+        "id": "1071",
+        "name": "UGREEN Nexode 100W",
+        "description": "Cargador GaN compacto de 4 puertos.",
+        "price": 55000,
+        "stock": 30,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "UGREEN"
+    },
+    {
+        "id": "1072",
+        "name": "CableMod Pro ModMesh Kit",
+        "description": "Set de cables custom para fuentes de poder.",
+        "price": 90000,
+        "stock": 15,
+        "category": "Componentes",
+        "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=1000",
+        "brand": "CableMod"
+    },
+    {
+        "id": "1073",
+        "name": "BenQ ScreenBar Halo",
+        "description": "Lámpara para monitor con control inalámbrico y luz trasera.",
+        "price": 140000,
+        "stock": 10,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000",
+        "brand": "BenQ"
+    },
+    {
+        "id": "1074",
+        "name": "Herman Miller Aeron",
+        "description": "La silla ergonómica más icónica del mundo.",
+        "price": 1500000,
+        "stock": 2,
+        "category": "Mobiliario",
+        "image": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Herman Miller"
+    },
+    {
+        "id": "1075",
+        "name": "Autonomous SmartDesk Pro",
+        "description": "Escritorio de altura ajustable eléctrico motorizado.",
+        "price": 600000,
+        "stock": 5,
+        "category": "Mobiliario",
+        "image": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Autonomous"
+    },
+    {
+        "id": "1076",
+        "name": "Govee Envisual TV Backlight T2",
+        "description": "Sistema de retroiluminación inmersiva para TV con doble cámara.",
+        "price": 120000,
+        "stock": 12,
+        "category": "Smart Home",
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Govee"
+    },
+    {
+        "id": "1077",
+        "name": "Apple TV 4K",
+        "description": "El mejor reproductor de streaming con integración Apple.",
+        "price": 160000,
+        "stock": 20,
+        "category": "TV",
+        "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Apple"
+    },
+    {
+        "id": "1078",
+        "name": "Nvidia Shield TV Pro",
+        "description": "Streamer Android TV potente ideal para servidores Plex.",
+        "price": 220000,
+        "stock": 8,
+        "category": "TV",
+        "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Nvidia"
+    },
+    {
+        "id": "1079",
+        "name": "Projector XGIMI Horizon Ultra",
+        "description": "Proyector 4K de larga distancia con Dolby Vision.",
+        "price": 1500000,
+        "stock": 3,
+        "category": "TV",
+        "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=1000",
+        "brand": "XGIMI"
+    },
+    {
+        "id": "1080",
+        "name": "Framework Laptop 13",
+        "description": "Laptop modular, reparable y actualizable.",
+        "price": 1100000,
+        "stock": 5,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Framework"
+    },
+    {
+        "id": "1081",
+        "name": "Microsoft Surface Pro 9",
+        "description": "La 2 en 1 que reemplaza a tu laptop.",
+        "price": 1300000,
+        "stock": 7,
+        "category": "Laptops",
+        "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Microsoft"
+    },
+    {
+        "id": "1082",
+        "name": "Satechi Type-C Hub",
+        "description": "Hub multipuerto de aluminio para MacBooks.",
+        "price": 80000,
+        "stock": 25,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Satechi"
+    },
+    {
+        "id": "1083",
+        "name": "Peak Design Tech Pouch",
+        "description": "Organizador de cables y accesorios premium.",
+        "price": 60000,
+        "stock": 20,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Peak Design"
+    },
+    {
+        "id": "1084",
+        "name": "Bellroy Tech Kit",
+        "description": "Estuche organizador de tecnología elegante.",
+        "price": 55000,
+        "stock": 15,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Bellroy"
+    },
+    {
+        "id": "1085",
+        "name": "Targus Docking Station",
+        "description": "Estación de acoplamiento universal USB-C DV4K.",
+        "price": 180000,
+        "stock": 8,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Targus"
+    },
+    {
+        "id": "1086",
+        "name": "Kensington Expert Mouse",
+        "description": "Trackball inalámbrico ergonómico.",
+        "price": 90000,
+        "stock": 5,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Kensington"
+    },
+    {
+        "id": "1087",
+        "name": "3Dconnexion SpaceMouse",
+        "description": "Mouse 3D para navegación en CAD y diseño.",
+        "price": 160000,
+        "stock": 4,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "3Dconnexion"
+    },
+    {
+        "id": "1088",
+        "name": "Loupedeck Live",
+        "description": "Consola de streaming y edición personalizable.",
+        "price": 250000,
+        "stock": 6,
+        "category": "Periféricos",
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Loupedeck"
+    },
+    {
+        "id": "1089",
+        "name": "Scarlett 2i2 4th Gen",
+        "description": "Interfaz de audio USB para músicos.",
+        "price": 180000,
+        "stock": 10,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Focusrite"
+    },
+    {
+        "id": "1090",
+        "name": "Shure SM7B",
+        "description": "El micrófono vocal legendario para estudio y podcast.",
+        "price": 450000,
+        "stock": 5,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Shure"
+    },
+    {
+        "id": "1091",
+        "name": "Cloudlifter CL-1",
+        "description": "Activador de micrófono para señales de baja salida.",
+        "price": 140000,
+        "stock": 8,
+        "category": "Audio",
+        "image": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Cloud Microphones"
+    },
+    {
+        "id": "1092",
+        "name": "K&F Concept Tripod",
+        "description": "Trípode de cámara ligero de fibra de carbono.",
+        "price": 120000,
+        "stock": 12,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "K&F Concept"
+    },
+    {
+        "id": "1093",
+        "name": "Aputure MC RGBWW",
+        "description": "Mini luz LED de cine magnética.",
+        "price": 90000,
+        "stock": 15,
+        "category": "Cámaras",
+        "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=1000",
+        "brand": "Aputure"
+    },
+    {
+        "id": "1094",
+        "name": "SanDisk Extreme Pro 128GB",
+        "description": "Tarjeta SD UHS-I rápida para 4K.",
+        "price": 35000,
+        "stock": 50,
+        "category": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1628557044797-f21a17b96e6d?auto=format&fit=crop&q=80&w=1000",
+        "brand": "SanDisk"
     }
 ]

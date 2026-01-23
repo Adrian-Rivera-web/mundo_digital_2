@@ -79,5 +79,17 @@ export const AuthService = {
     getCurrentUser: (): User | null => {
         const userStr = localStorage.getItem(CURRENT_USER_KEY);
         return userStr ? JSON.parse(userStr) : null;
+    },
+
+    updateUser: (user: User): void => {
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+        // Update in the main users list as well
+        const usersStr = localStorage.getItem(USERS_KEY);
+        if (usersStr) {
+            const users: User[] = JSON.parse(usersStr);
+            const updatedUsers = users.map(u => u.id === user.id ? user : u);
+            localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+        }
     }
 };

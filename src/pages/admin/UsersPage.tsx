@@ -3,11 +3,31 @@ import { Search, UserPlus, Eye, Shield, Trash2, X, ShoppingBag, Monitor } from '
 import type { User } from '../../types';
 
 export const UsersPage = () => {
+    // RUT Validation Helpers (Simplified for Admin use)
+    const formatRut = (rut: string) => {
+        const clean = rut.replace(/[^0-9kK]+/g, '').toUpperCase();
+        if (clean.length <= 1) return clean;
+        const body = clean.slice(0, -1);
+        const dv = clean.slice(-1);
+        let formattedBody = '';
+        for (let i = body.length - 1, j = 0; i >= 0; i--, j++) {
+            formattedBody = body[i] + (j > 0 && j % 3 === 0 ? '.' : '') + formattedBody;
+        }
+        return `${formattedBody}-${dv}`;
+    };
+
     const [users, setUsers] = useState<User[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedUserHistory, setSelectedUserHistory] = useState<string | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [newUser, setNewUser] = useState({ name: '', email: '', role: 'CLIENT' as const });
+    const [newUser, setNewUser] = useState({
+        name: '',
+        email: '',
+        role: 'CLIENT' as const,
+        password: '',
+        rut: '',
+        phone: ''
+    });
 
     useEffect(() => {
         const loadUsers = () => {
@@ -53,7 +73,10 @@ export const UsersPage = () => {
         setUsers(updated);
         localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
         setShowCreateModal(false);
-        setNewUser({ name: '', email: '', role: 'CLIENT' });
+        setUsers(updated);
+        localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
+        setShowCreateModal(false);
+        setNewUser({ name: '', email: '', role: 'CLIENT', password: '', rut: '', phone: '' });
     };
 
     const filteredUsers = users.filter(user =>
@@ -91,7 +114,7 @@ export const UsersPage = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-900">Gestión de Usuarios</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Gestión de Usuarios</h1>
                 <button
                     onClick={() => setShowCreateModal(true)}
                     className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
@@ -101,8 +124,8 @@ export const UsersPage = () => {
                 </button>
             </div>
 
-            <div className="bg-white shadow-sm border border-gray-100 rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-gray-100">
+            <div className="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Search className="h-5 w-5 text-gray-400" />
@@ -112,21 +135,21 @@ export const UsersPage = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Buscar usuarios por nombre o email..."
-                            className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all sm:text-sm text-gray-900"
+                            className="block w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg leading-5 bg-gray-50 dark:bg-gray-700/50 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-700 transition-all sm:text-sm text-gray-900 dark:text-white"
                         />
                     </div>
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="bg-gray-50 dark:bg-gray-700/50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Usuario</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Rol</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100">
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
                             {filteredUsers.length === 0 ? (
                                 <tr>
                                     <td colSpan={3} className="px-6 py-10 text-center text-gray-500 italic">
@@ -135,15 +158,15 @@ export const UsersPage = () => {
                                 </tr>
                             ) : (
                                 filteredUsers.map((user) => (
-                                    <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                                    <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200">
-                                                    <span className="text-blue-700 font-bold uppercase">{user.name.charAt(0)}</span>
+                                                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center border border-blue-200 dark:border-blue-800">
+                                                    <span className="text-blue-700 dark:text-blue-400 font-bold uppercase">{user.name.charAt(0)}</span>
                                                 </div>
                                                 <div className="ml-4">
-                                                    <div className="text-sm font-bold text-gray-900">{user.name}</div>
-                                                    <div className="text-sm text-gray-500">{user.email}</div>
+                                                    <div className="text-sm font-bold text-gray-900 dark:text-white">{user.name}</div>
+                                                    <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -162,12 +185,12 @@ export const UsersPage = () => {
                                             <div className="flex space-x-3">
                                                 <button
                                                     onClick={() => setSelectedUserHistory(user.id)}
-                                                    className="text-blue-600 hover:text-blue-900 flex items-center bg-blue-50 px-2 py-1 rounded">
+                                                    className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 flex items-center bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded">
                                                     <Eye className="h-4 w-4 mr-1" /> Historial
                                                 </button>
                                                 <button
                                                     onClick={() => deleteUser(user.id)}
-                                                    className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                                                    className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
                                                 </button>
@@ -184,11 +207,11 @@ export const UsersPage = () => {
             {/* Modal de Historial de Compras */}
             {selectedUserHistory && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+                        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
                             <div>
-                                <h2 className="text-xl font-black text-gray-900 uppercase">Historial de Compras</h2>
-                                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Usuario: {users.find(u => u.id === selectedUserHistory)?.name}</p>
+                                <h2 className="text-xl font-black text-gray-900 dark:text-white uppercase">Historial de Compras</h2>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest">Usuario: {users.find(u => u.id === selectedUserHistory)?.name}</p>
                             </div>
                             <button onClick={() => setSelectedUserHistory(null)} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
                                 <X className="h-6 w-6 text-gray-500" />
@@ -213,10 +236,10 @@ export const UsersPage = () => {
                                 return (
                                     <div className="space-y-8">
                                         {userOrders.map((order) => (
-                                            <div key={order.id} className="border border-gray-100 rounded-xl overflow-hidden">
-                                                <div className="bg-gray-50 px-4 py-3 flex justify-between items-center border-b border-gray-100">
+                                            <div key={order.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                                                <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 flex justify-between items-center border-b border-gray-100 dark:border-gray-700">
                                                     <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Pedido #{order.id.substring(0, 8)}</span>
-                                                    <span className="text-xs font-bold text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">
+                                                    <span className="text-xs font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-gray-200 dark:border-gray-600">
                                                         {new Date(order.createdAt).toLocaleDateString()}
                                                     </span>
                                                 </div>
@@ -224,20 +247,20 @@ export const UsersPage = () => {
                                                     {order.items.map((item: any, idx: number) => (
                                                         <div key={idx} className="flex justify-between items-center">
                                                             <div className="flex items-center">
-                                                                <div className="h-10 w-10 bg-gray-100 rounded flex items-center justify-center mr-3">
+                                                                <div className="h-10 w-10 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center mr-3">
                                                                     <Monitor className="h-5 w-5 text-gray-400" />
                                                                 </div>
                                                                 <div>
-                                                                    <p className="text-sm font-bold text-gray-900">{item.name}</p>
-                                                                    <p className="text-xs text-gray-500">Cant: {item.quantity} x ${item.price.toLocaleString()}</p>
+                                                                    <p className="text-sm font-bold text-gray-900 dark:text-white">{item.name}</p>
+                                                                    <p className="text-xs text-gray-500 dark:text-gray-400">Cant: {item.quantity} x ${item.price.toLocaleString()}</p>
                                                                 </div>
                                                             </div>
-                                                            <span className="text-sm font-black text-gray-900">${(item.price * item.quantity).toLocaleString()}</span>
+                                                            <span className="text-sm font-black text-gray-900 dark:text-white">${(item.price * item.quantity).toLocaleString()}</span>
                                                         </div>
                                                     ))}
-                                                    <div className="pt-3 border-t border-gray-100 flex justify-between items-center font-black">
+                                                    <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center font-black">
                                                         <span className="text-xs uppercase text-gray-400">Total del Pedido</span>
-                                                        <span className="text-blue-600 text-lg">${order.total.toLocaleString()}</span>
+                                                        <span className="text-blue-600 dark:text-blue-400 text-lg">${order.total.toLocaleString()}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,10 +270,10 @@ export const UsersPage = () => {
                             })()}
                         </div>
 
-                        <div className="p-6 bg-gray-50 border-t border-gray-100">
+                        <div className="p-6 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
                             <button
                                 onClick={() => setSelectedUserHistory(null)}
-                                className="w-full py-3 bg-gray-900 text-white font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all"
+                                className="w-full py-3 bg-gray-900 dark:bg-blue-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-black dark:hover:bg-blue-700 transition-all"
                             >
                                 Cerrar Historial
                             </button>
@@ -259,69 +282,106 @@ export const UsersPage = () => {
                 </div>
             )}
             {/* Modal de Creación de Usuario */}
-            {showCreateModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                            <h2 className="text-xl font-black text-gray-900 uppercase">Nuevo Usuario</h2>
-                            <button onClick={() => setShowCreateModal(false)} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
-                                <X className="h-6 w-6 text-gray-500" />
-                            </button>
+            {
+                showCreateModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+                            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50">
+                                <h2 className="text-xl font-black text-gray-900 dark:text-white uppercase">Nuevo Usuario</h2>
+                                <button onClick={() => setShowCreateModal(false)} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors">
+                                    <X className="h-6 w-6 text-gray-500" />
+                                </button>
+                            </div>
+                            <form onSubmit={handleCreateUser} className="p-6 space-y-4">
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Nombre Completo</label>
+                                    <input
+                                        required
+                                        type="text"
+                                        value={newUser.name}
+                                        onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                        placeholder="Ej: Juan Pérez"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">RUT</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            value={newUser.rut}
+                                            onChange={(e) => setNewUser({ ...newUser, rut: formatRut(e.target.value) })}
+                                            className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            placeholder="12.345.678-9"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Teléfono</label>
+                                        <input
+                                            type="text"
+                                            value={newUser.phone}
+                                            onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            placeholder="9 1234 5678"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Correo Electrónico</label>
+                                    <input
+                                        required
+                                        type="email"
+                                        value={newUser.email}
+                                        onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                        placeholder="juan@ejemplo.com"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Contraseña</label>
+                                    <input
+                                        required
+                                        type="password"
+                                        value={newUser.password}
+                                        onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                        placeholder="********"
+                                        minLength={6}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Rol de Acceso</label>
+                                    <select
+                                        value={newUser.role}
+                                        onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    >
+                                        <option value="CLIENT">Cliente (Solo Compras)</option>
+                                        <option value="ADMIN">Administrador (Acceso Panel)</option>
+                                    </select>
+                                </div>
+                                <div className="pt-4 space-y-3">
+                                    <button
+                                        type="submit"
+                                        className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition-all shadow-lg"
+                                    >
+                                        Crear Usuario
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowCreateModal(false)}
+                                        className="w-full py-3 bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-300 font-bold uppercase tracking-widest rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all"
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form onSubmit={handleCreateUser} className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Nombre Completo</label>
-                                <input
-                                    required
-                                    type="text"
-                                    value={newUser.name}
-                                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
-                                    placeholder="Ej: Juan Pérez"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Correo Electrónico</label>
-                                <input
-                                    required
-                                    type="email"
-                                    value={newUser.email}
-                                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
-                                    placeholder="juan@ejemplo.com"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Rol de Acceso</label>
-                                <select
-                                    value={newUser.role}
-                                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50"
-                                >
-                                    <option value="CLIENT">Cliente (Solo Compras)</option>
-                                    <option value="ADMIN">Administrador (Acceso Panel)</option>
-                                </select>
-                            </div>
-                            <div className="pt-4 space-y-3">
-                                <button
-                                    type="submit"
-                                    className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition-all shadow-lg"
-                                >
-                                    Crear Usuario
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="w-full py-3 bg-white text-gray-500 font-bold uppercase tracking-widest rounded-xl border border-gray-200 hover:bg-gray-50 transition-all"
-                                >
-                                    Cancelar
-                                </button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

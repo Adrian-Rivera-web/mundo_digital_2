@@ -4,6 +4,9 @@ import type { Product } from '../../types';
 import { ProductService } from '../../services/product.service';
 import { useCartStore } from '../../hooks/useCartStore';
 import { ArrowLeft, ShoppingCart, Truck, ShieldCheck } from 'lucide-react';
+import { ProductReviews } from '../../components/shop/ProductReviews';
+import { ReviewService } from '../../services/review.service';
+import { StarRating } from '../../components/ui/StarRating';
 
 export const ProductDetailsPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -65,30 +68,30 @@ export const ProductDetailsPage = () => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-colors duration-200">
             <div className="md:flex">
                 {/* Gallery Section */}
-                <div className="md:w-1/2 p-8 bg-gray-50 flex items-center justify-center">
+                <div className="md:w-1/2 p-8 bg-gray-50 dark:bg-gray-700/50 flex items-center justify-center">
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="max-h-96 w-full object-contain mix-blend-multiply"
+                        className="max-h-96 w-full object-contain mix-blend-multiply dark:mix-blend-normal"
                     />
                 </div>
 
                 {/* Info Section */}
                 <div className="md:w-1/2 p-8">
                     <div className="mb-4">
-                        <Link to="/" className="inline-flex items-center text-gray-500 hover:text-gray-700">
+                        <Link to="/" className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
                             <ArrowLeft className="h-4 w-4 mr-1" /> Volver
                         </Link>
                     </div>
 
-                    <span className="text-blue-600 font-semibold tracking-wide uppercase text-sm">
+                    <span className="text-primary-600 dark:text-primary-400 font-semibold tracking-wide uppercase text-sm">
                         {product.category}
                     </span>
                     <div className="flex items-center mt-2 mb-4">
-                        <h1 className="text-3xl font-bold text-gray-900">
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                             {product.name}
                         </h1>
                         {isBestSeller && (
@@ -98,36 +101,43 @@ export const ProductDetailsPage = () => {
                         )}
                     </div>
 
+                    <div className="flex items-center gap-2 mb-4">
+                        <StarRating rating={ReviewService.getAverageRating(product.id).average} size={18} />
+                        <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                            ({ReviewService.getAverageRating(product.id).count} reseñas)
+                        </span>
+                    </div>
+
                     <div className="mb-6">
                         {product.discountPrice ? (
                             <div className="flex items-center gap-4">
-                                <span className="text-4xl font-bold text-red-600">
+                                <span className="text-4xl font-bold text-red-600 dark:text-red-400">
                                     {formatPrice(product.discountPrice)}
                                 </span>
                                 <span className="text-xl text-gray-400 line-through">
                                     {formatPrice(product.price)}
                                 </span>
-                                <span className="bg-red-100 text-red-700 px-2 py-1 rounded-md text-sm font-bold">
+                                <span className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded-md text-sm font-bold">
                                     AHORRA {formatPrice(product.price - product.discountPrice)}
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-3xl font-bold text-gray-900">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-white">
                                 {formatPrice(product.price)}
                             </div>
                         )}
                     </div>
 
-                    <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">
                         {product.description}
                     </p>
 
-                    <div className="border-t border-b border-gray-200 py-6 mb-8 space-y-4">
-                        <div className="flex items-center text-gray-700">
+                    <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 mb-8 space-y-4">
+                        <div className="flex items-center text-gray-700 dark:text-gray-300">
                             <Truck className="h-5 w-5 mr-3 text-blue-500" />
                             <span>Envío a domicilio disponible</span>
                         </div>
-                        <div className="flex items-center text-gray-700">
+                        <div className="flex items-center text-gray-700 dark:text-gray-300">
                             <ShieldCheck className="h-5 w-5 mr-3 text-green-500" />
                             <span>Garantía de 12 meses directa</span>
                         </div>
@@ -138,7 +148,7 @@ export const ProductDetailsPage = () => {
                             onClick={handleAddToCart}
                             disabled={product.stock === 0 || isAdding || isMaxStock}
                             className={`flex-1 inline-flex justify-center items-center px-6 py-4 border border-transparent text-lg font-medium rounded-md shadow-sm text-white ${product.stock > 0 && !isMaxStock
-                                ? isAdding ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
+                                ? isAdding ? 'bg-green-600' : 'bg-primary-600 hover:bg-primary-700'
                                 : 'bg-gray-400 cursor-not-allowed'
                                 }`}
                         >
@@ -146,9 +156,16 @@ export const ProductDetailsPage = () => {
                             {product.stock === 0 ? 'Agotado' : isMaxStock ? 'Stock Máximo en Carrito' : isAdding ? 'Agregado al Carrito' : 'Agregar al Carrito'}
                         </button>
                     </div>
-                    <div className="mt-4 text-sm text-gray-500 text-center">
+                    <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 text-center">
                         Stock disponible: {Math.max(0, product.stock - cartQuantity)} unidades
                     </div>
+                </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-8">
+                <div className="max-w-4xl mx-auto">
+                    <ProductReviews productId={product.id} />
                 </div>
             </div>
         </div>

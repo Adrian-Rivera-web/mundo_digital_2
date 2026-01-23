@@ -1,24 +1,54 @@
 
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, Search, User as UserIcon, LogOut, ChevronDown, LayoutDashboard, Sun, Moon } from 'lucide-react';
+import { ShoppingCart, Menu, Search, User as UserIcon, LogOut, ChevronDown, LayoutDashboard, Sun, Moon, Heart } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../../hooks/useCartStore';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import logo from '../../assets/logo.svg';
 import { NAV_LINKS } from '../../data';
+import { ProductService } from '../../services/product.service';
+import type { Product } from '../../types';
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement>(null);
+    const searchRef = useRef<HTMLDivElement>(null);
     const { user, isAuthenticated, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const itemCount = useCartStore(state => state.getItemCount());
+
+    // Search State
     const [searchTerm, setSearchTerm] = useState('');
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [suggestions, setSuggestions] = useState<Product[]>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPERADMIN';
+
+    // Load available products for autocomplete
+    useEffect(() => {
+        ProductService.getAll().then(setAllProducts);
+    }, []);
+
+    // Filter logic
+    useEffect(() => {
+        if (searchTerm.length >= 2) {
+            const lowerTerm = searchTerm.toLowerCase();
+            const filtered = allProducts.filter(p =>
+                p.name.toLowerCase().includes(lowerTerm) ||
+                (p.brand && p.brand.toLowerCase().includes(lowerTerm)) ||
+                p.category.toLowerCase().includes(lowerTerm)
+            ).slice(0, 5); // Limit to 5 suggestions
+            setSuggestions(filtered);
+            setShowSuggestions(true);
+        } else {
+            setSuggestions([]);
+            setShowSuggestions(false);
+        }
+    }, [searchTerm, allProducts]);
 
     const handleLogout = () => {
         logout();
@@ -27,19 +57,28 @@ export const Navbar = () => {
         navigate('/');
     };
 
-    // Close user menu when clicking outside
+    // Close menus when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
                 setIsUserMenuOpen(false);
+            }
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setShowSuggestions(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const handleSearchSubmit = () => {
+        if (!searchTerm.trim()) return;
+        navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
+        setShowSuggestions(false);
+    };
+
     return (
-        <nav className="bg-[#1f69a2] dark:bg-gray-900 shadow border-b border-blue-800 dark:border-gray-800 transition-colors duration-200">
+        <nav className="fixed w-full top-0 z-50 bg-[#1f69a2]/95 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-white/10 transition-colors duration-300">
             {/* Main Header Row */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
@@ -51,7 +90,7 @@ export const Navbar = () => {
                     </div>
 
                     {/* Search Bar - Hidden on mobile, visible on sm+ */}
-                    <div className="hidden sm:flex flex-1 max-w-lg mx-8">
+                    <div className="hidden sm:flex flex-1 max-w-lg mx-8 relative" ref={searchRef}>
                         <div className="relative w-full">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <Search className="h-5 w-5 text-gray-400" />
@@ -62,13 +101,53 @@ export const Navbar = () => {
                                 placeholder="Buscar productos..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
+                                onFocus={() => searchTerm.length >= 2 && setShowSuggestions(true)}
                                 onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
-                                    }
+                                    if (e.key === 'Enter') handleSearchSubmit();
                                 }}
                             />
                         </div>
+
+                        {/* Autocomplete Dropdown */}
+                        {showSuggestions && suggestions.length > 0 && (
+                            <div className="absolute top-full left-0 w-full mt-1 bg-white rounded-md shadow-lg py-1 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
+                                {suggestions.map((product) => (
+                                    <button
+                                        key={product.id}
+                                        onClick={() => {
+                                            navigate(`/product/${product.id}`);
+                                            setShowSuggestions(false);
+                                            setSearchTerm('');
+                                        }}
+                                        className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center space-x-3 transition-colors border-b border-gray-100 last:border-0"
+                                    >
+                                        <div className="h-10 w-10 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                                            <img src={product.image} alt="" className="h-full w-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900 line-clamp-1">{product.name}</p>
+                                            <p className="text-xs text-blue-600 font-bold">
+                                                {product.discountPrice
+                                                    ? `$${product.discountPrice.toLocaleString()}`
+                                                    : `$${product.price.toLocaleString()}`
+                                                }
+                                            </p>
+                                        </div>
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={handleSearchSubmit}
+                                    className="w-full text-center py-2 text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 hover:bg-blue-100 transition-colors"
+                                >
+                                    Ver todos los resultados
+                                </button>
+                            </div>
+                        )}
+                        {showSuggestions && searchTerm.length >= 2 && suggestions.length === 0 && (
+                            <div className="absolute top-full left-0 w-full mt-1 bg-white rounded-md shadow-lg py-4 z-50 text-center text-sm text-gray-500">
+                                No se encontraron productos.
+                            </div>
+                        )}
                     </div>
 
                     {/* Right Icons */}
@@ -134,6 +213,10 @@ export const Navbar = () => {
                             </div>
                         )}
 
+                        <Link to="/wishlist" className="p-2 text-blue-100 hover:text-white transition-colors rounded-full hover:bg-white/10" title="Mis Favoritos">
+                            <Heart className="h-6 w-6" />
+                        </Link>
+
                         <Link to="/cart" className="relative p-2 text-blue-100 hover:text-white transition-colors rounded-full hover:bg-white/10">
                             <ShoppingCart className="h-7 w-7" />
                             {itemCount > 0 && (
@@ -165,14 +248,14 @@ export const Navbar = () => {
             </div>
 
             {/* Secondary Navigation Row - Hidden on mobile */}
-            <div className="hidden sm:block border-t border-gray-100 bg-gray-50">
+            <div className="hidden sm:block border-t border-white/10 bg-white/5 dark:bg-black/20 backdrop-blur-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex space-x-8 h-12 items-center text-sm font-medium">
                         {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.path}
                                 to={link.path}
-                                className="text-gray-900 hover:text-blue-600"
+                                className="text-white/90 hover:text-white hover:bg-white/10 px-3 py-1 rounded-full transition-all"
                             >
                                 {link.name}
                             </Link>
@@ -208,7 +291,17 @@ export const Navbar = () => {
                                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm text-gray-900"
                                 placeholder="Buscar..."
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    if (e.target.value.length === 0) setShowSuggestions(false);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
+                                        setShowSuggestions(false);
+                                        setIsMenuOpen(false);
+                                    }
+                                }}
                             />
                         </div>
 

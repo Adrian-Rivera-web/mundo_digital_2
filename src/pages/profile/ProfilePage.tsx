@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { LoyaltyDashboard } from '../../components/loyalty/LoyaltyDashboard';
-import { CouponList } from '../../components/coupons/CouponList';
+
 import { User, Mail, Phone, CreditCard, ShoppingBag, Calendar, ArrowRight } from 'lucide-react';
 import { Navigate, Link } from 'react-router-dom';
 import { OrderService } from '../../services/order.service';
@@ -47,7 +47,7 @@ export const ProfilePage = () => {
                     <LoyaltyDashboard user={user} />
 
                     {/* Coupons List */}
-                    <CouponList />
+
 
                     {/* Personal Info Card */}
                     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">

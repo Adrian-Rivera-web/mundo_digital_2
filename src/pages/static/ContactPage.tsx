@@ -26,15 +26,15 @@ export const ContactPage = () => {
     };
 
     return (
-        <div className="bg-white">
+        <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
             {/* Main Content */}
             <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-extrabold text-blue-900 tracking-tight sm:text-5xl">¡Contáctanos!</h1>
-                    <p className="mt-4 text-lg text-gray-500">Estamos aquí para ayudarte con cualquier duda sobre tecnología.</p>
+                    <h1 className="text-4xl font-extrabold text-blue-900 dark:text-blue-400 tracking-tight sm:text-5xl">¡Contáctanos!</h1>
+                    <p className="mt-4 text-lg text-gray-500 dark:text-gray-400">Estamos aquí para ayudarte con cualquier duda sobre tecnología.</p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-12 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                <div className="flex flex-col lg:flex-row gap-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
 
                     {/* Contact Info Side */}
                     <div className="lg:w-1/2 p-8 bg-[#1f69a2] text-white">
@@ -86,19 +86,19 @@ export const ContactPage = () => {
                     </div>
 
                     {/* Form Side */}
-                    <div className="lg:w-1/2 p-8 lg:p-12 bg-white">
+                    <div className="lg:w-1/2 p-8 lg:p-12 bg-white dark:bg-gray-800">
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-6">Envíanos un mensaje</h3>
+                            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Envíanos un mensaje</h3>
 
                             {!isAuthenticated && (
-                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-md">
+                                <div className="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 p-4 mb-6 rounded-md">
                                     <div className="flex">
                                         <div className="flex-shrink-0">
                                             <Lock className="h-5 w-5 text-yellow-500" />
                                         </div>
                                         <div className="ml-3">
-                                            <p className="text-sm text-yellow-700">
-                                                Debes <Link to="/login" className="font-bold text-blue-600 hover:text-blue-800 underline">iniciar sesión</Link> para enviarnos un mensaje.
+                                            <p className="text-sm text-yellow-700 dark:text-yellow-200">
+                                                Debes <Link to="/login" className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">iniciar sesión</Link> para enviarnos un mensaje.
                                             </p>
                                         </div>
                                     </div>
@@ -106,13 +106,13 @@ export const ContactPage = () => {
                             )}
 
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre Completo</label>
                                 <input
                                     type="text"
                                     name="name"
                                     id="name"
                                     disabled={!isAuthenticated}
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 transition-colors"
+                                    className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-500 transition-colors"
                                     placeholder="Ej: Juan Pérez"
                                     value={formData.name}
                                     onChange={handleChange}
@@ -121,13 +121,13 @@ export const ContactPage = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo Electrónico</label>
                                 <input
                                     type="email"
                                     name="email"
                                     id="email"
                                     disabled={!isAuthenticated}
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 transition-colors"
+                                    className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-500 transition-colors"
                                     placeholder="tucorreo@email.com"
                                     value={formData.email}
                                     onChange={handleChange}
@@ -136,13 +136,13 @@ export const ContactPage = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Asunto (Máx 60 palabras)</label>
+                                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Asunto (Máx 60 palabras)</label>
                                 <input
                                     type="text"
                                     name="subject"
                                     id="subject"
                                     disabled={!isAuthenticated}
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 transition-colors"
+                                    className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-500 transition-colors"
                                     placeholder="Consulta sobre producto..."
                                     value={formData.subject}
                                     onChange={handleChange}
@@ -151,13 +151,13 @@ export const ContactPage = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Mensaje (Máx 300 palabras)</label>
+                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mensaje (Máx 300 palabras)</label>
                                 <textarea
                                     name="message"
                                     id="message"
                                     rows={5}
                                     disabled={!isAuthenticated}
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 transition-colors resize-none"
+                                    className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500 dark:bg-gray-700 dark:text-white dark:disabled:bg-gray-800 dark:disabled:text-gray-500 transition-colors resize-none"
                                     placeholder="Escribe aquí tu consulta..."
                                     value={formData.message}
                                     onChange={handleChange}

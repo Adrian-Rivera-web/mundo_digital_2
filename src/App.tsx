@@ -26,6 +26,7 @@ import { UsersPage } from './pages/admin/UsersPage';
 import { InvoicesPage } from './pages/admin/InvoicesPage';
 import { AdminProfilePage } from './pages/admin/AdminProfilePage';
 import { ProfilePage } from './pages/profile/ProfilePage';
+import { WishlistPage } from './pages/shop/WishlistPage';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
               <Route path="contact" element={<ContactPage />} />
               <Route path="contact" element={<ContactPage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="wishlist" element={<WishlistPage />} />
               <Route path="bits-store" element={<BitsStorePage />} />
             </Route>
 

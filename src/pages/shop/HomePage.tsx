@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import bannerImage from '../../assets/banner.png';
 import { BrandCarousel } from '../../components/shop/BrandCarousel';
+import { ProductCarousel } from '../../components/shop/ProductCarousel';
+import { HeroCarousel } from '../../components/shop/HeroCarousel';
 
 export const HomePage = () => {
     const [bestSellers, setBestSellers] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export const HomePage = () => {
         const fetchBestSellers = async () => {
             // Import dynamically to avoid circular dependencies if any, or just standard import
             const { ProductService } = await import('../../services/product.service');
-            const data = await ProductService.getBestSellers(4);
+            const data = await ProductService.getBestSellers(8);
             setBestSellers(data);
         };
         fetchBestSellers();
@@ -21,82 +22,103 @@ export const HomePage = () => {
     };
 
     return (
-        <div className="bg-white">
-            {/* Banner */}
-            <section className="relative w-full">
-                <img
-                    className="w-full object-cover h-[400px] md:h-[500px]"
-                    src={bannerImage}
-                    alt="Banner de tienda"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Mundo Digital</h1>
-                        <p className="text-xl text-white mb-8">Tu tienda experta en tecnología</p>
-                    </div>
-                </div>
-            </section>
+        <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
+            {/* Banner Carousel */}
+            <HeroCarousel />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-2">
+
                 {/* Categorias Populares */}
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Categorías Populares</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-                    {['Laptops', 'Celulares', 'Periféricos', 'Componentes'].map((cat) => (
-                        <Link to={`/products?category=${cat}`} key={cat} className="group relative rounded-lg overflow-hidden h-40 shadow-md">
-                            <div className="absolute inset-0 bg-blue-600 group-hover:bg-blue-700 transition-colors flex items-center justify-center">
-                                <span className="text-white text-xl font-bold uppercase tracking-wider">{cat}</span>
-                            </div>
-                        </Link>
-                    ))}
+                <div className="mb-20">
+                    <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500 text-center mb-10">
+                        Explora por Categoría
+                    </h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        {[
+                            { name: 'Laptops', color: 'from-blue-500 to-primary-600' },
+                            { name: 'Celulares', color: 'from-secondary-500 to-purple-600' },
+                            { name: 'Periféricos', color: 'from-accent-400 to-teal-500' },
+                            { name: 'Componentes', color: 'from-orange-400 to-red-500' }
+                        ].map((cat) => (
+                            <Link to={`/products?category=${cat.name}`} key={cat.name} className="group relative rounded-2xl overflow-hidden h-44 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-90 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6`}>
+                                    <span className="text-white text-2xl font-bold tracking-tight mb-2 drop-shadow-md">{cat.name}</span>
+                                    <span className="text-white/80 text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white/20 px-4 py-1 rounded-full backdrop-blur-sm">Ver Productos</span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Mas Vendidos */}
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Más Vendidos</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                    {bestSellers.map((product) => (
-                        <div key={product.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-                            <div className="h-48 bg-gray-200 flex items-center justify-center overflow-hidden">
-                                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                            </div>
-                            <div className="p-4">
-                                <h3 className="font-semibold text-gray-900 mb-2 truncate">{product.name}</h3>
-                                <p className="text-blue-600 font-bold">{formatPrice(product.price)}</p>
-                                <Link to={`/product/${product.id}`} className="mt-4 block w-full text-center py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                                    Ver Detalle
-                                </Link>
-                            </div>
+                <div className="mb-20">
+                    <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Lo Más Vendido</h2>
+                        <Link to="/products" className="text-primary-600 font-semibold hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 flex items-center transition-colors">
+                            Ver todo <span className="ml-2 text-xl">→</span>
+                        </Link>
+                    </div>
+                    {bestSellers.length > 0 ? (
+                        <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-3xl">
+                            <ProductCarousel products={bestSellers} />
                         </div>
-                    ))}
-                    {bestSellers.length === 0 && (
-                        <div className="col-span-4 text-center text-gray-500 py-8">
-                            Cargando productos destacados...
+                    ) : (
+                        <div className="text-center text-gray-500 py-12">
+                            <div className="animate-pulse flex space-x-4 justify-center">
+                                <div className="rounded-full bg-gray-200 h-10 w-10"></div>
+                                <div className="flex-1 space-y-6 py-1 max-w-xs">
+                                    <div className="h-2 bg-gray-200 rounded"></div>
+                                    <div className="space-y-3">
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className="h-2 bg-gray-200 rounded col-span-2"></div>
+                                            <div className="h-2 bg-gray-200 rounded col-span-1"></div>
+                                        </div>
+                                        <div className="h-2 bg-gray-200 rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
 
                 {/* Ofertas Destacadas */}
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Ofertas Destacadas</h2>
-                <div className="bg-gray-900 rounded-2xl overflow-hidden shadow-xl mb-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2">
-                        <div className="p-12 flex flex-col justify-center">
-                            <span className="text-blue-400 font-bold tracking-wider uppercase mb-2">Oferta Relámpago</span>
-                            <h3 className="text-4xl font-bold text-white mb-4">Pack Gamer Pro</h3>
-                            <p className="text-gray-300 mb-8">Lleva tu experiencia de juego al siguiente nivel con nuestro kit completo de periféricos de alta gama.</p>
-                            <Link to="/products" className="inline-block bg-white text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors w-fit">
-                                Comprar Ahora
-                            </Link>
-                        </div>
-                        <div className="h-64 md:h-auto bg-gray-800 flex items-center justify-center">
-                            {/* Placeholder for offer image */}
-                            <div className="text-gray-600 font-bold text-2xl">Imagen Oferta</div>
+                <div className="mb-20">
+                    <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gray-900 group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-black/80 z-10"></div>
+                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700"></div>
+
+                        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 gap-8 p-8 md:p-16">
+                            <div className="flex flex-col justify-center text-left">
+                                <div className="inline-block px-4 py-1 bg-accent-500 text-white text-xs font-bold tracking-widest uppercase rounded-full mb-6 w-fit shadow-lg shadow-accent-500/30">
+                                    Oferta Limitada
+                                </div>
+                                <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                                    Setup Gamer <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-secondary-400">Ultimate Pro</span>
+                                </h3>
+                                <p className="text-gray-300 text-lg mb-8 max-w-md">
+                                    Potencia tu juego con la mejor tecnología. Teclados mecánicos, ratones de precisión y monitores de alta tasa de refresco.
+                                </p>
+                                <div className="flex gap-4">
+                                    <Link to="/products" className="px-8 py-4 bg-white text-primary-900 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                        Comprar Ahora
+                                    </Link>
+                                    <Link to="/products?category=Periféricos" className="px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-colors backdrop-blur-sm">
+                                        Ver Detalles
+                                    </Link>
+                                </div>
+                            </div>
+                            {/* Decorative element could go here */}
                         </div>
                     </div>
                 </div>
 
                 {/* Las Mejores Marcas */}
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Las Mejores Marcas</h2>
-                <div className="mb-16">
-                    <BrandCarousel />
+                <div className="mb-12">
+                    <h2 className="text-2xl font-bold text-gray-400 text-center mb-8 uppercase tracking-widest">Nuestras Marcas</h2>
+                    <div className="grayscale hover:grayscale-0 transition-all duration-500">
+                        <BrandCarousel />
+                    </div>
                 </div>
             </div>
         </div>

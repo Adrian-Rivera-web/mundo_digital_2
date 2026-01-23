@@ -35,8 +35,8 @@ export const BlogDetailsPage = () => {
     if (!post) {
         return (
             <div className="max-w-7xl mx-auto px-4 py-12 text-center">
-                <h2 className="text-2xl font-bold text-gray-900">Artículo no encontrado</h2>
-                <Link to="/blog" className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-500">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Artículo no encontrado</h2>
+                <Link to="/blog" className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Volver al blog
                 </Link>
@@ -46,7 +46,7 @@ export const BlogDetailsPage = () => {
 
     return (
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <Link to="/blog" className="inline-flex items-center text-gray-500 hover:text-blue-600 mb-8 transition-colors">
+            <Link to="/blog" className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver al blog
             </Link>
@@ -59,8 +59,8 @@ export const BlogDetailsPage = () => {
                 />
             </div>
 
-            <div className="prose prose-lg prose-blue mx-auto">
-                <div className="flex items-center space-x-4 text-sm text-gray-500 mb-6">
+            <div className="prose prose-lg prose-blue dark:prose-invert mx-auto">
+                <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-6">
                     <span className="flex items-center">
                         <User className="mr-1.5 h-4 w-4" />
                         {post.author}
@@ -75,12 +75,12 @@ export const BlogDetailsPage = () => {
                     </span>
                 </div>
 
-                <h1 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                     {post.title}
                 </h1>
 
                 <div
-                    className="text-gray-700 leading-relaxed space-y-4"
+                    className="text-gray-700 dark:text-gray-300 leading-relaxed space-y-4"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
             </div>

@@ -33,7 +33,7 @@ export const AdminProfilePage = () => {
     return (
         <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Configuración de Perfil</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Configuración de Perfil</h1>
                 {showSuccess && (
                     <div className="flex items-center text-green-600 bg-green-50 px-4 py-2 rounded-lg animate-pulse">
                         <CheckCircle className="h-4 w-4 mr-2" />
@@ -44,11 +44,11 @@ export const AdminProfilePage = () => {
 
             {user && <LoyaltyDashboard user={user} />}
 
-            <div className="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
-                <div className="bg-gradient-to-r from-gray-800 to-gray-900 h-32 relative">
-                    <div className="absolute -bottom-12 left-8 border-4 border-white rounded-2xl bg-white shadow-lg">
-                        <div className="h-24 w-24 rounded-xl bg-blue-50 flex items-center justify-center">
-                            <UserIcon className="h-12 w-12 text-blue-600" />
+            <div className="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden">
+                <div className="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-900 dark:to-black h-32 relative">
+                    <div className="absolute -bottom-12 left-8 border-4 border-white dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800 shadow-lg">
+                        <div className="h-24 w-24 rounded-xl bg-blue-50 dark:bg-gray-900 flex items-center justify-center">
+                            <UserIcon className="h-12 w-12 text-blue-600 dark:text-blue-500" />
                         </div>
                     </div>
                 </div>
@@ -56,8 +56,8 @@ export const AdminProfilePage = () => {
                 <div className="px-8 pb-8 pt-16">
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                         <div>
-                            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight">{user?.name}</h2>
-                            <p className="text-gray-500 font-medium">{user?.email}</p>
+                            <h2 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tight">{user?.name}</h2>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium">{user?.email}</p>
                         </div>
                         <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black bg-blue-600 text-white uppercase tracking-widest">
                             <Shield className="h-3 w-3 mr-1.5" /> {user?.role}
@@ -75,7 +75,7 @@ export const AdminProfilePage = () => {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="block w-full pl-11 pr-4 py-3 border border-gray-100 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-gray-900 font-bold"
+                                    className="block w-full pl-11 pr-4 py-3 border border-gray-100 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-700 transition-all text-gray-900 dark:text-white font-bold"
                                 />
                             </div>
                         </div>
@@ -89,7 +89,7 @@ export const AdminProfilePage = () => {
                                 <input
                                     type="email"
                                     defaultValue={user?.email}
-                                    className="block w-full pl-11 pr-4 py-3 border border-transparent bg-gray-50 text-gray-400 rounded-xl cursor-not-allowed font-medium"
+                                    className="block w-full pl-11 pr-4 py-3 border border-transparent bg-gray-50 dark:bg-gray-700/30 text-gray-400 dark:text-gray-500 rounded-xl cursor-not-allowed font-medium"
                                     disabled
                                 />
                             </div>
@@ -97,7 +97,7 @@ export const AdminProfilePage = () => {
 
                         <div>
                             <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Seguridad</label>
-                            <button className="flex items-center text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                            <button className="flex items-center text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
                                 <Lock className="h-4 w-4 mr-2" /> Cambiar Contraseña de Acceso
                             </button>
                         </div>
@@ -107,7 +107,7 @@ export const AdminProfilePage = () => {
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className={`w-full flex justify-center items-center px-6 py-4 rounded-xl text-sm font-black uppercase tracking-widest text-white transition-all shadow-lg ${isSaving ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-black hover:-translate-y-0.5 active:translate-y-0'
+                            className={`w-full flex justify-center items-center px-6 py-4 rounded-xl text-sm font-black uppercase tracking-widest text-white transition-all shadow-lg ${isSaving ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed' : 'bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 hover:-translate-y-0.5 active:translate-y-0'
                                 }`}
                         >
                             <Save className="h-5 w-5 mr-3" />

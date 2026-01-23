@@ -13,9 +13,16 @@ export const LOYALTY_RULES = {
 };
 
 export const LoyaltyService = {
-    calculateBitsEarned: (amount: number): number => {
+    calculateBitsEarned: (amount: number, tier: Tier = 'BIT'): number => {
         // 10 Bits por cada $1.000 (o 1 por cada $100)
-        return Math.floor(amount / 100);
+        const baseBits = Math.floor(amount / 100);
+
+        // Apply Multiplier
+        let multiplier = 1;
+        if (tier === 'BYTE') multiplier = 1.2;
+        if (tier === 'GIGA') multiplier = 1.5;
+
+        return Math.floor(baseBits * multiplier);
     },
 
     calculateTier: (totalBits: number): Tier => {

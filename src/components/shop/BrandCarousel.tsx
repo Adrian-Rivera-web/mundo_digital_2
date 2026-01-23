@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import New Brand Card Images (JPGs)
@@ -70,7 +71,7 @@ export const BrandCarousel = () => {
     }, [currentIndex, isTransitioning]);
 
     return (
-        <div className="relative w-full max-w-7xl mx-auto px-4 py-8 group">
+        <div className="relative w-full group">
             {/* Navigation Arrows */}
             <button
                 onClick={prevSlide}
@@ -86,7 +87,7 @@ export const BrandCarousel = () => {
                 <ChevronRight className="w-6 h-6 text-gray-800 dark:text-white" />
             </button>
 
-            <div className="overflow-hidden">
+            <div className="overflow-hidden py-4">
                 <div
                     className="flex"
                     style={{
@@ -100,7 +101,10 @@ export const BrandCarousel = () => {
                             key={`${brand.id}-${index}`}
                             className="flex-shrink-0 w-1/4 px-2"
                         >
-                            <div className="relative rounded-xl overflow-hidden shadow-md group/card cursor-pointer h-64 border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <Link
+                                to={`/products?brand=${brand.name}`}
+                                className="block relative rounded-xl overflow-hidden shadow-md group/card cursor-pointer h-64 border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                            >
                                 {/* Full Card Image */}
                                 <img
                                     src={brand.image}
@@ -109,7 +113,7 @@ export const BrandCarousel = () => {
                                 />
                                 {/* Optional: Hover Overlay effect */}
                                 <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300" />
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>

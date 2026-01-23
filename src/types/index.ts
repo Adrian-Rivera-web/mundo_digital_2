@@ -29,6 +29,7 @@ export interface User {
     bits: number;
     totalBitsDetails: number;
     tier: 'BIT' | 'BYTE' | 'GIGA';
+    wishlist?: string[];
 }
 
 export interface Order {
@@ -64,4 +65,14 @@ export interface Coupon {
     active: boolean;
     usageLimit?: number; // Total global uses
     usedCount: number;
+}
+
+export interface Review {
+    id: string;
+    productId: string;
+    userId: string;
+    userName: string;
+    rating: number;
+    comment: string;
+    date: string;
 }

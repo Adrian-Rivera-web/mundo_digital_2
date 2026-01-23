@@ -73,7 +73,7 @@ export const CheckoutPage = () => {
     const discountFromBits = Math.min(bitsToRedeem, maxRedeemableForOrder); // Ensure valid if totals change
 
     const finalTotal = totalBeforeBits - discountFromBits;
-    const earnedBits = LoyaltyService.calculateBitsEarned(subtotalAfterCoupon); // Earn based on what you pay for products
+    const earnedBits = LoyaltyService.calculateBitsEarned(subtotalAfterCoupon, user?.tier || 'BIT'); // Earn based on what you pay for products
 
     const handleSelectCoupon = (coupon: Coupon) => {
         setAppliedCoupon(coupon);
