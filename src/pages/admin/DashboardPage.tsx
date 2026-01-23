@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import type { Order } from '../../types';
-import { DollarSign, Package, ShoppingBag, Clock, TrendingUp, Users, ArrowRight } from 'lucide-react';
+import { DollarSign, Package, ShoppingBag, Clock, TrendingUp, ArrowRight } from 'lucide-react';
 import { ProductService } from '../../services/product.service';
 import { Link } from 'react-router-dom';
 

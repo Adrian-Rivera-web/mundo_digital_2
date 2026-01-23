@@ -17,9 +17,7 @@ export const HomePage = () => {
         fetchBestSellers();
     }, []);
 
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(price);
-    };
+
 
     return (
         <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
