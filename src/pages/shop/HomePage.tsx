@@ -90,18 +90,18 @@ export const HomePage = () => {
                                 <div className="inline-block px-4 py-1 bg-accent-500 text-white text-xs font-bold tracking-widest uppercase rounded-full mb-6 w-fit shadow-lg shadow-accent-500/30">
                                     Oferta Limitada
                                 </div>
-                                <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                                <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight text-center md:text-left">
                                     Setup Gamer <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-secondary-400">Ultimate Pro</span>
                                 </h3>
-                                <p className="text-gray-300 text-lg mb-8 max-w-md">
+                                <p className="text-gray-300 text-lg mb-8 max-w-md text-center md:text-left mx-auto md:mx-0">
                                     Potencia tu juego con la mejor tecnología. Teclados mecánicos, ratones de precisión y monitores de alta tasa de refresco.
                                 </p>
-                                <div className="flex gap-4">
-                                    <Link to="/products" className="px-8 py-4 bg-white text-primary-900 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                    <Link to="/products" className="px-8 py-4 bg-white text-primary-900 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-center">
                                         Comprar Ahora
                                     </Link>
-                                    <Link to="/products?category=Periféricos" className="px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-colors backdrop-blur-sm">
+                                    <Link to="/products?category=Periféricos" className="px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-colors backdrop-blur-sm text-center">
                                         Ver Detalles
                                     </Link>
                                 </div>

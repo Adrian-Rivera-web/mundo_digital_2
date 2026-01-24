@@ -66,7 +66,7 @@ export const HeroCarousel = () => {
     }, [currentIndex]);
 
     return (
-        <section className="relative w-full h-[400px] md:h-[500px] overflow-hidden group">
+        <section className="relative w-full aspect-video md:h-[500px] overflow-hidden group">
             {/* Slides Loop */}
             {BANNERS.map((banner, index) => (
                 <div
@@ -81,15 +81,15 @@ export const HeroCarousel = () => {
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <div className="text-center px-4 max-w-4xl mx-auto transform transition-transform duration-700 translate-y-0">
-                            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg tracking-tight">
+                            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white mb-2 sm:mb-6 drop-shadow-lg tracking-tight">
                                 {banner.title}
                             </h1>
-                            <p className="text-xl md:text-2xl text-gray-100 mb-8 font-light drop-shadow-md">
+                            <p className="text-sm sm:text-xl md:text-2xl text-gray-100 mb-4 sm:mb-8 font-light drop-shadow-md line-clamp-2">
                                 {banner.subtitle}
                             </p>
                             <Link
                                 to={banner.link}
-                                className="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-colors shadow-lg hover:shadow-blue-500/50 transform hover:-translate-y-1"
+                                className="inline-block bg-blue-600 text-white font-bold py-2 px-6 sm:py-3 sm:px-8 text-sm sm:text-base rounded-full hover:bg-blue-700 transition-colors shadow-lg hover:shadow-blue-500/50 transform hover:-translate-y-1"
                             >
                                 Ver Productos
                             </Link>

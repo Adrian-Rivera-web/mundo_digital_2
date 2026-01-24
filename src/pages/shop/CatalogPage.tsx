@@ -28,6 +28,7 @@ export const CatalogPage = () => {
     // UI State
     const [isCategoriesOpen, setIsCategoriesOpen] = useState(true);
     const [isBrandsOpen, setIsBrandsOpen] = useState(true);
+    const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
     // Brand Filter State
     const initialBrands = brandParam ? brandParam.split(',') : [];
@@ -183,14 +184,24 @@ export const CatalogPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Sidebar de Filtros */}
-                <aside className="w-full md:w-64 flex-shrink-0">
+                {/* Mobile Filter Toggle */}
+                <div className="md:hidden mb-4">
+                    <button
+                        onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
+                        className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-white bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        <Filter className="h-5 w-5 mr-2" />
+                        {isMobileFiltersOpen ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+                    </button>
+                </div>
+
+                <aside className={`w-full md:w-64 flex-shrink-0 ${isMobileFiltersOpen ? 'block' : 'hidden md:block'}`}>
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 sticky top-24">
                         <div className="flex items-center mb-6">
                             <Filter className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-2" />
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Filtros</h2>
                         </div>
 
-                        {/* Filtro Categoría */}
                         {/* Filtro Categoría */}
                         <div className="mb-8 border-b border-gray-100 pb-6">
                             <button
@@ -222,7 +233,7 @@ export const CatalogPage = () => {
                             )}
                         </div>
 
-                        {/* Filtro Marcas (Nuevo) */}
+                        {/* Filtro Marcas */}
                         <div className="mb-8 border-b border-gray-100 pb-6">
                             <button
                                 onClick={() => setIsBrandsOpen(!isBrandsOpen)}
@@ -406,7 +417,7 @@ export const CatalogPage = () => {
                         </>
                     )}
                 </main>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };

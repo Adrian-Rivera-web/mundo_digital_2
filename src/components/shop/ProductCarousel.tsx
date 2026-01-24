@@ -14,18 +14,45 @@ export const ProductCarousel = ({ products }: ProductCarouselProps) => {
 
     // Clone logic: [Last4, ...RealProducts, First4]
     // This allows smooth transition from last to first and first to last.
-    const itemsPerSlide = 4;
+    // Responsive logic
+    const [itemsPerSlide, setItemsPerSlide] = useState(4); // Default to desktop
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 640) {
+                setItemsPerSlide(1); // Mobile
+            } else if (window.innerWidth < 1024) {
+                setItemsPerSlide(2); // Tablet
+            } else {
+                setItemsPerSlide(4); // Desktop
+            }
+        };
+
+        // Initial check
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Safety check
     if (!products || products.length === 0) return null;
 
+    // Clone logic: [LastN, ...RealProducts, FirstN]
+    // We clone 'itemsPerSlide' amount to ensure seamless loop
     const clonesStart = products.slice(-itemsPerSlide);
     const clonesEnd = products.slice(0, itemsPerSlide);
     const displayProducts = [...clonesStart, ...products, ...clonesEnd];
 
-    // Start at index 'itemsPerSlide' (the first real item)
+    // Initialize at the first real item
     const [currentIndex, setCurrentIndex] = useState(itemsPerSlide);
     const [isTransitioning, setIsTransitioning] = useState(false);
+
+    // Reset index when itemsPerSlide changes to prevent staying in empty space
+    useEffect(() => {
+        setCurrentIndex(itemsPerSlide);
+        setIsTransitioning(false);
+    }, [itemsPerSlide]);
 
     const realCount = products.length;
 
@@ -45,10 +72,9 @@ export const ProductCarousel = ({ products }: ProductCarouselProps) => {
         setIsTransitioning(false);
         // Seamless reset
         if (currentIndex >= realCount + itemsPerSlide) {
-            setCurrentIndex(itemsPerSlide);
-        }
-        if (currentIndex < itemsPerSlide) {
-            setCurrentIndex(realCount + itemsPerSlide - 1);
+            setCurrentIndex(itemsPerSlide); // Jump to first real
+        } else if (currentIndex < itemsPerSlide) {
+            setCurrentIndex(realCount + itemsPerSlide - 1); // Jump to last real
         }
     };
 
@@ -87,7 +113,8 @@ export const ProductCarousel = ({ products }: ProductCarouselProps) => {
                     {displayProducts.map((product, index) => (
                         <div
                             key={`${product.id}-${index}`}
-                            className="flex-shrink-0 w-1/4 px-3" // 1/4 width for 4 items per slide
+                            className="flex-shrink-0 px-3"
+                            style={{ width: `${100 / itemsPerSlide}%` }}
                         >
                             <div className="h-full">
                                 <ProductCard product={product} isPopular={true} />

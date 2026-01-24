@@ -80,12 +80,12 @@ export const Navbar = () => {
     return (
         <nav className="fixed w-full top-0 z-50 bg-[#1f69a2]/95 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-white/10 transition-colors duration-300">
             {/* Main Header Row */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
+            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center">
+                    <div className="flex-shrink-0 flex items-center min-w-0">
                         <Link to="/" className="flex items-center gap-2">
-                            <img src={logo} alt="Mundo Digital Logo" className="h-12 w-auto" />
+                            <img src={logo} alt="Mundo Digital Logo" className="h-8 sm:h-12 w-auto" />
                         </Link>
                     </div>
 
@@ -228,18 +228,18 @@ export const Navbar = () => {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="flex items-center sm:hidden">
-                        <Link to="/cart" className="relative p-2 text-blue-100 hover:text-white mr-2">
+                    <div className="flex items-center sm:hidden flex-shrink-0 ml-auto">
+                        <Link to="/cart" className="relative p-1.5 text-white hover:text-gray-200 mr-1">
                             <ShoppingCart className="h-6 w-6" />
                             {itemCount > 0 && (
-                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-500 bg-white rounded-full">
+                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-500 bg-white rounded-full transform translate-x-1/4 -translate-y-1/4">
                                     {itemCount}
                                 </span>
                             )}
                         </Link>
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-blue-700/50 focus:outline-none transition-colors"
+                            className="inline-flex items-center justify-center p-1.5 rounded-md text-white hover:text-gray-200 hover:bg-white/10 focus:outline-none transition-colors"
                         >
                             <Menu className="h-6 w-6" />
                         </button>
