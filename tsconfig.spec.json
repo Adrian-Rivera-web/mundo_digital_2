@@ -1,0 +1,25 @@
+{
+    "extends": "./tsconfig.app.json",
+    "compilerOptions": {
+        "types": [
+            "jasmine",
+            "node"
+        ],
+        "module": "commonjs",
+        "jsx": "react-jsx",
+        "moduleResolution": "node",
+        "target": "es5",
+        "lib": [
+            "DOM",
+            "ES2015"
+        ],
+        "noEmit": false
+    },
+    "include": [
+        "src/tests/unit.spec.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "src/setupTests.ts"
+    ]
+}
