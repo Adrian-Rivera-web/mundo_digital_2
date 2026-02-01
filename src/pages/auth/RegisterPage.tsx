@@ -76,10 +76,18 @@ export const RegisterPage = () => {
     });
 
     const onSubmit = async (data: RegisterFormData) => {
-        // Concatenate first and last name for backend compatibility
-        const fullName = `${data.firstName} ${data.lastName}`;
-        await registerUser(fullName, data.email, data.rut, `+56 ${data.phone}`, data.password);
-        navigate('/');
+        try {
+            // Concatenate first and last name for backend compatibility
+            const fullName = `${data.firstName} ${data.lastName}`;
+            console.log("Intentando registrar usuario:", { email: data.email, fullName });
+
+            await registerUser(fullName, data.email, data.rut, `+56 ${data.phone}`, data.password);
+            alert("¡Registro exitoso! Iniciando sesión...");
+            navigate('/');
+        } catch (error) {
+            console.error("Error al registrar:", error);
+            alert("Error al registrar: " + (error instanceof Error ? error.message : "Error desconocido"));
+        }
     };
 
     return (

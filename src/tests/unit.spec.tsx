@@ -3,7 +3,7 @@
 
 describe('Mundo Digital Unit Tests', () => {
 
-    // 1. Utility: Price Formatter
+    // 1. Utility:Formateo de Precios Price Formatter
     it('PriceFormatter: should format numbers to currency string', () => {
         const formatPrice = (price: number): string => {
             return '$' + price.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });

@@ -22,12 +22,29 @@ export const LoginPage = () => {
     });
 
     const onSubmit = async (data: LoginFormData) => {
-        const success = await login(data.email, data.password);
-        if (success) {
-            navigate('/');
-        } else {
+        try {
+            const user = await login(data.email, data.password);
+
+            if (user) {
+                console.log('Login successful, user:', user);
+                // Force a small delay to ensure state is propagated if needed, though usually not required
+                if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') {
+                    console.log('Redirecting to ADMIN');
+                    navigate('/admin');
+                } else {
+                    console.log('Redirecting to HOME');
+                    navigate('/');
+                }
+            } else {
+                console.warn('Login returned null');
+                setError('root', {
+                    message: 'Credenciales inválidas. Verifica tu email y contraseña.'
+                });
+            }
+        } catch (err) {
+            console.error('Login submit error:', err);
             setError('root', {
-                message: 'Credenciales inválidas. Verifica tu email y contraseña.'
+                message: 'Ocurrió un error al intentar ingresar. Intenta nuevamente.'
             });
         }
     };

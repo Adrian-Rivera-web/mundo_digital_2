@@ -7,7 +7,7 @@ import { useCartStore } from '../hooks/useCartStore';
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
-    login: (email: string, password?: string) => Promise<boolean>;
+    login: (email: string, password?: string) => Promise<User | null>;
     register: (name: string, email: string, rut: string, phone: string, password?: string) => Promise<void>;
     logout: () => void;
     refreshUser: () => void;
@@ -36,14 +36,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         initAuth();
     }, []);
 
-    const login = async (email: string, password?: string): Promise<boolean> => {
-        const user = await AuthService.login(email, password);
-        if (user) {
-            setUser(user);
-            useCartStore.getState().setActiveUser(user.id);
-            return true;
+    const login = async (email: string, password?: string): Promise<User | null> => {
+        try {
+            const user = await AuthService.login(email, password);
+            if (user) {
+                setUser(user);
+                useCartStore.getState().setActiveUser(user.id);
+                return user;
+            }
+        } catch (error) {
+            console.error('Login error in context:', error);
         }
-        return false;
+        return null;
     };
 
     const register = async (name: string, email: string, rut: string, phone: string, password?: string): Promise<void> => {

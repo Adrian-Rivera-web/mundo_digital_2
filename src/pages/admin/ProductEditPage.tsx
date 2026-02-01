@@ -39,29 +39,36 @@ export const ProductEditPage = () => {
 
     const onSubmit = async (formData: Product) => {
         const data = { ...formData };
+
+        // Ensure numbers
+        data.price = Number(data.price);
+        data.stock = Number(data.stock);
+
+        // Sanitize optional discount
         if (!data.discountPrice || isNaN(data.discountPrice)) {
             delete data.discountPrice;
-        }
-
-        const localStr = localStorage.getItem('mundo_digital_products');
-        let products: Product[] = await ProductService.getAll(); // fallback base
-
-        if (localStr) {
-            products = JSON.parse(localStr);
         } else {
-            // First time editing? snapshot all current server products to local
-            localStorage.setItem('mundo_digital_products', JSON.stringify(products));
+            data.discountPrice = Number(data.discountPrice);
         }
 
-        if (isNew) {
-            const newProduct = { ...data, id: Math.random().toString(36).substr(2, 9) };
-            products.push(newProduct);
-        } else {
-            products = products.map(p => p.id === id ? { ...p, ...data } : p);
+        // Default image if missing
+        if (!data.image) {
+            data.image = "https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=1000";
         }
 
-        localStorage.setItem('mundo_digital_products', JSON.stringify(products));
-        navigate('/admin/products');
+        try {
+            if (isNew) {
+                await ProductService.create(data);
+                console.log('Product created successfully');
+            } else if (id) {
+                await ProductService.update(id, data);
+                console.log('Product updated successfully');
+            }
+            navigate('/admin/products');
+        } catch (error) {
+            console.error('Failed to save product:', error);
+            alert('Error al guardar el producto. Revisa la consola o intenta nuevamente.');
+        }
     };
 
     return (
@@ -100,6 +107,11 @@ export const ProductEditPage = () => {
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría</label>
                     <input {...register('category')} className="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border" />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Marca</label>
+                    <input {...register('brand', { required: true })} placeholder="Ej: Samsung, Sony, Genérica" className="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border" />
                 </div>
 
                 <div>

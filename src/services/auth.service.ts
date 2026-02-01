@@ -1,79 +1,86 @@
 import type { User } from '../types';
+import api from '../api/axios';
 
-const USERS_KEY = 'mundo_digital_users';
 const CURRENT_USER_KEY = 'mundo_digital_current_user';
-
-const INITIAL_ADMIN: User = {
-    id: 'admin-1',
-    email: 'admin@mundodigital.com',
-    name: 'Super Admin',
-    role: 'SUPERADMIN',
-    password: 'admin123',
-    bits: 10000,
-    totalBitsDetails: 10000,
-    tier: 'BYTE'
-};
+const TOKEN_KEY = 'token';
 
 export const AuthService = {
     login: async (email: string, password?: string): Promise<User | null> => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Check if it's the hardcoded admin
-                if (email === INITIAL_ADMIN.email) {
-                    if (password === INITIAL_ADMIN.password) {
-                        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(INITIAL_ADMIN));
-                        resolve(INITIAL_ADMIN);
-                    } else {
-                        resolve(null);
-                    }
-                    return;
-                }
+        try {
+            const response = await api.post('/auth/login', { email, password });
 
-                // Check registered users
-                const usersStr = localStorage.getItem(USERS_KEY);
-                const users: User[] = usersStr ? JSON.parse(usersStr) : [];
-                const user = users.find(u => u.email === email);
+            if (response.data.success) {
+                const { id, nombre, email: userEmail, jwToken, role, bits, tier } = response.data;
 
-                if (user && user.password === password) {
-                    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-                    resolve(user);
-                } else {
-                    resolve(null);
-                }
-            }, 500); // Fake delay
-        });
+                const user: User = {
+                    id,
+                    name: nombre,
+                    email: userEmail,
+                    role: role || 'CLIENT',
+                    password: '',
+                    bits: bits || 0,
+                    totalBitsDetails: 0, // Si el backend no devuelve esto login, podría ser 0 o pedir 'me'
+                    tier: tier || 'BIT',
+                    rut: response.data.rut || '',
+                    phone: response.data.phone || response.data.telefono || ''
+                };
+
+                localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+                localStorage.setItem(TOKEN_KEY, jwToken);
+                return user;
+            }
+            return null;
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
     },
 
     register: async (name: string, email: string, rut: string, phone: string, password?: string): Promise<User> => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
+        try {
+            // Note: Backend 'crearUsuario' usually mapped to /auth/register
+            // Rut and Phone are not currently saved by the backend.
+            // Now sending RUT and Phone to the backend
+            const response = await api.post('/auth/register', {
+                email,
+                nombre: name,
+                password,
+                rut,
+                phone
+            });
+
+            if (response.data.success) {
+                // Determine what to return. The backend returns { success: true, usuario: "name", email: "email" }
+                // We construct a User object similar to login to immediately sign them in or just return it.
+                // Usually after register you might want to auto-login.
+
                 const newUser: User = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    name,
-                    email,
+                    id: response.data.id || 'temp-id', // Backend might not return ID on create depending on implementation
+                    name: response.data.nombre || response.data.usuario,
+                    email: response.data.email,
                     rut,
                     phone,
-                    role: 'CLIENT',
-                    password: password || '123456', // Fallback for old tests
+                    role: response.data.role || 'CLIENT',
+                    password: '',
                     bits: 0,
                     totalBitsDetails: 0,
                     tier: 'BIT'
                 };
 
-                const usersStr = localStorage.getItem(USERS_KEY);
-                const users: User[] = usersStr ? JSON.parse(usersStr) : [];
-
-                users.push(newUser);
-                localStorage.setItem(USERS_KEY, JSON.stringify(users));
-                localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser));
-
-                resolve(newUser);
-            }, 500);
-        });
+                // Optional: Auto-login logic could go here if the backend returned a token on register
+                // For now, we just return the user, and the UI might redirect to login.
+                return newUser;
+            }
+            throw new Error('Registration failed');
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw error;
+        }
     },
 
     logout: () => {
         localStorage.removeItem(CURRENT_USER_KEY);
+        localStorage.removeItem(TOKEN_KEY);
     },
 
     getCurrentUser: (): User | null => {
@@ -81,15 +88,18 @@ export const AuthService = {
         return userStr ? JSON.parse(userStr) : null;
     },
 
-    updateUser: (user: User): void => {
-        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-
-        // Update in the main users list as well
-        const usersStr = localStorage.getItem(USERS_KEY);
-        if (usersStr) {
-            const users: User[] = JSON.parse(usersStr);
-            const updatedUsers = users.map(u => u.id === user.id ? user : u);
-            localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+    updateUser: async (user: User): Promise<void> => {
+        try {
+            localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+            // Actualizar en backend
+            await api.put(`/users/${user.id}`, {
+                nombre: user.name,
+                email: user.email,
+                rut: user.rut,
+                phone: user.phone
+            });
+        } catch (error) {
+            console.error("Error updating user", error);
         }
     }
 };

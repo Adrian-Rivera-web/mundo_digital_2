@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Search, UserPlus, Eye, Shield, Trash2, X, ShoppingBag, Monitor } from 'lucide-react';
 import type { User } from '../../types';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { useAuth } from '../../context/AuthContext';
 
 export const UsersPage = () => {
     // RUT Validation Helpers (Simplified for Admin use)
@@ -30,86 +33,83 @@ export const UsersPage = () => {
     });
 
     useEffect(() => {
-        const loadUsers = () => {
-            const usersStr = localStorage.getItem('mundo_digital_users');
-            if (usersStr) {
-                setUsers(JSON.parse(usersStr));
-            } else {
-                // Initialize with some default users if empty (for demo/persistence)
-                const defaults: User[] = [
-                    {
-                        id: '1',
-                        name: 'Admin Mundo',
-                        email: 'admin@mundodigital.com',
-                        role: 'SUPERADMIN',
-                        bits: 0,
-                        totalBitsDetails: 0,
-                        tier: 'BIT'
-                    }
-                ];
-                setUsers(defaults);
-                localStorage.setItem('mundo_digital_users', JSON.stringify(defaults));
-            }
-        };
         loadUsers();
     }, []);
 
-    const handleCreateUser = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (users.some(u => u.email === newUser.email)) {
-            alert('Este email ya está registrado.');
-            return;
+    const loadUsers = async () => {
+        try {
+            const data = await UserService.getAll();
+            setUsers(data);
+        } catch (error) {
+            console.error("Error loading users:", error);
+            // Fallback to empty or show error
         }
-
-        const userToAdd: User = {
-            ...newUser,
-            id: Math.random().toString(36).substr(2, 9),
-            bits: 0,
-            totalBitsDetails: 0,
-            tier: 'BIT'
-        };
-
-        const updated = [...users, userToAdd];
-        setUsers(updated);
-        localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
-        setShowCreateModal(false);
-        setUsers(updated);
-        localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
-        setShowCreateModal(false);
-        setNewUser({ name: '', email: '', role: 'CLIENT', password: '', rut: '', phone: '' });
     };
 
-    const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleCreateUser = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            // We use AuthService.register because it handles password hashing etc (via backend register endpoint)
+            // But AuthService.register logs us in automatically usually in context.
+            // We should check if we can use a direct service call or if we need a specific 'admin create user' endpoint.
+            // Re-using AuthService.register might change the CURRENT user session in some implementations.
+            // Let's check AuthService.register implementation.
+            // It calls /auth/register and then setUser(response). 
+            // BAD: Using context register will log out the admin.
+            // We need to use AuthService.register STATICALLY without context side effects, or a new endpoint.
+            // AuthService.register returns the user but also has side effects in Context? 
+            // No, AuthService.register in `auth.service.ts` is static. 
+            // `useAuth().register` WRAPS it and updates state.
+            // So we should use `AuthService` directly here, NOT `useAuth`.
 
-    const toggleRole = (userId: string) => {
-        const updated = users.map(u => {
-            if (u.id === userId) {
-                // Prevent toggling SUPERADMIN
-                if (u.role === 'SUPERADMIN') return u;
-                return { ...u, role: u.role === 'ADMIN' ? 'CLIENT' : 'ADMIN' } as User;
-            }
-            return u;
-        });
-        setUsers(updated);
-        localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
+            await AuthService.register(newUser.name, newUser.email, newUser.rut, newUser.phone, newUser.password);
+            // Verify if backend allows duplicate emails (it throws 400).
+
+            await loadUsers(); // Refresh list
+            setShowCreateModal(false);
+            setNewUser({ name: '', email: '', role: 'CLIENT', password: '', rut: '', phone: '' });
+            alert('Usuario creado correctamente');
+        } catch (error: any) {
+            alert(error.response?.data?.message || 'Error al crear usuario');
+        }
     };
 
-    const deleteUser = (userId: string) => {
+    const toggleRole = async (userId: string) => {
+        const user = users.find(u => u.id === userId);
+        if (!user) return;
+        if (user.role === 'SUPERADMIN') return;
+
+        const newRole = user.role === 'ADMIN' ? 'CLIENT' : 'ADMIN';
+        try {
+            await UserService.updateRole(userId, newRole);
+            loadUsers();
+        } catch (error) {
+            console.error("Error updating role", error);
+            alert("No se pudo actualizar el rol");
+        }
+    };
+
+    const deleteUser = async (userId: string) => {
         const user = users.find(u => u.id === userId);
         if (user?.role === 'SUPERADMIN') {
             alert('No se puede eliminar al Super Admin.');
             return;
         }
         if (confirm('¿Estás seguro de eliminar este usuario?')) {
-            const updated = users.filter(u => u.id !== userId);
-            setUsers(updated);
-            localStorage.setItem('mundo_digital_users', JSON.stringify(updated));
+            try {
+                await UserService.delete(userId);
+                loadUsers();
+            } catch (error) {
+                console.error("Error deleting user", error);
+                alert("Error al eliminar usuario");
+            }
         }
     };
 
+    const filteredUsers = users.filter(user =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="space-y-6">
