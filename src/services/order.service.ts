@@ -23,7 +23,10 @@ export const OrderService = {
             console.log('Creating Order payload (JSON):', JSON.stringify(payload, null, 2));
 
             const response = await api.post('/orders', payload);
-            return response.data;
+            return {
+                ...response.data,
+                id: response.data._id || response.data.id
+            };
         } catch (error: any) {
             console.error('Error creating order:', error);
             if (error.response) {
@@ -45,14 +48,32 @@ export const OrderService = {
 
     getOrderById: async (id: string): Promise<Order | undefined> => {
         try {
-            // Placeholder: Backend might not have direct public ID access yet
-            // Using ID to suppress unused warning
-            console.log(`Fetching order ${id}`);
-            // const response = await api.get(`/orders/${id}`);
-            // return response.data;
+            const response = await api.get(`/orders/${id}`);
+            if (response.data) {
+                return {
+                    ...response.data,
+                    id: response.data._id || response.data.id
+                };
+            }
             return undefined;
         } catch (error) {
+            console.error("Error fetching order by ID", error);
             return undefined;
+        }
+    },
+    getDashboardStats: async (): Promise<any> => {
+        try {
+            const response = await api.get('/orders/dashboard');
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching dashboard stats:", error);
+            return {
+                totalRevenue: 0,
+                totalOrders: 0,
+                pendingOrders: 0,
+                productsSold: 0,
+                recentOrders: []
+            };
         }
     }
 };

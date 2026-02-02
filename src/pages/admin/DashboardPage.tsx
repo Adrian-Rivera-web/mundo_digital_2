@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import type { Order } from '../../types';
 import { DollarSign, Package, ShoppingBag, Clock, TrendingUp, ArrowRight } from 'lucide-react';
 import { ProductService } from '../../services/product.service';
+import { OrderService } from '../../services/order.service';
 import { Link } from 'react-router-dom';
 
 export const AdminDashboard = () => {
@@ -18,36 +19,26 @@ export const AdminDashboard = () => {
 
     useEffect(() => {
         const fetchStats = async () => {
-            const ordersStr = localStorage.getItem('mundo_digital_orders');
-            const orders: Order[] = ordersStr ? JSON.parse(ordersStr) : [];
+            try {
+                // Get Order Stats from Backend
+                const dashboardData = await OrderService.getDashboardStats();
 
-            // Sort orders to get recent ones
-            const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                // Get Products for Low Stock Check
+                const products = await ProductService.getAll();
+                const lowStockProducts = products.filter((p: any) => p.stock < 3);
 
-            // Get products to check low stock
-            const localProductsStr = localStorage.getItem('mundo_digital_products');
-            let products = [];
-            if (localProductsStr) {
-                products = JSON.parse(localProductsStr);
-            } else {
-                products = await ProductService.getAll();
+                setStats({
+                    totalRevenue: dashboardData.totalRevenue || 0,
+                    totalOrders: dashboardData.totalOrders || 0,
+                    pendingOrders: dashboardData.pendingOrders || 0,
+                    productsSold: dashboardData.productsSold || 0,
+                    recentOrders: dashboardData.recentOrders || [],
+                    lowStockCount: lowStockProducts.length,
+                    lowStockItems: lowStockProducts
+                });
+            } catch (error) {
+                console.error("Error loading dashboard:", error);
             }
-
-            const totalRevenue = orders.reduce((acc, order) => acc + order.total, 0);
-            const pendingOrders = orders.filter(o => o.status === 'PENDING').length;
-            const productsSold = orders.reduce((acc, order) => acc + order.items.reduce((sum, item) => sum + item.quantity, 0), 0);
-
-            const lowStockProducts = products.filter((p: any) => p.stock < 3);
-
-            setStats({
-                totalRevenue,
-                totalOrders: orders.length,
-                pendingOrders,
-                productsSold,
-                lowStockCount: lowStockProducts.length,
-                lowStockItems: lowStockProducts,
-                recentOrders: sortedOrders.slice(0, 5) // Last 5 orders
-            });
         };
         fetchStats();
     }, []);

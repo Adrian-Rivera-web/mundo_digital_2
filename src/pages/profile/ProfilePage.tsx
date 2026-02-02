@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export const ProfilePage = () => {
-    const { user, refreshUser } = useAuth();
+    const { user, refreshUser, isLoading } = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
 
@@ -31,6 +31,14 @@ export const ProfilePage = () => {
         };
         fetchOrders();
     }, [user?.id]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     if (!user) {
         return <Navigate to="/login" replace />;

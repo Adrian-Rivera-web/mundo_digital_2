@@ -101,5 +101,30 @@ export const AuthService = {
         } catch (error) {
             console.error("Error updating user", error);
         }
+    },
+
+    getById: async (id: string): Promise<User | null> => {
+        try {
+            const response = await api.get(`/users/${id}`);
+            const data = response.data;
+            if (data) {
+                return {
+                    id: data._id || data.id,
+                    name: data.nombre || data.name,
+                    email: data.email,
+                    role: data.role,
+                    bits: data.bits || 0,
+                    totalBitsDetails: data.totalBitsDetails || 0,
+                    tier: data.tier || 'BIT',
+                    rut: data.rut,
+                    phone: data.phone,
+                    wishlist: data.wishlist
+                };
+            }
+            return null;
+        } catch (error) {
+            console.error("Error fetching user by ID", error);
+            return null;
+        }
     }
 };

@@ -10,7 +10,7 @@ interface AuthContextType {
     login: (email: string, password?: string) => Promise<User | null>;
     register: (name: string, email: string, rut: string, phone: string, password?: string) => Promise<void>;
     logout: () => void;
-    refreshUser: () => void;
+    refreshUser: () => Promise<void>;
     toggleWishlist: (productId: string) => void;
     isLoading: boolean;
 }
@@ -62,10 +62,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         useCartStore.getState().setActiveUser('guest');
     };
 
-    const refreshUser = () => {
+    const refreshUser = async () => {
         const storedUser = AuthService.getCurrentUser();
-        setUser(storedUser);
         if (storedUser) {
+            // Fetch fresh data from API
+            try {
+                const freshUser = await AuthService.getById(storedUser.id);
+                if (freshUser) {
+                    // Update local storage and state with fresh data
+                    // Preserve token key which is separate
+                    localStorage.setItem('mundo_digital_current_user', JSON.stringify(freshUser));
+                    setUser(freshUser);
+                } else {
+                    // Fallback to stored if API fails
+                    setUser(storedUser);
+                }
+            } catch (err) {
+                console.error("Error refreshing user data", err);
+                setUser(storedUser);
+            }
             useCartStore.getState().setActiveUser(storedUser.id);
         }
     };

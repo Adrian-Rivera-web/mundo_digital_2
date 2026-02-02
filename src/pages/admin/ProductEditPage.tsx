@@ -19,21 +19,16 @@ export const ProductEditPage = () => {
     }, [id, isNew]);
 
     const loadProduct = async (productId: string) => {
-        // Tries to find in localStorage first, then Service
-        const localStr = localStorage.getItem('mundo_digital_products');
-        let product: Product | undefined;
-
-        if (localStr) {
-            const products = JSON.parse(localStr) as Product[];
-            product = products.find(p => p.id === productId);
-        }
-
-        if (!product) {
-            product = await ProductService.getById(productId);
-        }
-
-        if (product) {
-            reset(product);
+        try {
+            const product = await ProductService.getById(productId);
+            if (product) {
+                reset(product);
+            } else {
+                alert("Producto no encontrado");
+                navigate('/admin/products');
+            }
+        } catch (error) {
+            console.error("Error loading product:", error);
         }
     };
 

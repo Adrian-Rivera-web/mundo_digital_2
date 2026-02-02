@@ -89,7 +89,7 @@ export const LoyaltyDashboard = ({ user }: LoyaltyDashboardProps) => {
                 <p className="text-xs text-gray-400 mt-2 text-right">
                     {tier === 'GIGA'
                         ? '¡Eres una leyenda! Mantén tu estatus.'
-                        : `Te faltan ${(tier === 'BIT' ? 5000 : 15000) - totalBits} bits para subir.`
+                        : `Te faltan ${Math.max(0, (tier === 'BIT' ? 5000 : 15000) - totalBits)} bits para subir.`
                     }
                 </p>
 
