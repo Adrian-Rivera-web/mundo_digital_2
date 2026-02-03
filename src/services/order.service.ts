@@ -2,7 +2,7 @@ import type { Order, CartItem } from '../types';
 import api from '../api/axios';
 
 export const OrderService = {
-    createOrder: async (userId: string, items: CartItem[], total: number, shippingData: any): Promise<Order> => {
+    createOrder: async (userId: string, items: CartItem[], total: number, shippingData: any, loyalty?: { redeemed: number, earned: number }): Promise<Order> => {
         try {
             const payload = {
                 userId,
@@ -18,7 +18,8 @@ export const OrderService = {
                 }),
                 total,
                 shippingAddress: shippingData.address || "Retiro en Sucursal",
-                shippingType: shippingData.shippingType
+                shippingType: shippingData.shippingType,
+                loyalty: loyalty
             };
             console.log('Creating Order payload (JSON):', JSON.stringify(payload, null, 2));
 

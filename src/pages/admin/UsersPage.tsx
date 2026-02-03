@@ -3,7 +3,7 @@ import { Search, UserPlus, Eye, Shield, Trash2, X, ShoppingBag, Monitor } from '
 import type { User } from '../../types';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
-import { useAuth } from '../../context/AuthContext';
+
 
 export const UsersPage = () => {
     // RUT Validation Helpers (Simplified for Admin use)
